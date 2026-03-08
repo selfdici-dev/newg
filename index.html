@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -257,6 +258,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div id="content">
 
 <!-- FEED -->
+
 <div class="page on" id="p-feed">
 <div style="padding:0 20px;margin-top:16px">
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
@@ -274,6 +276,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <!-- CRYPTO -->
+
 <div class="page" id="p-crypto">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px">Crypto <span style="background:linear-gradient(135deg,var(--crypto-a),var(--crypto-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">&amp; Finance</span></div>
@@ -341,6 +344,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <!-- NUTRITION -->
+
 <div class="page" id="p-nutri">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px"><span style="background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Nutrition</span> JJB</div>
@@ -386,6 +390,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <!-- ROUTINE -->
+
 <div class="page" id="p-routine">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px">Ta <span style="background:linear-gradient(135deg,var(--routine-a),var(--routine-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Routine</span></div>
@@ -452,6 +457,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <!-- CORPS -->
+
 <div class="page" id="p-corps">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px">Ton <span style="background:linear-gradient(135deg,var(--body-a),var(--body-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Corps</span></div>
@@ -533,6 +539,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <!-- JOURNAL -->
+
 <div class="page" id="p-mind">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px">Ton <span style="background:linear-gradient(135deg,var(--mind-a),var(--mind-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Esprit</span></div>
@@ -565,6 +572,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <!-- BRIEF -->
+
 <div class="page" id="p-brief">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:2px">Morning <span style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Brief</span></div>
@@ -612,6 +620,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <!-- EXPLORE -->
+
 <div class="page" id="p-explore">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px"><span style="background:linear-gradient(135deg,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Explore</span></div>
@@ -630,6 +639,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div><!-- /content -->
 
 <!-- NAVBAR -->
+
 <div id="navbar">
 <button class="nb" onclick="goPage('brief',this)">
 <div class="nb-ico" style="background:var(--cream)">☀</div>
@@ -667,6 +677,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div><!-- /app -->
 
 <!-- FOCUS OVERLAY -->
+
 <div id="fov">
 <button class="ico fo-cl" onclick="closeFocus()">✕</button>
 <div class="fo-tag" id="fo-tag">FOCUS</div>
@@ -692,6 +703,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 
 <!-- MODALS -->
+
 <div class="mbg" id="m-task" onclick="if(event.target===this)closeM('m-task')">
 <div class="mbox"><div class="mhd"><div class="mtit">Nouvelle tâche</div><button class="mx" onclick="closeM('m-task')">✕</button></div>
 <div class="field"><label>Tâche</label><input type="text" id="task-in" placeholder="Décris la tâche..."></div>
@@ -818,14 +830,15 @@ async function refreshFeed(){
   var progInterval=setInterval(function(){prog=Math.min(prog+8,90);if(bar)bar.style.width=prog+'%';},300);
   try{
     var cats=FEED_DATA.map(function(i){return i.cat;}).filter(function(v,j,a){return a.indexOf(v)===j;}).join(', ');
+    var prompt='Generate 3 fresh educational articles in JSON for: JJB/BJJ, crypto/finance, nutrition, sport performance, mindset, freediving. Categories: '+cats+'. Reply ONLY valid JSON array: [{"cat":"JJB","time":"Aujourd hui","title":"...","text":"2-3 sentences educational content in French...","keys":["tag1","tag2"]}]. 3 articles, different categories, in French.';
     var res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:1000,
-        messages:[{role:'user',content:'Generate 3 fresh educational articles in French for a young French person interested in: JJB/BJJ, crypto/finance, nutrition, sport performance, mindset, freediving/apnee. Categories available: '+cats+'. Each article should be genuinely educational and actionable. Reply ONLY with a valid JSON array (no markdown, no explanation) like: [{"cat":"JJB","time":"Aujourd\'hui","title":"...","text":"2-3 sentences of real educational content...","keys":["tag1","tag2","tag3"]}]. Generate 3 articles across different categories.'}]}
-      )
+        messages:[{role:'user',content:prompt}]
+      })
     });
     var data=await res.json();
     var text=data.content.map(function(c){return c.text||''}).join('');
@@ -989,18 +1002,39 @@ var list=document.getElementById('static-recipes');if(!list)return;list.innerHTM
 RECIPES.slice(0,3).forEach(function(r){var el=document.createElement('div');el.innerHTML=makeRecipeCard(r);list.appendChild(el);});
 }
 
-function genRecipe(){
-var raw=document.getElementById('ai-ingr').value.trim();if(!raw)return toast('Entre tes ingrédients !');
+async function genRecipe(){
+var raw=document.getElementById('ai-ingr').value.trim();if(!raw)return toast('Entre tes ingredients !');
 var ctx=document.getElementById('ai-ctx').value||'post-jjb';
-var words=raw.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').split(/[,;\s]+/).filter(function(w){return w.length>2;});
-var scored=RECIPES.map(function(r){var km=r.keys.filter(function(k){return words.some(function(w){return w.includes(k)||k.includes(w);});}).length;return{r:r,score:km+(r.ctx.includes(ctx)?3:0)};}).sort(function(a,b){return b.score-a.score;});
-var top=scored[0].score;var pool=scored.filter(function(s){return s.score>=top-1;});
-var pick=pool[Math.floor(Math.random()*Math.min(pool.length,3))].r;
+var btn=document.getElementById('recipe-btn');
 var box=document.getElementById('recipe-result');if(!box)return;
-box.style.display='block';box.innerHTML=makeRecipeCard(pick);
-document.getElementById('recipe-btn').textContent='✦ Autre recette';toast('Recette générée ✓');
+btn.disabled=true;btn.textContent='✦ Generation...';
+box.style.display='block';
+box.innerHTML='<div style="text-align:center;padding:30px 0;font:500 13px var(--f);color:var(--ink2)">Claude cuisine ta recette...</div>';
+try{
+var ctxMap={'post-jjb':'apres entrainement JJB','matin':'petit-dejeuner','soir':'diner','rapide':'moins de 10 min','batch':'batch cooking'};
+var prompt='Cree une recette en francais avec ces ingredients: '+raw+'. Contexte: '+(ctxMap[ctx]||ctx)+'. Reponds UNIQUEMENT avec du JSON valide sans markdown: {"name":"Nom recette","icon":"emoji","time":"X min","ing":["ingredient 1","ingredient 2","ingredient 3"],"steps":["etape 1","etape 2","etape 3"],"macros":["XXg","XXg","XXg","XXX"],"why":"Une phrase sur les benefices pour la performance."}. Ordre macros: proteines, glucides, lipides, calories.';
+var res=await fetch('https://api.anthropic.com/v1/messages',{
+  method:'POST',
+  headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+  body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:prompt}]})
+});
+var data=await res.json();
+var text=data.content.map(function(c){return c.text||'';}).join('');
+var clean=text.replace(/```json|```/g,'').trim();
+var r=JSON.parse(clean);
+r.keys=raw.split(/[,;\s]+/).map(function(s){return s.trim().toLowerCase();}).filter(function(s){return s.length>1;}).slice(0,4);
+box.innerHTML=makeRecipeCard(r);
+btn.textContent='✦ Autre recette';
+toast('Recette IA generee !');
+}catch(e){
+var words=raw.toLowerCase().split(/[,;\s]+/).filter(function(w){return w.length>1;});
+var scored=RECIPES.map(function(r){var km=r.keys.filter(function(k){return words.some(function(w){return k.includes(w)||w.includes(k);});}).length;return{r:r,score:km};}).sort(function(a,b){return b.score-a.score;});
+var pick=scored[0].r;
+box.innerHTML=makeRecipeCard(pick)+'<div style="margin-top:8px;font:400 11px var(--s);font-style:italic;color:var(--ink3);text-align:center">Suggestion hors ligne</div>';
+btn.textContent='✦ Autre recette';
 }
-
+btn.disabled=false;
+}
 function renderAliments(){
 var list=document.getElementById('aliments-list');if(!list)return;
 var aliments=[{e:'🥚',n:'Œufs',d:'Leucine — synthèse protéique. 6g prot/œuf.'},{e:'🐟',n:'Thon / Saumon',d:'Protéines complètes + Oméga-3 anti-inflammatoires.'},{e:'🥑',n:'Avocat',d:'Lipides mono-insaturés. Satiété longue durée.'},{e:'🍠',n:'Patate douce',d:'Glucides complexes. IG bas. Idéal pré-JJB.'},{e:'🫐',n:'Myrtilles',d:"Antioxydants. Réduisent l'inflammation musculaire."},{e:'🌰',n:'Amandes',d:'Magnésium + Vitamine E. Sommeil + récup.'},{e:'🥦',n:'Brocoli',d:'Fer, calcium, vitamine C. Densité nutritive maximale.'},{e:'🍌',n:'Banane',d:'Potassium + glucides rapides. Post-entraînement.'}];
@@ -1235,155 +1269,191 @@ var pagesTotal=weekEntries.reduce(function(s,e){return s+(e.pages||0);},0);
 var w=window.open('','_blank');if(!w){toast('Active les popups');return;}
 var dateStr=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bilan LIFE OS</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Georgia,serif;background:#fff;color:#1a1a1a;padding:40px;max-width:680px;margin:0 auto}h1{font-size:28px;font-weight:900;margin-bottom:4px}.sub{font-size:12px;color:#888;margin-bottom:32px;font-style:italic}h2{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:#888;margin:28px 0 12px;border-bottom:1px solid #eee;padding-bottom:6px}.sr{display:flex;gap:16px;margin-bottom:8px}.sv2{text-align:center;padding:16px;border:1px solid #eee;border-radius:12px;flex:1}.svv{font-size:26px;font-weight:900;color:#22c55e}.svl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-top:4px}.e{border:1px solid #eee;border-radius:10px;padding:16px;margin-bottom:12px}.ed{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:8px}.et{font-size:13px;color:#555;line-height:1.6;margin-bottom:5px}.footer{margin-top:32px;font-size:10px;color:#aaa;text-align:center;padding-top:16px;border-top:1px solid #eee}</style></head><body>';
-html+='<h1>Bilan hebdomadaire</h1><div class="sub">'+dateStr+' · LIFE OS</div>';
-html+='<h2>Résumé</h2><div class="sr"><div class="sv2"><div class="svv">'+weekEntries.length+'</div><div class="svl">Entrées</div></div><div class="sv2"><div class="svv">'+pagesTotal+'p</div><div class="svl">Pages lues</div></div></div>';
-html+='<h2>Journal</h2>';
-if(weekEntries.length){weekEntries.forEach(function(e){html+='<div class="e"><div class="ed">'+e.date+'</div>'+(e.appris?'<div class="et"><strong>Appris :</strong> '+e.appris+'</div>':'')+(e.bien?'<div class="et"><strong>Bien :</strong> '+e.bien+'</div>':'')+(e.ameliorer?'<div class="et"><strong>Améliorer :</strong> '+e.ameliorer+'</div>':'')+'</div>';});}
-else html+='<p style="color:#aaa;font-style:italic">Aucune entrée cette semaine.</p>';
-html+='<div class="footer">LIFE OS · '+days[0]+' au '+days[6]+'</div>';
-html+='<script>window.onload=function(){setTimeout(function(){window.print();},400);};<\/script></body></html>';
-w.document.write(html);w.document.close();toast('PDF en cours…');
+
+html+=’<h1>Bilan hebdomadaire</h1><div class="sub">’+dateStr+’ · LIFE OS</div>’;
+html+=’<h2>Résumé</h2><div class="sr"><div class="sv2"><div class="svv">’+weekEntries.length+’</div><div class="svl">Entrées</div></div><div class="sv2"><div class="svv">’+pagesTotal+‘p</div><div class="svl">Pages lues</div></div></div>’;
+html+=’<h2>Journal</h2>’;
+if(weekEntries.length){weekEntries.forEach(function(e){html+=’<div class="e"><div class="ed">’+e.date+’</div>’+(e.appris?’<div class="et"><strong>Appris :</strong> ‘+e.appris+’</div>’:’’)+(e.bien?’<div class="et"><strong>Bien :</strong> ‘+e.bien+’</div>’:’’)+(e.ameliorer?’<div class="et"><strong>Améliorer :</strong> ‘+e.ameliorer+’</div>’:’’)+’</div>’;});}
+else html+=’<p style="color:#aaa;font-style:italic">Aucune entrée cette semaine.</p>’;
+html+=’<div class="footer">LIFE OS · ‘+days[0]+’ au ‘+days[6]+’</div>’;
+html+=’<script>window.onload=function(){setTimeout(function(){window.print();},400);};</script></body></html>’;
+w.document.write(html);w.document.close();toast(‘PDF en cours…’);
 }
 
 var _fT=0,_fR=0,_fRun=false,_fInt=null;
 function openFocus(type,mins,name,sub){
 _fT=mins*60;_fR=_fT;_fRun=false;if(_fInt){clearInterval(_fInt);_fInt=null;}
-document.getElementById('fo-tag').textContent=type.toUpperCase();document.getElementById('fo-name').textContent=name;document.getElementById('fo-sub').textContent=sub;
-document.getElementById('fo-play').textContent='▶ Démarrer';updateFD();document.getElementById('fov').classList.add('on');
+document.getElementById(‘fo-tag’).textContent=type.toUpperCase();document.getElementById(‘fo-name’).textContent=name;document.getElementById(‘fo-sub’).textContent=sub;
+document.getElementById(‘fo-play’).textContent=‘▶ Démarrer’;updateFD();document.getElementById(‘fov’).classList.add(‘on’);
 }
-function closeFocus(){document.getElementById('fov').classList.remove('on');if(_fInt){clearInterval(_fInt);_fInt=null;_fRun=false;}}
+function closeFocus(){document.getElementById(‘fov’).classList.remove(‘on’);if(_fInt){clearInterval(_fInt);_fInt=null;_fRun=false;}}
 function toggleTimer(){
-if(_fRun){clearInterval(_fInt);_fRun=false;document.getElementById('fo-play').textContent='▶ Reprendre';}
-else{_fRun=true;document.getElementById('fo-play').textContent='⏸ Pause';_fInt=setInterval(function(){_fR--;if(_fR<=0){clearInterval(_fInt);_fRun=false;_fR=0;document.getElementById('fo-play').textContent='✓ Terminé';toast('Timer terminé ✓');}updateFD();},1000);}
+if(_fRun){clearInterval(_fInt);_fRun=false;document.getElementById(‘fo-play’).textContent=‘▶ Reprendre’;}
+else{_fRun=true;document.getElementById(‘fo-play’).textContent=‘⏸ Pause’;_fInt=setInterval(function(){_fR–;if(_fR<=0){clearInterval(_fInt);_fRun=false;_fR=0;document.getElementById(‘fo-play’).textContent=‘✓ Terminé’;toast(‘Timer terminé ✓’);}updateFD();},1000);}
 }
-function resetTimer(){if(_fInt)clearInterval(_fInt);_fRun=false;_fR=_fT;document.getElementById('fo-play').textContent='▶ Démarrer';updateFD();}
-function updateFD(){var m=Math.floor(_fR/60),s=_fR%60;var e=document.getElementById('fo-time');if(e)e.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');var arc=document.getElementById('fo-arc');if(arc)arc.style.strokeDashoffset=616*(_fT>0?1-_fR/_fT:0);}
+function resetTimer(){if(_fInt)clearInterval(_fInt);_fRun=false;_fR=_fT;document.getElementById(‘fo-play’).textContent=‘▶ Démarrer’;updateFD();}
+function updateFD(){var m=Math.floor(_fR/60),s=_fR%60;var e=document.getElementById(‘fo-time’);if(e)e.textContent=String(m).padStart(2,‘0’)+’:’+String(s).padStart(2,‘0’);var arc=document.getElementById(‘fo-arc’);if(arc)arc.style.strokeDashoffset=616*(_fT>0?1-_fR/_fT:0);}
 
 var EXPLORE_ENGINES=[
-  {id:'google',label:'Google',icon:'🌐',url:'https://www.google.com/search?q=',col:'#4285f4'},
-  {id:'youtube',label:'YouTube',icon:'▶',url:'https://www.youtube.com/results?search_query=',col:'#ff0000'},
-  {id:'reddit',label:'Reddit',icon:'🤙',url:'https://www.reddit.com/search/?q=',col:'#ff4500'},
-  {id:'pubmed',label:'PubMed',icon:'🔬',url:'https://pubmed.ncbi.nlm.nih.gov/?term=',col:'#336699'},
-  {id:'coindesk',label:'CoinDesk',icon:'₿',url:'https://www.coindesk.com/search?s=',col:'#f7931a'},
+{id:‘google’,label:‘Google’,icon:‘🌐’,url:‘https://www.google.com/search?q=’,col:’#4285f4’},
+{id:‘youtube’,label:‘YouTube’,icon:‘▶’,url:‘https://www.youtube.com/results?search_query=’,col:’#ff0000’},
+{id:‘reddit’,label:‘Reddit’,icon:‘🤙’,url:‘https://www.reddit.com/search/?q=’,col:’#ff4500’},
+{id:‘pubmed’,label:‘PubMed’,icon:‘🔬’,url:‘https://pubmed.ncbi.nlm.nih.gov/?term=’,col:’#336699’},
+{id:‘coindesk’,label:‘CoinDesk’,icon:‘₿’,url:‘https://www.coindesk.com/search?s=’,col:’#f7931a’},
 ];
-var _activeEngine='google';
+var _activeEngine=‘google’;
 
 var EXPLORE_SHORTCUTS=[
-  {label:'BTC analyse',q:'bitcoin price analysis 2025',engine:'youtube',icon:'📈'},
-  {label:'JJB technique',q:'bjj technique tutorial guard passing',engine:'youtube',icon:'🥋'},
-  {label:'Apnée training',q:'freediving training CO2 tables',engine:'youtube',icon:'🌊'},
-  {label:'Sommeil science',q:'sleep deep work cognitive performance',engine:'pubmed',icon:'😴'},
-  {label:'DCA stratégie',q:'DCA bitcoin long term strategy',engine:'reddit',icon:'💰'},
-  {label:'Nutrition récup',q:'post workout nutrition recovery',engine:'google',icon:'🥗'},
+{label:‘BTC analyse’,q:‘bitcoin price analysis 2025’,engine:‘youtube’,icon:‘📈’},
+{label:‘JJB technique’,q:‘bjj technique tutorial guard passing’,engine:‘youtube’,icon:‘🥋’},
+{label:‘Apnée training’,q:‘freediving training CO2 tables’,engine:‘youtube’,icon:‘🌊’},
+{label:‘Sommeil science’,q:‘sleep deep work cognitive performance’,engine:‘pubmed’,icon:‘😴’},
+{label:‘DCA stratégie’,q:‘DCA bitcoin long term strategy’,engine:‘reddit’,icon:‘💰’},
+{label:‘Nutrition récup’,q:‘post workout nutrition recovery’,engine:‘google’,icon:‘🥗’},
 ];
 
 function renderExploreEngines(){
-  var el=document.getElementById('explore-engines');if(!el)return;el.innerHTML='';
-  EXPLORE_ENGINES.forEach(function(e){
-    var btn=document.createElement('button');
-    var active=_activeEngine===e.id;
-    btn.style.cssText='padding:8px 14px;border-radius:50px;font:700 11px var(--f);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:5px;border:1.5px solid '+(active?'transparent':'var(--line)')+';background:'+(active?e.col:'var(--white)')+';color:'+(active?'white':'var(--ink2)')+';flex-shrink:0';
-    btn.innerHTML='<span>'+e.icon+'</span>'+e.label;
-    btn.onclick=(function(eid){return function(){_activeEngine=eid;renderExploreEngines();};})(e.id);
-    el.appendChild(btn);
-  });
+var el=document.getElementById(‘explore-engines’);if(!el)return;el.innerHTML=’’;
+EXPLORE_ENGINES.forEach(function(e){
+var btn=document.createElement(‘button’);
+var active=_activeEngine===e.id;
+btn.style.cssText=‘padding:8px 14px;border-radius:50px;font:700 11px var(–f);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:5px;border:1.5px solid ‘+(active?‘transparent’:‘var(–line)’)+’;background:’+(active?e.col:‘var(–white)’)+’;color:’+(active?‘white’:‘var(–ink2)’)+’;flex-shrink:0’;
+btn.innerHTML=’<span>’+e.icon+’</span>’+e.label;
+btn.onclick=(function(eid){return function(){_activeEngine=eid;renderExploreEngines();};})(e.id);
+el.appendChild(btn);
+});
 }
 
 function renderExploreShortcuts(){
-  var el=document.getElementById('explore-shortcuts');if(!el)return;el.innerHTML='';
-  var grid=document.createElement('div');
-  grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:10px';
-  EXPLORE_SHORTCUTS.forEach(function(s){
-    var eng=EXPLORE_ENGINES.find(function(e){return e.id===s.engine;})||EXPLORE_ENGINES[0];
-    var btn=document.createElement('button');
-    btn.style.cssText='background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:14px 12px;text-align:left;cursor:pointer;transition:.15s';
-    btn.innerHTML='<div style="font:500 18px var(--f);margin-bottom:4px">'+s.icon+'</div><div style="font:700 12px var(--f);color:var(--ink);margin-bottom:3px">'+s.label+'</div><div style="font:500 10px var(--f);color:'+eng.col+'">'+eng.label+'</div>';
-    btn.onclick=function(){window.open(eng.url+encodeURIComponent(s.q),'_blank');};
-    grid.appendChild(btn);
-  });
-  el.appendChild(grid);
+var el=document.getElementById(‘explore-shortcuts’);if(!el)return;el.innerHTML=’’;
+var grid=document.createElement(‘div’);
+grid.style.cssText=‘display:grid;grid-template-columns:1fr 1fr;gap:10px’;
+EXPLORE_SHORTCUTS.forEach(function(s){
+var eng=EXPLORE_ENGINES.find(function(e){return e.id===s.engine;})||EXPLORE_ENGINES[0];
+var btn=document.createElement(‘button’);
+btn.style.cssText=‘background:var(–white);border:1.5px solid var(–line);border-radius:14px;padding:14px 12px;text-align:left;cursor:pointer;transition:.15s’;
+btn.innerHTML=’<div style="font:500 18px var(--f);margin-bottom:4px">’+s.icon+’</div><div style="font:700 12px var(--f);color:var(--ink);margin-bottom:3px">’+s.label+’</div><div style="font:500 10px var(--f);color:'+eng.col+'">’+eng.label+’</div>’;
+btn.onclick=function(){window.open(eng.url+encodeURIComponent(s.q),’_blank’);};
+grid.appendChild(btn);
+});
+el.appendChild(grid);
 }
 
-function doExploreSearch(){
-  var q=document.getElementById('explore-q');if(!q||!q.value.trim())return;
-  var eng=EXPLORE_ENGINES.find(function(e){return e.id===_activeEngine;})||EXPLORE_ENGINES[0];
-  window.open(eng.url+encodeURIComponent(q.value.trim()),'_blank');
+async function doExploreSearch(){
+var q=document.getElementById(‘explore-q’);if(!q||!q.value.trim())return;
+var query=q.value.trim();
+var eng=EXPLORE_ENGINES.find(function(e){return e.id===_activeEngine;})||EXPLORE_ENGINES[0];
+var shortcutsEl=document.getElementById(‘explore-shortcuts’);
+if(shortcutsEl){
+shortcutsEl.innerHTML=’<div style="text-align:center;padding:20px 0;font:500 13px var(--f);color:var(--ink2)">Claude cherche la meilleure ressource…</div>’;
 }
-
+try{
+var prompt=‘Je cherche: “’+query+’” sur ‘+eng.label+’. Trouve-moi les 3 meilleures ressources sur ce sujet. Reponds UNIQUEMENT en JSON valide sans markdown: [{“title”:“Titre exact”,“url”:“URL complete et valide”,“channel”:“Auteur/Chaine/Site”,“why”:“1 phrase sur la qualite de la ressource”,“type”:”’+eng.label+’”}]. URLs reelles et valides pour ‘+eng.label+’.’;
+var res=await fetch(‘https://api.anthropic.com/v1/messages’,{
+method:‘POST’,
+headers:{‘Content-Type’:‘application/json’,‘anthropic-version’:‘2023-06-01’,‘anthropic-dangerous-direct-browser-access’:‘true’},
+body:JSON.stringify({model:‘claude-sonnet-4-20250514’,max_tokens:600,messages:[{role:‘user’,content:prompt}]})
+});
+var data=await res.json();
+var text=data.content.map(function(c){return c.text||’’;}).join(’’);
+var clean=text.replace(/`json|`/g,’’).trim();
+var results=JSON.parse(clean);
+var html=’<div style="font:700 10px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px">Recommandations pour “’+query+’”</div>’;
+results.forEach(function(r,i){
+html+=’<a href="'+r.url+'" target="_blank" style="display:block;background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:10px;text-decoration:none;color:inherit">’;
+html+=’<div style="display:flex;align-items:flex-start;gap:10px">’;
+html+=’<div style="background:'+eng.col+';color:white;border-radius:8px;padding:4px 8px;font:700 10px var(--f);flex-shrink:0;margin-top:2px">’+(i===0?’#1’:’#’+(i+1))+’</div>’;
+html+=’<div style="flex:1">’;
+html+=’<div style="font:700 13px var(--f);margin-bottom:3px;line-height:1.4">’+r.title+’</div>’;
+html+=’<div style="font:600 11px var(--f);color:'+eng.col+';margin-bottom:6px">’+r.channel+’</div>’;
+html+=’<div style="font:400 12px var(--s);font-style:italic;color:var(--ink2);line-height:1.5">’+r.why+’</div>’;
+html+=’</div></div>’;
+html+=’<div style="margin-top:10px;font:600 10px var(--f);color:var(--ink3)">Ouvrir → ‘+r.url.replace(/^https?:///,’’).split(’/’)[0]+’</div>’;
+html+=’</a>’;
+});
+html+=’<button onclick="renderExploreShortcuts()" style="width:100%;background:var(--cream);border:none;border-radius:50px;padding:10px;font:600 12px var(--f);cursor:pointer;color:var(--ink2);margin-top:4px">← Retour aux raccourcis</button>’;
+if(shortcutsEl)shortcutsEl.innerHTML=html;
+}catch(e){
+if(shortcutsEl){
+shortcutsEl.innerHTML=’<div style="text-align:center;padding:16px 0"><div style="font:500 13px var(--f);color:var(--ink2);margin-bottom:12px">Ouvrir directement sur ‘+eng.label+’</div><a href="'+eng.url+encodeURIComponent(query)+'" target="_blank" style="display:inline-block;background:'+eng.col+';color:white;border-radius:50px;padding:10px 20px;font:700 12px var(--f);text-decoration:none">Rechercher “’+query+’” →</a></div>’;
+}
+}
+}
 function renderExploreFilters(){}
 function renderExploreList(){renderExploreEngines();renderExploreShortcuts();}
 
 var QBRIEF=[
-{t:"L'excellence n\'est pas un acte, c\'est une habitude.",a:'Aristote'},
-{t:"Chaque action est un vote pour le type de personne que tu veux devenir.",a:'James Clear'},
-{t:"La vraie discipline c\'est être précis, pas dur.",a:'–'},
-{t:"Ne cherche pas à ce que les choses arrivent comme tu le veux.",a:'Épictète'},
-{t:"Le talent c\'est ce que tu as. La technique c\'est ce que tu fais avec.",a:'Josh Waitzkin'},
-{t:"Le corps s\'adapte. L\'esprit décide.",a:'–'},
-{t:"Il ne s'agit pas d\'être parfait. Il s\'agit d\'être meilleur qu'hier.",a:'–'},
-{t:'Suis ton propre pas. La patience, la constance — voilà la clé.',a:'Rickson Gracie'},
-{t:"Le jiu-jitsu ne construit pas le caractère — il le révèle.",a:'Helio Gracie'},
+{t:“L’excellence n'est pas un acte, c'est une habitude.”,a:‘Aristote’},
+{t:“Chaque action est un vote pour le type de personne que tu veux devenir.”,a:‘James Clear’},
+{t:“La vraie discipline c'est être précis, pas dur.”,a:’–’},
+{t:“Ne cherche pas à ce que les choses arrivent comme tu le veux.”,a:‘Épictète’},
+{t:“Le talent c'est ce que tu as. La technique c'est ce que tu fais avec.”,a:‘Josh Waitzkin’},
+{t:“Le corps s'adapte. L'esprit décide.”,a:’–’},
+{t:“Il ne s’agit pas d'être parfait. Il s'agit d'être meilleur qu’hier.”,a:’–’},
+{t:‘Suis ton propre pas. La patience, la constance — voilà la clé.’,a:‘Rickson Gracie’},
+{t:“Le jiu-jitsu ne construit pas le caractère — il le révèle.”,a:‘Helio Gracie’},
 ];
 
 function initBrief(){
 var d=new Date();
-var DAYS=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-var MONTHS=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-var sub=document.getElementById('brief-date-sub');if(sub)sub.textContent=DAYS[d.getDay()]+' '+d.getDate()+' '+MONTHS[d.getMonth()]+' — '+d.getFullYear();
+var DAYS=[‘Dimanche’,‘Lundi’,‘Mardi’,‘Mercredi’,‘Jeudi’,‘Vendredi’,‘Samedi’];
+var MONTHS=[‘janvier’,‘février’,‘mars’,‘avril’,‘mai’,‘juin’,‘juillet’,‘août’,‘septembre’,‘octobre’,‘novembre’,‘décembre’];
+var sub=document.getElementById(‘brief-date-sub’);if(sub)sub.textContent=DAYS[d.getDay()]+’ ‘+d.getDate()+’ ‘+MONTHS[d.getMonth()]+’ — ‘+d.getFullYear();
 var qi=Math.floor(Date.now()/86400000);var q=QBRIEF[qi%QBRIEF.length];
-var qe=document.getElementById('brief-quote');if(qe)qe.textContent=q.t;var qa=document.getElementById('brief-author');if(qa)qa.textContent='– '+q.a;
+var qe=document.getElementById(‘brief-quote’);if(qe)qe.textContent=q.t;var qa=document.getElementById(‘brief-author’);if(qa)qa.textContent=’– ‘+q.a;
 var yesterday=new Date();yesterday.setDate(yesterday.getDate()-1);var yd=yesterday.toISOString().slice(0,10);
-var HIDS=['eau','lumiere','jjb-mat','cafe','legumes','deep','lecture','nap','jjb-soir','no-wa','journal','coucher'];
-var yState=ld('habits_'+yd,{});var yDone=HIDS.filter(function(id){return !!yState[id];}).length;var yPct=Math.round(yDone/HIDS.length*100);
-var scoreEl=document.getElementById('brief-score');if(scoreEl)scoreEl.textContent=yPct+'%';
-var barEl=document.getElementById('brief-hab-bar');if(barEl)setTimeout(function(){barEl.style.width=yPct+'%';},300);
-var habEl=document.getElementById('brief-hab-score');if(habEl)habEl.textContent=yDone+'/'+HIDS.length;
-var DAB=DEFAULT_AG;var blocks=ld('agenda',DAB).slice().sort(function(a,b){return a.time.localeCompare(b.time);});
-var agEl=document.getElementById('brief-agenda');if(!agEl)return;agEl.innerHTML='';
+var HIDS=[‘eau’,‘lumiere’,‘jjb-mat’,‘cafe’,‘legumes’,‘deep’,‘lecture’,‘nap’,‘jjb-soir’,‘no-wa’,‘journal’,‘coucher’];
+var yState=ld(‘habits_’+yd,{});var yDone=HIDS.filter(function(id){return !!yState[id];}).length;var yPct=Math.round(yDone/HIDS.length*100);
+var scoreEl=document.getElementById(‘brief-score’);if(scoreEl)scoreEl.textContent=yPct+’%’;
+var barEl=document.getElementById(‘brief-hab-bar’);if(barEl)setTimeout(function(){barEl.style.width=yPct+’%’;},300);
+var habEl=document.getElementById(‘brief-hab-score’);if(habEl)habEl.textContent=yDone+’/’+HIDS.length;
+var DAB=DEFAULT_AG;var blocks=ld(‘agenda’,DAB).slice().sort(function(a,b){return a.time.localeCompare(b.time);});
+var agEl=document.getElementById(‘brief-agenda’);if(!agEl)return;agEl.innerHTML=’’;
 var now=d.getHours()*60+d.getMinutes();
 blocks.forEach(function(b,i){
-var bMin=parseInt(b.time.split(':')[0])*60+parseInt(b.time.split(':')[1]);var nb2=blocks[i+1];var nMin=nb2?parseInt(nb2.time.split(':')[0])*60+parseInt(nb2.time.split(':')[1]):1440;
+var bMin=parseInt(b.time.split(’:’)[0])*60+parseInt(b.time.split(’:’)[1]);var nb2=blocks[i+1];var nMin=nb2?parseInt(nb2.time.split(’:’)[0])*60+parseInt(nb2.time.split(’:’)[1]):1440;
 var isNow=now>=bMin&&now<nMin;var isPast=now>=nMin;
-var el2=document.createElement('div');el2.style.cssText='display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1.5px solid var(--line)'+(i===blocks.length-1?';border-bottom:none':'');
-el2.innerHTML='<div style="font:700 11px var(--f);color:'+(isNow?b.col:'var(--ink3)')+';width:38px;flex-shrink:0">'+b.time+'</div><div style="width:7px;height:7px;border-radius:50%;background:'+(isPast?'var(--line)':b.col)+';flex-shrink:0"></div><div style="font:'+(isNow?'700':'500')+' 13px var(--f);color:'+(isPast?'var(--ink3)':'var(--ink)')+';flex:1'+(isPast?';text-decoration:line-through':'')+'">'+b.title+'</div>'+(isNow?'<span style="background:var(--routine-a);color:white;padding:2px 8px;border-radius:20px;font:700 9px var(--f)">En cours</span>':'');
+var el2=document.createElement(‘div’);el2.style.cssText=‘display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1.5px solid var(–line)’+(i===blocks.length-1?’;border-bottom:none’:’’);
+el2.innerHTML=’<div style="font:700 11px var(--f);color:'+(isNow?b.col:'var(--ink3)')+';width:38px;flex-shrink:0">’+b.time+’</div><div style="width:7px;height:7px;border-radius:50%;background:'+(isPast?'var(--line)':b.col)+';flex-shrink:0"></div><div style="font:'+(isNow?'700':'500')+' 13px var(--f);color:'+(isPast?'var(--ink3)':'var(--ink)')+';flex:1'+(isPast?';text-decoration:line-through':'')+'">’+b.title+’</div>’+(isNow?’<span style="background:var(--routine-a);color:white;padding:2px 8px;border-radius:20px;font:700 9px var(--f)">En cours</span>’:’’);
 agEl.appendChild(el2);
 });
-var cachedBTC=ld('cached_btc',null);var btcEl=document.getElementById('brief-btc');if(cachedBTC&&btcEl)btcEl.textContent='€'+Math.round(cachedBTC).toLocaleString('fr');
+var cachedBTC=ld(‘cached_btc’,null);var btcEl=document.getElementById(‘brief-btc’);if(cachedBTC&&btcEl)btcEl.textContent=‘€’+Math.round(cachedBTC).toLocaleString(‘fr’);
 fetchWeather();
-var intent=ld('intent_'+td(),'');var intentEl=document.getElementById('brief-intent');if(intentEl&&intent)intentEl.value=intent;
+var intent=ld(‘intent_’+td(),’’);var intentEl=document.getElementById(‘brief-intent’);if(intentEl&&intent)intentEl.value=intent;
 renderIntentList();
 }
 
 async function fetchWeather(){
 try{
-var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=-33.87&longitude=151.21&current=temperature_2m,weather_code&timezone=auto');
+var r=await fetch(‘https://api.open-meteo.com/v1/forecast?latitude=-33.87&longitude=151.21&current=temperature_2m,weather_code&timezone=auto’);
 var d=await r.json();
-if(d.current){var temp=Math.round(d.current.temperature_2m);var icon=d.current.weather_code<=1?'☀':d.current.weather_code<=3?'⛅':'☁';var tempEl=document.getElementById('brief-temp');if(tempEl)tempEl.textContent=icon+' '+temp+'°C';var cityEl=document.getElementById('brief-city');if(cityEl)cityEl.textContent='Sydney AU';}
-}catch(e){console.log('Weather error',e);}
+if(d.current){var temp=Math.round(d.current.temperature_2m);var icon=d.current.weather_code<=1?‘☀’:d.current.weather_code<=3?‘⛅’:‘☁’;var tempEl=document.getElementById(‘brief-temp’);if(tempEl)tempEl.textContent=icon+’ ’+temp+‘°C’;var cityEl=document.getElementById(‘brief-city’);if(cityEl)cityEl.textContent=‘Sydney AU’;}
+}catch(e){console.log(‘Weather error’,e);}
 }
 
 function saveIntent(){
-var el=document.getElementById('brief-intent');if(!el||!el.value.trim())return toast("Écris ton intention !");
-sv('intent_'+td(),el.value.trim());renderIntentList();toast('Journée lancée ✓');
+var el=document.getElementById(‘brief-intent’);if(!el||!el.value.trim())return toast(“Écris ton intention !”);
+sv(‘intent_’+td(),el.value.trim());renderIntentList();toast(‘Journée lancée ✓’);
 }
 function renderIntentList(){
-var list=document.getElementById('intent-list');if(!list)return;
-var intents=[];for(var i=0;i<7;i++){var d2=new Date();d2.setDate(d2.getDate()-i);var ds=d2.toISOString().slice(0,10);var v=ld('intent_'+ds,null);if(v)intents.push({date:ds,text:v});}
-if(!intents.length){list.innerHTML='<div style="font:400 12px var(--f);color:var(--ink3)">Aucune intention enregistrée.</div>';return;}
-list.innerHTML='';
-intents.forEach(function(item){var el=document.createElement('div');el.className='ent';el.innerHTML='<div class="ehd"><div style="font:700 10px var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)">'+item.date+'</div></div><div style="font:500 14px var(--f);color:var(--ink);line-height:1.5;margin-top:4px">'+item.text+'</div>';list.appendChild(el);});
+var list=document.getElementById(‘intent-list’);if(!list)return;
+var intents=[];for(var i=0;i<7;i++){var d2=new Date();d2.setDate(d2.getDate()-i);var ds=d2.toISOString().slice(0,10);var v=ld(‘intent_’+ds,null);if(v)intents.push({date:ds,text:v});}
+if(!intents.length){list.innerHTML=’<div style="font:400 12px var(--f);color:var(--ink3)">Aucune intention enregistrée.</div>’;return;}
+list.innerHTML=’’;
+intents.forEach(function(item){var el=document.createElement(‘div’);el.className=‘ent’;el.innerHTML=’<div class="ehd"><div style="font:700 10px var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)">’+item.date+’</div></div><div style="font:500 14px var(--f);color:var(--ink);line-height:1.5;margin-top:4px">’+item.text+’</div>’;list.appendChild(el);});
 }
 
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
+if(‘serviceWorker’ in navigator){window.addEventListener(‘load’,function(){navigator.serviceWorker.register(’./sw.js’).catch(function(){});});}
 
-window.addEventListener('DOMContentLoaded',function(){
+window.addEventListener(‘DOMContentLoaded’,function(){
 initTopbar();initQuotes();renderFeed();renderCryptoLearn();renderPEA();renderPie();renderDCA();
 renderStaticRecipes();renderAliments();renderHabits();renderStreak();renderTasks();renderAgenda();
 restoreSleep();renderSleepChart();updateSleepStreak();updateApnStats();renderApnChart();
 renderJournal();renderNotes();renderBooks();updateWater();fetchCrypto();fetchFearGreed();fetchBTCChart();initBrief();
 renderExploreFilters();renderExploreList();
-document.getElementById('ht-matin').className='btn btn-sm btn-p';
+document.getElementById(‘ht-matin’).className=‘btn btn-sm btn-p’;
 });
 </script>
+
 </body>
 </html>
