@@ -1157,10 +1157,6 @@ intents.forEach(function(item){var el=document.createElement('div');el.className
 
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
 
-window.addEventListener('DOMContentLoaded',function(){
-initTopbar();initQuotes();renderCryptoLearn();renderPEA();renderPie();renderDCA();
-renderHabits();renderStreak();renderTasks();renderAgenda();
-restoreSleep();renderSleepChart();updateSleepStreak();updateApnStats();renderApnChart();
 
 var FEED_SOURCES = [
   {id:'sport', label:'Sport', color:'#10b981', url:'https://www.lequipe.fr/rss/actu_rss_TouteLEquipe.xml'},
@@ -1170,6 +1166,7 @@ var FEED_SOURCES = [
   {id:'monde', label:'Monde', color:'#8b5cf6', url:'https://feeds.bbci.co.uk/news/world/rss.xml'}
 ];
 var _feedCat = 'sport';
+
 
 function initFeed() {
   var el = document.getElementById('feed-cats');
@@ -1257,8 +1254,6 @@ function loadFeed() {
   if (el) el.innerHTML = html;
 }
 
-
-// ===== MEALS =====
 async function searchMeals(q) {
   var input = document.getElementById('meal-q');
   var query = q || (input && input.value.trim()) || 'chicken';
@@ -1328,7 +1323,6 @@ async function openMeal(id) {
   }
 }
 
-// ===== EXPLORE =====
 var ENGINES = [
   {id:'google', name:'Google', icon:'G', color:'#4285f4', url:'https://www.google.com/search?q='},
   {id:'youtube', name:'YouTube', icon:'▶', color:'#ff0000', url:'https://www.youtube.com/results?search_query='},
@@ -1345,7 +1339,7 @@ var SHORTCUTS = [
   {label:'Nutrition sport', q:'nutrition sportive performance', engine:'pubmed'},
   {label:'DCA crypto', q:'DCA crypto strategy', engine:'reddit'},
   {label:'Sommeil science', q:'sleep science performance', engine:'scholar'},
-  {label:'Apnée training', q:'freediving breath training', engine:'youtube'}
+  {label:'Apnee training', q:'freediving breath training', engine:'youtube'}
 ];
 
 function initExplore() {
@@ -1385,7 +1379,6 @@ function doSearch() {
   window.location.href = link;
 }
 
-
 function toggleDark() {
   var html = document.documentElement;
   var btn = document.getElementById('dark-btn');
@@ -1399,6 +1392,7 @@ function toggleDark() {
     localStorage.setItem('theme', 'dark');
   }
 }
+
 function initTheme() {
   var saved = localStorage.getItem('theme');
   if (saved === 'dark') {
@@ -1407,10 +1401,37 @@ function initTheme() {
     if (btn) btn.textContent = '☀';
   }
 }
+
+
+function genRecipe() {
+  var ingr = document.getElementById('ai-ingr');
+  var ctx = document.getElementById('ai-ctx');
+  if (!ingr || !ingr.value.trim()) return toast('Entre des ingrédients !');
+  var q = ingr.value.trim().toLowerCase();
+  var ctxVal = ctx ? ctx.value : '';
+  // Find matching recipe
+  var match = RECIPES.filter(function(r) {
+    if (ctxVal && r.ctx.indexOf(ctxVal) < 0) return false;
+    return r.keys.some(function(k) { return q.indexOf(k) >= 0; });
+  });
+  if (!match.length) match = RECIPES.filter(function(r) { return !ctxVal || r.ctx.indexOf(ctxVal) >= 0; });
+  if (!match.length) match = RECIPES;
+  var r = match[Math.floor(Math.random() * match.length)];
+  var res = document.getElementById('recipe-result');
+  if (res) { res.style.display = 'block'; res.innerHTML = makeRecipeCard(r); }
+  toast('Recette générée ✓');
+}
+
+window.addEventListener('DOMContentLoaded',function(){
 initTheme();
-updateWater();fetchCrypto();fetchFearGreed();fetchBTCChart();initBrief();initFeed();loadFeed();searchMeals("chicken");initExplore();
+initTopbar();initQuotes();renderCryptoLearn();renderPEA();renderPie();renderDCA();
+renderStaticRecipes();renderAliments();renderHabits();renderStreak();renderTasks();renderAgenda();
+restoreSleep();updateApnStats();
+updateWater();fetchCrypto();fetchFearGreed();fetchBTCChart();
+initBrief();initFeed();loadFeed();searchMeals('chicken');initExplore();
 document.getElementById('ht-matin').className='btn btn-sm btn-p';
 });
+;
 
 // Stub functions for removed features
 function renderStaticRecipes() {
@@ -1441,24 +1462,7 @@ function renderAliments() {
 }
 function renderNotes() {}
 function renderJournal() {}
-function genRecipe() {
-  var ingr = document.getElementById('ai-ingr');
-  var ctx = document.getElementById('ai-ctx');
-  if (!ingr || !ingr.value.trim()) return toast('Entre des ingrédients !');
-  var q = ingr.value.trim().toLowerCase();
-  var ctxVal = ctx ? ctx.value : '';
-  // Find matching recipe
-  var match = RECIPES.filter(function(r) {
-    if (ctxVal && r.ctx.indexOf(ctxVal) < 0) return false;
-    return r.keys.some(function(k) { return q.indexOf(k) >= 0; });
-  });
-  if (!match.length) match = RECIPES.filter(function(r) { return !ctxVal || r.ctx.indexOf(ctxVal) >= 0; });
-  if (!match.length) match = RECIPES;
-  var r = match[Math.floor(Math.random() * match.length)];
-  var res = document.getElementById('recipe-result');
-  if (res) { res.style.display = 'block'; res.innerHTML = makeRecipeCard(r); }
-  toast('Recette générée ✓');
-}
+
 
 </script>
 </body>
