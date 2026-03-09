@@ -745,12 +745,10 @@ var _bankIndex=0;
 
 async function callAI(body){
   try{
-    var r=await fetch('https://api.anthropic.com/v1/messages',{
+    var r=await fetch('https://newg.selfdici.workers.dev',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
       },
       body:JSON.stringify(body)
     });
