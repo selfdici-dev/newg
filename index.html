@@ -9,17 +9,20 @@
 <meta name="apple-mobile-web-app-title" content="LIFE OS">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>LIFE OS</title>
+<title>LIFE OS v1773094354</title>
+<!-- Force no-cache for GitHub Pages -->
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
 <style>
 :root{
---cream:#f7f5f0;--white:#fff;--ink:#1a1714;--ink2:#6b6560;--ink3:#b0aba5;--line:#e8e4de;
---feed-a:#ff6b35;--feed-b:#ff9f1c;--crypto-a:#6c63ff;--crypto-b:#a78bfa;
---nutri-a:#22c55e;--nutri-b:#86efac;--body-a:#0ea5e9;--body-b:#7dd3fc;
---routine-a:#f59e0b;--routine-b:#fcd34d;--mind-a:#ec4899;--mind-b:#f9a8d4;
---r:20px;--rs:12px;--f:'Outfit',sans-serif;--s:'Lora',Georgia,serif;
---sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px);
-}
+--bg:#0d0d10;--white:#16161c;--cream:#1e1e26;--line:#2a2a36;
+--ink:#f5f3ee;--ink2:#8888a0;--ink3:#50506a;
+--acc:#ff6b2b;--acc2:#ff8c50;
+--nutri-a:#34d399;--nutri-b:#6ee7b7;--body-a:#60a5fa;--body-b:#93c5fd;
+--routine-a:#a78bfa;--routine-b:#c4b5fd;--crypto-a:#fbbf24;--crypto-b:#fde68a;
+--f:'Inter',system-ui,sans-serif;--s:'Inter',sans-serif;--r:16px;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--cream);color:var(--ink);font-family:var(--f);overscroll-behavior:none}
 #app{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
@@ -192,6 +195,8 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 [data-theme="dark"] #navbar{background:rgba(15,23,42,.95);border-top:1px solid #334155}
 [data-theme="dark"] #topbar{background:#1e293b;border-bottom:1px solid #334155}
 [data-theme="dark"] input,[data-theme="dark"] textarea,[data-theme="dark"] select{background:#0f172a;color:#f1f5f9;border-color:#334155}
+.fpm{padding:6px 12px;background:var(--cream);border:1.5px solid var(--line);border-radius:20px;font:600 10px var(--f);color:var(--ink2);cursor:pointer;margin:2px}
+.exp-item{padding:5px 0 5px 14px;border-left:2px solid var(--acc);margin:4px 0;font:400 13px var(--f);color:var(--ink2);line-height:1.6}
 </style>
 </head>
 <body>
@@ -266,7 +271,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px">Ton <span style="background:linear-gradient(135deg,var(--feed-a),var(--feed-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Feed</span></div>
 <div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:14px">Liens curatés par thème.</div>
 <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;-webkit-overflow-scrolling:touch;scrollbar-width:none" id="feed-cats"></div>
-<button onclick="loadFeed()" style="width:100%;background:var(--white);border:1.5px solid var(--line);border-radius:50px;padding:9px;font:700 11px var(--f);cursor:pointer;margin-bottom:14px;color:var(--ink)">↺ Nouveaux articles</button>
+<button id="feed-refresh-btn" onclick="_feedOffset=(_feedOffset+Math.floor(Math.random()*9)+2)%100;loadFeed()" style="width:100%;background:var(--white);border:1.5px solid var(--line);border-radius:50px;padding:9px;font:700 11px var(--f);cursor:pointer;margin-bottom:14px;color:var(--ink)">↺ Nouveaux articles</button>
 <div id="feed-articles"></div>
 </div>
 </div>
@@ -274,63 +279,66 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <!-- FINANCE -->
 <div class="page" id="p-crypto">
 <div style="padding:0 20px;margin-top:16px">
-<div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px">Crypto <span style="background:linear-gradient(135deg,var(--crypto-a),var(--crypto-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">&amp; Finance</span></div>
-<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:20px">Comprendre, pas juste voir les prix.</div>
-<div class="cx-big" id="btc-card">
-<div class="cx-name">Bitcoin · BTC/EUR</div>
-<div class="cx-price" id="btc-p">Chargement...</div>
-<div class="cx-chg" id="btc-c"></div>
-<div class="cx-stats">
-<div class="cx-stat"><div class="cx-sv" id="dca-inv-d">—</div><div class="cx-sl">Investi DCA</div></div>
-<div class="cx-stat"><div class="cx-sv" id="dca-pnl-d">—</div><div class="cx-sl">P&L estimé</div></div>
-<div class="cx-stat"><div class="cx-sv" id="dca-avg-d">—</div><div class="cx-sl">Prix moy.</div></div>
-<div class="cx-stat"><div class="cx-sv" id="btc-mktcap">—</div><div class="cx-sl">Market Cap</div></div>
+<div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:2px"><span style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Bitcoin</span></div>
+<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:14px">Ton seul actif. Focus long terme.</div>
+
+<!-- HERO BTC -->
+<div style="background:linear-gradient(135deg,#1a1200,#2a1e00);border:1.5px solid #3a2c00;border-radius:20px;padding:20px;margin-bottom:12px">
+<div style="font:600 10px var(--f);color:rgba(251,191,36,.6);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Bitcoin · BTC/EUR</div>
+<div style="font:900 48px var(--f);letter-spacing:-.04em;color:#fbbf24" id="btc-price">—</div>
+<div style="font:600 12px var(--f);margin-top:2px" id="btc-change"></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px">
+<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px;text-align:center">
+<div style="font:800 16px var(--f);color:#fbbf24" id="dca-pnl-v">—</div>
+<div style="font:500 8px var(--f);color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">P&amp;L</div>
+</div>
+<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px;text-align:center">
+<div style="font:800 16px var(--f);color:white" id="dca-stack">—</div>
+<div style="font:500 8px var(--f);color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Sats</div>
+</div>
+<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:10px;text-align:center">
+<div style="font:800 16px var(--f);color:white" id="dca-avg-v">—</div>
+<div style="font:500 8px var(--f);color:rgba(255,255,255,.4);text-transform:uppercase;margin-top:2px">Prix moy.</div>
 </div>
 </div>
-<div style="background:linear-gradient(135deg,#374151,#6b7280);border-radius:var(--r);padding:18px;margin-bottom:12px;color:white">
-<div class="cx-name">Ethereum · ETH/EUR</div>
-<div style="font:900 30px var(--f);letter-spacing:-.04em" id="eth-p">—</div>
-<div class="cx-chg" id="eth-c"></div>
 </div>
+
+<!-- CHART 7J -->
+<div class="card" style="margin-bottom:12px">
+<div style="font:700 11px var(--f);color:var(--ink3);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between">
+<span>BTC 7 jours</span><span id="btc-7d-pct" style="font:700 11px var(--f)"></span>
+</div>
+<div class="spark-wrap" id="btc-sparkline"></div>
+</div>
+
+<!-- FEAR & GREED -->
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-<div style="background:var(--white);border:1.5px solid var(--line);border-radius:var(--r);padding:16px">
-<div style="font:700 10px var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px">Fear & Greed</div>
-<div style="font:900 32px var(--f);letter-spacing:-.04em" id="fg-value">—</div>
-<div style="font:600 11px var(--f);margin-top:2px" id="fg-label">...</div>
-<div style="margin-top:10px;height:6px;background:var(--line);border-radius:3px;overflow:hidden"><div id="fg-bar" style="height:100%;width:0%;border-radius:3px;transition:width 1s ease;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e)"></div></div>
+<div class="card" style="text-align:center">
+<div style="font:700 9px var(--f);color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Fear &amp; Greed</div>
+<div style="font:900 36px var(--f)" id="fg-val">—</div>
+<div style="font:600 10px var(--f)" id="fg-txt">—</div>
+<div style="height:4px;background:var(--cream);border-radius:2px;overflow:hidden;margin-top:8px"><div id="fg-bar" style="height:100%;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e);border-radius:2px;transition:width .8s;width:0%"></div></div>
 </div>
-<div style="background:var(--white);border:1.5px solid var(--line);border-radius:var(--r);padding:16px">
-<div style="font:700 10px var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px">BTC 7 jours</div>
-<div id="btc-sparkline" style="height:60px;display:flex;align-items:flex-end;gap:2px"></div>
-<div style="font:500 10px var(--f);color:var(--ink3);margin-top:4px" id="btc-7d-chg">—</div>
-</div>
-</div>
-<div class="card">
-<div class="card-title">📊 Mon DCA Bitcoin</div>
-<div class="card-sub" style="margin-bottom:14px">Suivi de ta position long terme</div>
-<div class="field"><label>Total investi (€)</label><input type="number" id="dca-inv-in" placeholder="ex: 500"></div>
-<div class="field"><label>Prix moyen d'achat (€)</label><input type="number" id="dca-avg-in" placeholder="ex: 72000"></div>
-<button class="btn btn-p btn-full" onclick="saveDCA()">Sauvegarder</button>
-</div>
-<div class="card">
-<div class="card-title" style="margin-bottom:14px">🏦 PEA — Fortuneo</div>
-<div id="pea-list"></div>
-<div style="font:400 12px var(--s);font-style:italic;color:var(--ink2);margin-top:12px">DCA mensuel · Horizon 15+ ans · Horloge fiscale 5 ans lancée.</div>
-</div>
-<div style="background:linear-gradient(135deg,#1e3a5f,#2563eb);border-radius:var(--r);padding:20px;margin-bottom:12px;color:white">
-<div style="font:700 10px var(--f);letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:6px">ETF Défense · CTO</div>
-<div style="font:800 22px var(--f);letter-spacing:-.03em;margin-bottom:8px">DFND</div>
-<div style="font:400 13px var(--f);opacity:.85;line-height:1.55">Exposition au secteur défense &amp; aérospatial européen. Diversification hors tech/crypto. Horizon 10+ ans.</div>
-</div>
-<div class="card">
-<div class="card-title" style="margin-bottom:14px">📐 Répartition portfolio</div>
-<div class="pier">
-<svg id="pie-svg" width="100" height="100" viewBox="0 0 100 100"></svg>
-<div class="piel" id="pie-legend"></div>
+<div class="card" style="text-align:center">
+<div style="font:700 9px var(--f);color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Market Cap</div>
+<div style="font:900 22px var(--f);color:#fbbf24" id="btc-mcap">—</div>
+<div style="font:500 10px var(--f);color:var(--ink3);margin-top:4px">~19.7M BTC</div>
 </div>
 </div>
-<div style="font:700 13px var(--f);margin-bottom:12px;margin-top:4px">📚 Comprendre la crypto</div>
-<div id="crypto-learn-list"></div>
+
+<!-- MON DCA -->
+<div class="card" style="margin-bottom:12px">
+<div style="font:700 13px var(--f);margin-bottom:12px">📊 Mon DCA</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+<div><div style="font:600 9px var(--f);color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Total investi (€)</div><input type="number" id="dca-inv" placeholder="500" style="font:700 16px var(--f);text-align:center"></div>
+<div><div style="font:600 9px var(--f);color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Prix moyen (€)</div><input type="number" id="dca-avg" placeholder="72000" style="font:700 16px var(--f);text-align:center"></div>
+</div>
+<button onclick="saveDCA()" class="btn btn-full" style="background:linear-gradient(135deg,#f59e0b,#f97316);color:white;border:none">Sauvegarder</button>
+</div>
+
+<!-- CRYPTO LEARN -->
+<div style="font:700 11px var(--f);color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px">Comprendre Bitcoin</div>
+<div id="crypto-learn"></div>
 </div>
 </div>
 
@@ -338,15 +346,43 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <div class="page" id="p-nutri">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px"><span style="background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Nutrition</span> JJB</div>
-<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:20px">Manger pour performer.</div>
+<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:16px">Manger pour performer.</div>
 
-<!-- GÉNÉRATEUR IA -->
-<div class="card" style="border:2px solid var(--nutri-a)">
-<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-<div style="width:36px;height:36px;background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">🤖</div>
-<div><div style="font:700 14px var(--f)">Générateur IA de recettes</div><div style="font:400 11px var(--f);color:var(--ink2)">Entre tes ingrédients ou laisse vide pour une surprise</div></div>
+<!-- HYDRATATION COMPACTE -->
+<div class="card" style="margin-bottom:12px">
+<div style="display:flex;align-items:center;gap:12px">
+  <div style="font-size:22px">💧</div>
+  <div style="flex:1">
+    <div style="display:flex;align-items:baseline;gap:6px">
+      <div style="font:800 22px var(--f);color:var(--body-a)" id="water-disp">0.0</div>
+      <div style="font:500 11px var(--f);color:var(--ink3)">/ 3L</div>
+    </div>
+    <div class="wtrack" style="margin:4px 0"><div class="wfill" id="water-bar" style="width:0%"></div></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:4px">
+    <button onclick="addWater(250)" style="background:var(--body-a);color:white;border:none;border-radius:8px;padding:4px 9px;font:700 10px var(--f);cursor:pointer">+250</button>
+    <button onclick="addWater(500)" style="background:var(--body-b);color:var(--ink);border:none;border-radius:8px;padding:4px 9px;font:700 10px var(--f);cursor:pointer">+500</button>
+  </div>
+  <button onclick="resetWater()" style="background:var(--cream);border:1px solid var(--line);border-radius:8px;padding:5px 9px;font:600 10px var(--f);color:var(--ink3);cursor:pointer">✕</button>
 </div>
-<div class="field"><textarea id="ai-ingr" placeholder="ex: œufs, riz, thon, avocat, citron..." style="min-height:54px"></textarea></div>
+</div>
+
+<!-- ONGLETS NAVIGATION RECETTES -->
+<div style="display:flex;gap:0;background:var(--cream);border-radius:12px;padding:3px;margin-bottom:14px">
+  <button id="ntab-ia" onclick="switchNutriTab('ia')" style="flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 11px var(--f);cursor:pointer;background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));color:white">✦ IA</button>
+  <button id="ntab-bank" onclick="switchNutriTab('bank')" style="flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 11px var(--f);cursor:pointer;background:transparent;color:var(--ink3)">📚 Banque</button>
+  <button id="ntab-search" onclick="switchNutriTab('search')" style="flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 11px var(--f);cursor:pointer;background:transparent;color:var(--ink3)">🔍 Chercher</button>
+  <button id="ntab-keys" onclick="switchNutriTab('keys')" style="flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 11px var(--f);cursor:pointer;background:transparent;color:var(--ink3)">⭐ Clés</button>
+</div>
+
+<!-- SECTION IA -->
+<div id="ns-ia">
+<div class="card" style="border:2px solid var(--nutri-a)">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+<div style="width:34px;height:34px;background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px">🤖</div>
+<div><div style="font:700 14px var(--f)">Générateur IA</div><div style="font:400 10px var(--f);color:var(--ink2)">Laisse vide = recette aléatoire</div></div>
+</div>
+<div class="field"><textarea id="ai-ingr" placeholder="oeuf, riz, thon, avocat..." style="min-height:48px"></textarea></div>
 <div class="field"><label>Contexte</label>
 <select id="ai-ctx">
 <option value="post-jjb">Post-JJB — récupération</option>
@@ -357,33 +393,30 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 </select>
 </div>
 <button class="btn btn-full btn-colored" style="background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b))" onclick="genRecipe()" id="recipe-btn">✦ Générer une recette</button>
-<div id="recipe-result" style="display:none;margin-top:16px"></div>
-</div>
-
-<!-- EAU -->
-<div class="card">
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-<div class="card-title">💧 Hydratation</div>
-<button class="btn btn-g btn-sm" onclick="resetWater()">Reset</button>
-</div>
-<div style="font:900 36px var(--f);letter-spacing:-.04em;color:var(--body-a)" id="water-disp">0 / 3L</div>
-<div class="wtrack"><div class="wfill" id="water-bar" style="width:0%"></div></div>
-<div class="wbtns">
-<div class="wb" onclick="addWater(250)">+250ml</div>
-<div class="wb" onclick="addWater(500)">+500ml</div>
-<div class="wb" onclick="addWater(-250)" style="color:var(--ink3)">−250</div>
+<div id="recipe-result" style="display:none;margin-top:12px"></div>
 </div>
 </div>
 
-<!-- RECETTES BANQUE -->
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:4px">
+<!-- SECTION BANQUE -->
+<div id="ns-bank" style="display:none">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
 <div style="font:700 13px var(--f)">Recettes JJB essentielles</div>
-<button class="btn btn-g btn-sm" onclick="shuffleStaticRecipes()">↺ Nouvelles</button>
+<button class="btn btn-g btn-sm" onclick="shuffleStaticRecipes()">↺ Autres</button>
+</div>
+<!-- FILTRES CONTEXTE -->
+<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none">
+<button onclick="filterRecipes('all',this)" class="rfilter on" data-ctx="all" style="flex-shrink:0;border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer;border:1.5px solid var(--nutri-a);background:var(--nutri-a);color:white">Toutes</button>
+<button onclick="filterRecipes('post-jjb',this)" class="rfilter" data-ctx="post-jjb" style="flex-shrink:0;border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer;border:1.5px solid var(--line);background:var(--white);color:var(--ink3)">Post-JJB</button>
+<button onclick="filterRecipes('matin',this)" class="rfilter" data-ctx="matin" style="flex-shrink:0;border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer;border:1.5px solid var(--line);background:var(--white);color:var(--ink3)">Matin</button>
+<button onclick="filterRecipes('rapide',this)" class="rfilter" data-ctx="rapide" style="flex-shrink:0;border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer;border:1.5px solid var(--line);background:var(--white);color:var(--ink3)">Rapide</button>
+<button onclick="filterRecipes('soir',this)" class="rfilter" data-ctx="soir" style="flex-shrink:0;border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer;border:1.5px solid var(--line);background:var(--white);color:var(--ink3)">Soir</button>
+<button onclick="filterRecipes('batch',this)" class="rfilter" data-ctx="batch" style="flex-shrink:0;border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer;border:1.5px solid var(--line);background:var(--white);color:var(--ink3)">Batch</button>
 </div>
 <div id="static-recipes"></div>
+</div>
 
-<!-- MEALDB SEARCH -->
-<div style="margin:20px 0 12px;font:700 13px var(--f)">🔍 Chercher une recette</div>
+<!-- SECTION CHERCHER -->
+<div id="ns-search" style="display:none">
 <div style="position:relative;margin-bottom:10px">
 <input type="text" id="meal-q" placeholder="Poulet, saumon, riz..." style="padding-left:40px;padding-right:44px;border-radius:50px;font:500 13px var(--f)" onkeydown="if(event.key==='Enter')searchMeals()">
 <div style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:14px">🔍</div>
@@ -397,66 +430,127 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <button onclick="searchMeals('rice')" style="flex-shrink:0;background:var(--white);border:1.5px solid var(--line);border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer">🍚 Riz</button>
 </div>
 <div id="meal-results"></div>
-<div class="card" style="margin-top:8px">
-<div class="card-title" style="margin-bottom:12px">⭐ Aliments clés JJB</div>
+</div>
+
+<!-- SECTION ALIMENTS CLÉS -->
+<div id="ns-keys" style="display:none">
 <div id="aliments-list"></div>
 </div>
+
 </div>
 </div>
 
 <!-- ROUTINE -->
 <div class="page" id="p-routine">
 <div style="padding:0 20px;margin-top:16px">
-<div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px">Ta <span style="background:linear-gradient(135deg,var(--routine-a),var(--routine-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Routine</span></div>
-<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:20px">La discipline crée la liberté.</div>
-<div class="hero" style="background:linear-gradient(135deg,var(--routine-a),var(--routine-b));margin-bottom:16px">
-<div class="hero-tag">Score du jour</div>
-<div class="hero-val" id="score-num">—</div>
-<div class="hero-lbl">/100</div>
+<div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:2px"><span style="background:linear-gradient(135deg,var(--routine-a),var(--routine-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Body</span> & Mind</div>
+<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:14px">Sommeil · Apnée · Récupération · Focus</div>
+<div class="hero" style="background:linear-gradient(135deg,var(--routine-a),var(--routine-b));margin-bottom:14px">
+<div class="hero-tag">Score du jour</div><div class="hero-val" id="score-num">—</div><div class="hero-lbl">/100</div>
 <div class="hero-row">
 <div class="hero-f"><div class="hero-fv" id="sf-h">—</div><div class="hero-fl">Habitudes</div></div>
 <div class="hero-f"><div class="hero-fv" id="sf-s">—</div><div class="hero-fl">Sommeil</div></div>
 <div class="hero-f"><div class="hero-fv" id="sf-t">—</div><div class="hero-fl">Tâches</div></div>
+</div></div>
+<div style="display:flex;gap:0;background:var(--cream);border-radius:12px;padding:3px;margin-bottom:14px">
+<button id="btab-habits" onclick="switchBodyTab('habits')" style="flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 10px var(--f);cursor:pointer;background:linear-gradient(135deg,var(--routine-a),var(--routine-b));color:white">⚡ Habits</button>
+<button id="btab-sleep" onclick="switchBodyTab('sleep')" style="flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 10px var(--f);cursor:pointer;background:transparent;color:var(--ink3)">😴 Sommeil</button>
+<button id="btab-apnee" onclick="switchBodyTab('apnee')" style="flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 10px var(--f);cursor:pointer;background:transparent;color:var(--ink3)">🌊 Apnée</button>
+<button id="btab-focus" onclick="switchBodyTab('focus')" style="flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 10px var(--f);cursor:pointer;background:transparent;color:var(--ink3)">🎯 Focus</button>
 </div>
-</div>
-<div style="display:flex;gap:8px;margin-bottom:14px">
+<div id="bs-habits">
+<div style="display:flex;gap:8px;margin-bottom:12px">
 <button class="btn btn-sm btn-p" onclick="showHab('matin',this)" id="ht-matin">Matin</button>
 <button class="btn btn-sm btn-g" onclick="showHab('midi',this)" id="ht-midi">Midi</button>
 <button class="btn btn-sm btn-g" onclick="showHab('soir',this)" id="ht-soir">Soir</button>
 </div>
-<div class="card">
-<div id="hab-matin"></div>
-<div id="hab-midi" style="display:none"></div>
-<div id="hab-soir" style="display:none"></div>
-</div>
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+<div class="card"><div id="hab-matin"></div><div id="hab-midi" style="display:none"></div><div id="hab-soir" style="display:none"></div></div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin:12px 0 8px">
 <div style="font:700 13px var(--f)">🔥 Streak</div>
-<div style="font:800 16px var(--f)" id="streak-lbl">0j</div>
+<div style="font:800 16px var(--f);color:var(--acc)" id="streak-lbl">0j</div>
 </div>
 <div class="card card-sm"><div class="sgrid" id="streak-grid"></div></div>
-<div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0 12px">
+<div style="display:flex;align-items:center;justify-content:space-between;margin:12px 0 8px">
 <div style="font:700 13px var(--f)">Tâches</div>
 <button class="btn btn-g btn-sm" onclick="openM('m-task')">+ Ajouter</button>
 </div>
 <div class="card"><div id="tasks-list"></div></div>
-<div style="display:flex;align-items:center;justify-content:space-between;margin:4px 0 12px">
+<div style="display:flex;align-items:center;justify-content:space-between;margin:8px 0 8px">
 <div style="font:700 13px var(--f)">Agenda</div>
 <button class="btn btn-g btn-sm" onclick="openM('m-agenda')">+ Bloc</button>
 </div>
 <div class="card card-sm"><div id="agenda-list"></div></div>
-<div style="font:700 13px var(--f);margin-bottom:12px;margin-top:4px">Timers Focus</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-<div class="card card-sm" style="cursor:pointer;text-align:center;border:2px solid transparent;background:linear-gradient(var(--white),var(--white)) padding-box,linear-gradient(135deg,var(--routine-a),var(--routine-b)) border-box" onclick="openFocus('deep',90,'🎯 Deep Work','Une tâche. Téléphone ailleurs.')">
-<div style="font-size:26px;margin-bottom:6px">🎯</div><div style="font:700 13px var(--f)">Deep Work</div><div style="font:500 11px var(--f);color:var(--ink2)">90 min</div>
 </div>
-<div class="card card-sm" style="cursor:pointer;text-align:center" onclick="openFocus('nap',26,'😴 Nap Café','Café bu. Allongé.')">
-<div style="font-size:26px;margin-bottom:6px">😴</div><div style="font:700 13px var(--f)">Nap Café</div><div style="font:500 11px var(--f);color:var(--ink2)">26 min</div>
+<div id="bs-sleep" style="display:none">
+<div class="card" style="margin-bottom:10px">
+<div style="font:700 13px var(--f);margin-bottom:12px">😴 Log nuit</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+<div><div style="font:600 9px var(--f);color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Couché</div><input type="time" id="sleep-bed" value="22:30"></div>
+<div><div style="font:600 9px var(--f);color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Réveil</div><input type="time" id="sleep-wake" value="05:40"></div>
 </div>
-<div class="card card-sm" style="cursor:pointer;text-align:center" onclick="openFocus('jjb',90,'🥋 JJB','Bonne session !')">
-<div style="font-size:26px;margin-bottom:6px">🥋</div><div style="font:700 13px var(--f)">JJB</div><div style="font:500 11px var(--f);color:var(--ink2)">90 min</div>
+<div style="font:600 9px var(--f);color:var(--ink3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Qualité</div>
+<div style="display:flex;gap:5px;margin-bottom:12px">
+<button onclick="selectSleepQ(1,this)" class="sq-btn" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--line);background:var(--cream);font:700 11px var(--f);cursor:pointer">😫</button>
+<button onclick="selectSleepQ(2,this)" class="sq-btn" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--line);background:var(--cream);font:700 11px var(--f);cursor:pointer">😐</button>
+<button onclick="selectSleepQ(3,this)" class="sq-btn" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--line);background:var(--cream);font:700 11px var(--f);cursor:pointer">🙂</button>
+<button onclick="selectSleepQ(4,this)" class="sq-btn" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--line);background:var(--cream);font:700 11px var(--f);cursor:pointer">😊</button>
+<button onclick="selectSleepQ(5,this)" class="sq-btn" style="flex:1;padding:7px;border-radius:8px;border:1.5px solid var(--line);background:var(--cream);font:700 11px var(--f);cursor:pointer">🤩</button>
 </div>
-<div class="card card-sm" style="cursor:pointer;text-align:center" onclick="openFocus('read',30,'📖 Lecture','30 pages minimum.')">
-<div style="font-size:26px;margin-bottom:6px">📖</div><div style="font:700 13px var(--f)">Lecture</div><div style="font:500 11px var(--f);color:var(--ink2)">30 min</div>
+<input type="hidden" id="sleep-q" value="3">
+<button onclick="logSleep()" class="btn btn-p btn-full">Enregistrer la nuit</button>
+</div>
+<div class="card">
+<div style="font:700 13px var(--f);margin-bottom:10px">Dernières nuits</div>
+<div id="sleep-log-list"></div>
+</div>
+<div class="card"><div style="font:700 13px var(--f);margin-bottom:8px">💡 Tips sommeil</div>
+<div style="font:400 12px var(--f);color:var(--ink2);line-height:1.8">· Couché avant 22h30 → +30 min sommeil profond<br>· Chambre 18-19°C = récup musculaire optimale<br>· Sans écran 1h avant → +25% mélatonine<br>· Nap café 13h (20-26 min) = performance +34%<br>· Magnésium bisglycinate 400mg avant coucher</div>
+</div>
+</div>
+<div id="bs-apnee" style="display:none">
+<div class="card" style="background:linear-gradient(135deg,#0c1a3a,#0c2a4a);border-color:#1a3a6a;margin-bottom:10px">
+<div style="font:700 9px var(--f);color:rgba(96,165,250,.7);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Chrono Apnée</div>
+<div id="apn-timer-display" style="font:900 56px var(--f);letter-spacing:-.04em;color:var(--body-a);line-height:1">0:00</div>
+<div style="font:500 11px var(--f);color:var(--ink3);margin:4px 0 12px" id="apn-phase">Prêt · Appuie pour démarrer</div>
+<div style="display:flex;gap:8px">
+<button onclick="toggleApnTimer()" id="apn-btn" style="flex:1;background:var(--body-a);color:white;border:none;border-radius:10px;padding:11px;font:700 12px var(--f);cursor:pointer">▶ Démarrer</button>
+<button onclick="logApnea()" style="background:var(--cream);border:1px solid var(--line);color:var(--ink2);border-radius:10px;padding:11px 14px;font:700 11px var(--f);cursor:pointer">+ Log</button>
+</div>
+</div>
+<div class="card" style="margin-bottom:10px"><div style="font:700 13px var(--f);margin-bottom:10px">🏆 Mes records</div><div id="apn-records"></div></div>
+<div class="card"><div style="font:700 13px var(--f);margin-bottom:8px">🌊 Tables CO2 · 8 séries</div>
+<div style="font:400 11px var(--f);color:var(--ink2);line-height:1.6;margin-bottom:10px">Apnée fixe · Récup décroissante · Objectif : tolérance CO2</div>
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">
+<div style="text-align:center;background:var(--cream);border-radius:7px;padding:7px"><div style="font:700 12px var(--f);color:var(--body-a)">2:00</div><div style="font:500 8px var(--f);color:var(--ink3)">Apnée</div></div>
+<div style="text-align:center;background:var(--cream);border-radius:7px;padding:7px"><div style="font:700 12px var(--f);color:var(--ink2)">2:00</div><div style="font:500 8px var(--f);color:var(--ink3)">Récup</div></div>
+<div style="text-align:center;background:var(--cream);border-radius:7px;padding:7px"><div style="font:700 12px var(--f);color:var(--body-a)">2:00</div><div style="font:500 8px var(--f);color:var(--ink3)">Apnée</div></div>
+<div style="text-align:center;background:var(--cream);border-radius:7px;padding:7px"><div style="font:700 12px var(--f);color:var(--ink2)">1:45</div><div style="font:500 8px var(--f);color:var(--ink3)">Récup</div></div>
+<div style="text-align:center;background:var(--cream);border-radius:7px;padding:7px"><div style="font:700 12px var(--f);color:var(--body-a)">2:00</div><div style="font:500 8px var(--f);color:var(--ink3)">Apnée</div></div>
+<div style="text-align:center;background:var(--cream);border-radius:7px;padding:7px"><div style="font:700 12px var(--f);color:var(--ink2)">1:30</div><div style="font:500 8px var(--f);color:var(--ink3)">Récup</div></div>
+<div style="text-align:center;background:var(--cream);border-radius:7px;padding:7px"><div style="font:700 12px var(--f);color:var(--body-a)">2:00</div><div style="font:500 8px var(--f);color:var(--ink3)">Apnée</div></div>
+<div style="text-align:center;background:var(--cream);border-radius:7px;padding:7px"><div style="font:700 12px var(--f);color:var(--ink2)">1:15</div><div style="font:500 8px var(--f);color:var(--ink3)">Récup</div></div>
+</div></div>
+</div>
+<div id="bs-focus" style="display:none">
+<div class="card" style="margin-bottom:10px">
+<div style="font:700 13px var(--f);margin-bottom:10px">🎯 Focus Timer</div>
+<div style="text-align:center;font:900 56px var(--f);letter-spacing:-.04em;color:var(--acc)" id="fo-time">90:00</div>
+<div style="text-align:center;font:500 11px var(--f);color:var(--ink3);margin:4px 0 14px" id="fo-label">Deep Work</div>
+<div style="display:flex;gap:8px;margin-bottom:10px">
+<button onclick="toggleTimer()" id="fo-play" class="btn btn-p btn-full">▶ Démarrer</button>
+<button onclick="resetTimer()" class="btn btn-g">↺</button>
+</div>
+<div style="display:flex;gap:5px;flex-wrap:wrap">
+<button onclick="setFocusMode(90,'🎯 Deep Work')" class="fpm">Deep 90</button>
+<button onclick="setFocusMode(26,'😴 Nap Café')" class="fpm">Nap 26</button>
+<button onclick="setFocusMode(90,'🥋 JJB')" class="fpm">JJB 90</button>
+<button onclick="setFocusMode(30,'📖 Lecture')" class="fpm">Lire 30</button>
+<button onclick="setFocusMode(45,'🧘 Récup')" class="fpm">Récup 45</button>
+<button onclick="setFocusMode(20,'🌊 Apnée')" class="fpm">Apnée 20</button>
+</div>
+</div>
+<div class="card"><div style="font:700 13px var(--f);margin-bottom:8px">💡 Récupération JJB</div>
+<div style="font:400 12px var(--f);color:var(--ink2);line-height:1.8">· Ice bath 10 min post-sparring → -40% inflammation<br>· Protéines dans 30 min après training (fenêtre anabolique)<br>· Marche 20 min le lendemain > repos complet<br>· Respiration 4-7-8 : inspire 4s, retiens 7s, expire 8s<br>· Rouleau fascias 10 min avant sommeil</div>
 </div>
 </div>
 </div>
@@ -465,22 +559,28 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 <!-- EXPLORE -->
 <div class="page" id="p-explore">
 <div style="padding:0 20px;margin-top:16px">
-<div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px"><span style="background:linear-gradient(135deg,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Explore</span></div>
-<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:14px">Sélectionne un moteur puis recherche.</div>
-
-<!-- SEARCH BAR -->
-<div style="position:relative;margin-bottom:16px">
-<input type="text" id="explore-q" placeholder="bitcoin, triangle choke..." style="padding-left:42px;padding-right:56px;border-radius:50px;font:500 14px var(--f)" onkeydown="if(event.key==='Enter')doSearch()">
+<div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:2px"><span style="background:linear-gradient(135deg,#ff6b2b,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Explore</span></div>
+<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:14px">Recherche web intelligente — résultats actuels.</div>
+<div style="position:relative;margin-bottom:8px">
+<input type="text" id="explore-q" placeholder="bitcoin 2025, guard retention, récup JJB..." style="padding-left:42px;padding-right:90px;border-radius:50px;font:500 14px var(--f)" onkeydown="if(event.key==='Enter')doExploreSearch()">
 <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink3)">🔍</div>
-<button onclick="doSearch()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:var(--ink);color:white;border:none;border-radius:50px;padding:7px 16px;font:700 12px var(--f);cursor:pointer">Go →</button>
+<button onclick="doExploreSearch()" style="position:absolute;right:5px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,#ff6b2b,#f59e0b);color:white;border:none;border-radius:50px;padding:8px 16px;font:700 12px var(--f);cursor:pointer">Go →</button>
 </div>
-
-<!-- MOTEURS -->
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px" id="engine-grid"></div>
-
-<!-- RACCOURCIS -->
-<div style="font:700 10px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Raccourcis rapides</div>
+<!-- SUGGESTIONS RAPIDES -->
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px" id="exp-suggestions">
+<button onclick="setExploreQ('bitcoin price prediction 2025')" style="background:var(--cream);border:1.5px solid var(--line);border-radius:20px;padding:5px 11px;font:600 10px var(--f);color:var(--ink2);cursor:pointer">₿ BTC 2025</button>
+<button onclick="setExploreQ('JJB guard retention technique')" style="background:var(--cream);border:1.5px solid var(--line);border-radius:20px;padding:5px 11px;font:600 10px var(--f);color:var(--ink2);cursor:pointer">🥋 Guard retention</button>
+<button onclick="setExploreQ('sommeil récupération musculaire')" style="background:var(--cream);border:1.5px solid var(--line);border-radius:20px;padding:5px 11px;font:600 10px var(--f);color:var(--ink2);cursor:pointer">😴 Récup sommeil</button>
+<button onclick="setExploreQ('freediving CO2 training tables')" style="background:var(--cream);border:1.5px solid var(--line);border-radius:20px;padding:5px 11px;font:600 10px var(--f);color:var(--ink2);cursor:pointer">🌊 Apnée CO2</button>
+<button onclick="setExploreQ('crypto fear greed index today')" style="background:var(--cream);border:1.5px solid var(--line);border-radius:20px;padding:5px 11px;font:600 10px var(--f);color:var(--ink2);cursor:pointer">📊 Fear & Greed</button>
+</div>
+<!-- RÉSULTATS -->
+<div id="exp-results"></div>
+<!-- LIENS DIRECTS MOTEURS -->
+<div id="exp-home">
+<div style="font:700 10px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Ou ouvrir directement sur</div>
 <div id="shortcuts-grid"></div>
+</div>
 </div>
 </div>
 
@@ -488,30 +588,12 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 
 <!-- NAVBAR -->
 <div id="navbar">
-<button class="nb on" onclick="goPage('brief',this)">
-<div class="nb-ico" style="background:linear-gradient(135deg,#f59e0b,#f97316)">☀</div>
-<span class="nb-lbl">Brief</span>
-</button>
-<button class="nb" onclick="goPage('feed',this)">
-<div class="nb-ico" style="background:var(--cream)">📡</div>
-<span class="nb-lbl">Feed</span>
-</button>
-<button class="nb" onclick="goPage('crypto',this)">
-<div class="nb-ico" style="background:var(--cream)">💎</div>
-<span class="nb-lbl">Finance</span>
-</button>
-<button class="nb" onclick="goPage('nutri',this)">
-<div class="nb-ico" style="background:var(--cream)">🥗</div>
-<span class="nb-lbl">Nutrition</span>
-</button>
-<button class="nb" onclick="goPage('routine',this)">
-<div class="nb-ico" style="background:var(--cream)">⚡</div>
-<span class="nb-lbl">Routine</span>
-</button>
-<button class="nb" onclick="goPage('explore',this)">
-<div class="nb-ico" style="background:var(--cream)">🌐</div>
-<span class="nb-lbl">Explore</span>
-</button>
+<button class="nb on" onclick="goPage('brief',this)"><div class="nb-ico" style="background:linear-gradient(135deg,#f59e0b,#ff6b2b)">☀</div><span class="nb-lbl">Brief</span></button>
+<button class="nb" onclick="goPage('feed',this)"><div class="nb-ico" style="background:var(--cream)">📡</div><span class="nb-lbl">Feed</span></button>
+<button class="nb" onclick="goPage('nutri',this)"><div class="nb-ico" style="background:var(--cream)">🥗</div><span class="nb-lbl">Nutrition</span></button>
+<button class="nb" onclick="goPage('explore',this)"><div class="nb-ico" style="background:var(--cream)">🔍</div><span class="nb-lbl">Explore</span></button>
+<button class="nb" onclick="goPage('routine',this)"><div class="nb-ico" style="background:var(--cream)">🌊</div><span class="nb-lbl">Body</span></button>
+<button class="nb" onclick="goPage('crypto',this)"><div class="nb-ico" style="background:var(--cream)">₿</div><span class="nb-lbl">Bitcoin</span></button>
 </div>
 </div>
 
@@ -670,7 +752,8 @@ var FEED_DATA = {
     {t:'BRICS et dédollarisation : état des lieux',u:'https://www.reuters.com',d:'Reuters · Finance'},
   ]
 };
-var _feedCat = 'sport';
+var _feedCat='sport';
+var _feedOffset=0;
 var _feedSeed = Date.now();
 
 function initFeed(){
@@ -698,22 +781,26 @@ function initFeed(){
 function loadFeed(){
   var el=document.getElementById('feed-articles');
   if(!el)return;
-  var items=(FEED_DATA[_feedCat]||FEED_DATA.sport).slice();
-  // True random shuffle using timestamp seed
-  for(var i=items.length-1;i>0;i--){
-    var j=Math.floor(Math.random()*(i+1));
-    var tmp=items[i];items[i]=items[j];items[j]=tmp;
+  var all=(FEED_DATA[_feedCat]||FEED_DATA.sport).slice();
+  _feedOffset=(_feedOffset+1)%all.length;
+  var rotated=all.slice(_feedOffset).concat(all.slice(0,_feedOffset));
+  for(var ii=rotated.length-1;ii>0;ii--){
+    var jj=Math.floor(Math.random()*(ii+1));
+    var tt=rotated[ii];rotated[ii]=rotated[jj];rotated[jj]=tt;
   }
   var catColors={sport:'#10b981',crypto:'#f59e0b',sante:'#84cc16',tech:'#3b82f6',monde:'#8b5cf6'};
   var color=catColors[_feedCat]||'var(--ink2)';
+  var catLabel={sport:'Sport',crypto:'Crypto',sante:'Sante',tech:'Tech',monde:'Monde'};
   var html='';
-  items.forEach(function(a){
-    html+='<a href="'+a.u+'" target="_blank" class="feed-link">';
-    html+='<div class="feed-pill" style="background:'+color+'">'+_feedCat+'</div>';
+  rotated.forEach(function(a){
+    html+='<a href="'+a.u+'" target="_blank" rel="noopener" class="feed-link">';
+    html+='<div class="feed-pill" style="background:'+color+'">'+(catLabel[_feedCat]||_feedCat)+'</div>';
     html+='<div class="feed-title">'+a.t+'</div>';
     html+='<div class="feed-source">'+a.d+' →</div></a>';
   });
   el.innerHTML=html;
+  var btn=document.getElementById('feed-refresh-btn');
+  if(btn){var orig=btn.textContent;btn.textContent='✓ Actualise !';setTimeout(function(){btn.textContent=orig;},900);}
 }
 
 // ============================================================
@@ -724,35 +811,25 @@ var ENGINES=[
   {id:'youtube',name:'YouTube',icon:'▶',color:'#ff0000',url:'https://www.youtube.com/results?search_query='},
   {id:'reddit',name:'Reddit',icon:'🤙',color:'#ff4500',url:'https://www.reddit.com/search/?q='},
   {id:'pubmed',name:'PubMed',icon:'🔬',color:'#336699',url:'https://pubmed.ncbi.nlm.nih.gov/?term='},
-  {id:'scholar',name:'Scholar',icon:'📚',color:'#1a73e8',url:'https://scholar.google.com/scholar?q='},
-  {id:'x',name:'X',icon:'✕',color:'#000',url:'https://x.com/search?q='}
+  {id:'x',name:'X/Twitter',icon:'✕',color:'#1a1a1a',url:'https://x.com/search?q='}
 ];
-var _activeEngine='google';
 
 var SHORTCUTS=[
   {label:'BTC analyse',q:'bitcoin price analysis 2025',engine:'youtube',icon:'📈'},
-  {label:'JJB technique',q:'bjj technique tutorial guard passing',engine:'youtube',icon:'🥋'},
-  {label:'Apnée CO2 tables',q:'freediving CO2 training tables',engine:'youtube',icon:'🌊'},
-  {label:'Sommeil science',q:'sleep deep work cognitive performance',engine:'pubmed',icon:'😴'},
-  {label:'DCA stratégie',q:'DCA bitcoin long term strategy',engine:'reddit',icon:'💰'},
-  {label:'Nutrition récup',q:'post workout recovery nutrition protein',engine:'pubmed',icon:'🥗'},
+  {label:'JJB technique',q:'bjj guard retention tutorial',engine:'youtube',icon:'🥋'},
+  {label:'Apnée CO2',q:'freediving CO2 training tables',engine:'youtube',icon:'🌊'},
+  {label:'Sommeil récup',q:'sleep recovery performance science',engine:'pubmed',icon:'😴'},
+  {label:'DCA Bitcoin',q:'DCA bitcoin long term strategy',engine:'reddit',icon:'₿'},
+  {label:'Nutrition JJB',q:'bjj grappling nutrition recovery protein',engine:'pubmed',icon:'🥗'},
 ];
 
+function setExploreQ(q){
+  var el=document.getElementById('explore-q');
+  if(el){el.value=q;el.focus();}
+  doExploreSearch();
+}
+
 function initExplore(){
-  var grid=document.getElementById('engine-grid');
-  if(grid){
-    grid.innerHTML='';
-    ENGINES.forEach(function(eng){
-      var btn=document.createElement('div');
-      var on=eng.id===_activeEngine;
-      btn.className='eng-btn'+(on?' on':'');
-      if(on){btn.style.background=eng.color;btn.style.borderColor=eng.color;}
-      btn.innerHTML='<div class="eng-icon" style="color:'+(on?'white':eng.color)+'">'+eng.icon+'</div><div class="eng-name" style="color:'+(on?'white':'var(--ink)')+'">'+eng.name+'</div>';
-      btn.dataset.eid=eng.id;
-      btn.addEventListener('click',function(){_activeEngine=this.dataset.eid;initExplore();});
-      grid.appendChild(btn);
-    });
-  }
   var sc=document.getElementById('shortcuts-grid');
   if(sc){
     sc.innerHTML='';
@@ -760,22 +837,81 @@ function initExplore(){
       var eng=ENGINES.find(function(e){return e.id===s.engine;})||ENGINES[0];
       var a=document.createElement('a');
       a.href=eng.url+encodeURIComponent(s.q);
-      a.target='_blank'; // OUVRE DANS NOUVEL ONGLET
-      a.rel='noopener noreferrer';
+      a.target='_blank';a.rel='noopener noreferrer';
       a.style.cssText='display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;text-decoration:none;color:inherit';
-      a.innerHTML='<div style="font-size:18px">'+s.icon+'</div><div style="flex:1"><div style="font:600 12px var(--f)">'+s.label+'</div><div style="font:500 10px var(--f);color:var(--ink3);margin-top:1px">via '+eng.name+'</div></div><div style="background:'+eng.color+';color:white;border-radius:8px;padding:3px 8px;font:700 9px var(--f)">'+eng.name+'</div><div style="color:var(--ink3);font:600 12px var(--f)">→</div>';
+      a.innerHTML='<div style="font-size:18px">'+s.icon+'</div><div style="flex:1"><div style="font:600 12px var(--f)">'+s.label+'</div><div style="font:500 10px var(--f);color:var(--ink3);margin-top:1px">via '+eng.name+'</div></div><div style="color:var(--ink3);font:600 12px var(--f)">→</div>';
       sc.appendChild(a);
     });
   }
 }
 
-function doSearch(){
-  var q=document.getElementById('explore-q');
-  if(!q||!q.value.trim()){toast('Entre un terme de recherche');return;}
-  var eng=ENGINES.find(function(e){return e.id===_activeEngine;})||ENGINES[0];
-  var url=eng.url+encodeURIComponent(q.value.trim());
-  window.open(url,'_blank'); // OUVRE DANS NOUVEL ONGLET — ne quitte pas l'app
+async function doExploreSearch(){
+  var qEl=document.getElementById('explore-q');
+  if(!qEl||!qEl.value.trim()){toast('Entre un mot-clé');return;}
+  var query=qEl.value.trim();
+  var res=document.getElementById('exp-results');
+  var home=document.getElementById('exp-home');
+  if(!res)return;
+  if(home)home.style.display='none';
+  res.innerHTML='<div style="text-align:center;padding:32px;color:var(--ink3);font:500 13px var(--f)">🔍 Recherche en cours...</div>';
+  
+  // Show engine links immediately while AI loads
+  var engHtml='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">';
+  ENGINES.forEach(function(eng){
+    engHtml+='<a href="'+eng.url+encodeURIComponent(query)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;background:var(--cream);border:1.5px solid var(--line);border-radius:20px;padding:5px 11px;font:600 10px var(--f);color:var(--ink2);text-decoration:none;cursor:pointer">'+eng.icon+' '+eng.name+'</a>';
+  });
+  engHtml+='</div>';
+  
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        tools:[{type:'web_search_20250305',name:'web_search'}],
+        messages:[{role:'user',content:'Recherche des informations actuelles et précises sur: "'+query+'". Donne-moi un résumé concis (5-8 points clés) avec les infos les plus récentes et importantes. Réponds en français, sois direct et factuel.'}]
+      })
+    });
+    var data = await resp.json();
+    var text = (data.content||[]).filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('\n');
+    
+    if(text){
+      // Convert markdown-style to HTML
+      var html = text
+        .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+        .replace(/^[•·\-\*]\s+(.+)$/gm,'<div class="exp-item">$1</div>')
+        .replace(/^\d+\.\s+(.+)$/gm,'<div class="exp-item">$1</div>')
+        .replace(/\n{2,}/g,'<br>');
+      
+      res.innerHTML = engHtml +
+        '<div style="background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:8px">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">' +
+        '<div style="width:24px;height:24px;background:linear-gradient(135deg,#ff6b2b,#f59e0b);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px">✦</div>' +
+        '<div style="font:700 12px var(--f)">Résumé IA · <span style="color:var(--ink3);font-weight:500">'+query+'</span></div>' +
+        '</div><div style="font:400 13px var(--f);color:var(--ink2);line-height:1.7">'+html+'</div></div>' +
+        '<button onclick="clearExplore()" style="width:100%;background:var(--cream);border:1.5px solid var(--line);border-radius:50px;padding:8px;font:600 11px var(--f);color:var(--ink3);cursor:pointer;margin-top:4px">← Nouvelle recherche</button>';
+    } else {
+      throw new Error('no text');
+    }
+  } catch(e) {
+    // Fallback: just show engine links
+    res.innerHTML = engHtml +
+      '<div style="background:var(--cream);border-radius:14px;padding:14px;text-align:center;color:var(--ink3);font:500 12px var(--f)">Ouvre un moteur ci-dessus pour voir les résultats</div>' +
+      '<button onclick="clearExplore()" style="width:100%;background:var(--cream);border:1.5px solid var(--line);border-radius:50px;padding:8px;font:600 11px var(--f);color:var(--ink3);cursor:pointer;margin-top:8px">← Retour</button>';
+  }
 }
+
+function clearExplore(){
+  var res=document.getElementById('exp-results');
+  var home=document.getElementById('exp-home');
+  if(res)res.innerHTML='';
+  if(home)home.style.display='block';
+  var q=document.getElementById('explore-q');if(q)q.value='';
+}
+
+function doSearch(){doExploreSearch();}
+
 
 // ============================================================
 // RECETTES — shuffle VRAI aléatoire
@@ -808,7 +944,10 @@ var RECIPES=[
 
 function _shuffleArr(arr){
   var a=arr.slice();
-  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  /* True random - crypto random if available */
+  var rnd=function(){return typeof crypto!=='undefined'&&crypto.getRandomValues?
+    (crypto.getRandomValues(new Uint32Array(1))[0]/0xFFFFFFFF):Math.random();};
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
   return a;
 }
 
@@ -818,15 +957,22 @@ function makeRecipeCard(r){
   return '<div class="recipe-hero"><div class="recipe-top"><div class="recipe-icon">'+r.icon+'</div><div class="recipe-name">'+r.name+'</div><div class="recipe-meta"><span class="recipe-m">⏱ '+r.time+'</span></div></div><div class="recipe-body"><div class="recipe-section">Ingrédients</div>'+ing+'<div class="recipe-section">Préparation</div>'+steps+'<div class="recipe-section">Macros</div><div class="macro-row"><div class="macro-box"><div class="macro-v" style="color:var(--nutri-a)">'+r.macros[0]+'</div><div class="macro-l">Prot</div></div><div class="macro-box"><div class="macro-v" style="color:var(--routine-a)">'+r.macros[1]+'</div><div class="macro-l">Glucides</div></div><div class="macro-box"><div class="macro-v" style="color:var(--body-a)">'+r.macros[2]+'</div><div class="macro-l">Lipides</div></div><div class="macro-box"><div class="macro-v">'+r.macros[3]+'</div><div class="macro-l">kcal</div></div></div><div style="background:rgba(34,197,94,.08);border-radius:10px;padding:10px;margin-top:10px;font:400 12px var(--s);font-style:italic;color:var(--nutri-a)">✦ '+r.why+'</div></div></div>';
 }
 
+var _nutriTab='ia';
+var _recipeCtx='all';
+var _rOffset=0;
 function renderStaticRecipes(){
   var el=document.getElementById('static-recipes');
   if(!el)return;
-  var picks=_shuffleArr(RECIPES).slice(0,4);
+  var pool=(_recipeCtx&&_recipeCtx!=='all')?RECIPES.filter(function(r){return r.ctx&&r.ctx.indexOf(_recipeCtx)>=0;}):RECIPES;
+  if(!pool.length)pool=RECIPES;
+  var all=_shuffleArr(pool);
+  var picks=[];for(var i=0;i<Math.min(4,all.length);i++)picks.push(all[(_rOffset+i)%all.length]);
   var html='';picks.forEach(function(r){html+=makeRecipeCard(r);});
   el.innerHTML=html;
 }
 
 function shuffleStaticRecipes(){
+  _rOffset=(_rOffset+4)%RECIPES.length;
   renderStaticRecipes();
   toast('4 nouvelles recettes ↺');
 }
@@ -1113,12 +1259,52 @@ try{var r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_cha
 }
 
 async function fetchCrypto(){
-try{var [rBTC,rETH]=await Promise.all([fetch('https://api.coinbase.com/v2/prices/BTC-EUR/spot'),fetch('https://api.coinbase.com/v2/prices/ETH-EUR/spot')]);var dBTC=await rBTC.json();var dETH=await rETH.json();if(dBTC.data){var p=parseFloat(dBTC.data.amount);var pe=document.getElementById('btc-p');if(pe)pe.textContent='€'+Math.round(p).toLocaleString('fr');var mc=document.getElementById('btc-mktcap');if(mc)mc.textContent='~€'+Math.round(p*19700000/1e9)+'Md';sv('cached_btc',p);updateDCAPnL(p);}if(dETH.data){var ep=parseFloat(dETH.data.amount);var epe=document.getElementById('eth-p');if(epe)epe.textContent='€'+Math.round(ep).toLocaleString('fr');}toast('Cours actualisés ✓');}catch(e){var pe=document.getElementById('btc-p');if(pe&&pe.textContent==='Chargement...')pe.textContent='Indisponible';}
+  try{
+    var r1=await fetch('https://api.coinbase.com/v2/prices/BTC-EUR/spot');
+    var d1=await r1.json();
+    var price=parseFloat(d1.data.amount);
+    _btcPrice=price;
+    var el=document.getElementById('btc-price');
+    if(el)el.textContent='€'+Math.round(price).toLocaleString('fr');
+    updateDCAPnL();
+    // Market cap estimate (circulating ~19.7M BTC)
+    var mc=price*19700000;
+    var mce=document.getElementById('btc-mcap');
+    if(mce)mce.textContent=mc>1e12?'€'+(mc/1e12).toFixed(2)+'T':'€'+(mc/1e9).toFixed(0)+'B';
+  }catch(e){console.log('BTC price error',e);}
 }
 
-function saveDCA(){var inv=parseFloat(document.getElementById('dca-inv-in').value);var avg=parseFloat(document.getElementById('dca-avg-in').value);if(isNaN(inv)||isNaN(avg))return toast('Remplis les deux champs');sv('btc_dca',{inv:inv,avg:avg});renderDCA();toast('DCA sauvegardé ✓');}
-function renderDCA(){var dca=ld('btc_dca',null);if(!dca)return;var ie=document.getElementById('dca-inv-d');if(ie)ie.textContent='€'+dca.inv.toLocaleString('fr');var ae=document.getElementById('dca-avg-d');if(ae)ae.textContent='€'+Math.round(dca.avg).toLocaleString('fr');var iin=document.getElementById('dca-inv-in');if(iin)iin.value=dca.inv;var ain=document.getElementById('dca-avg-in');if(ain)ain.value=dca.avg;}
-function updateDCAPnL(cur){var dca=ld('btc_dca',null);if(!dca||!dca.inv||!dca.avg)return;var owned=dca.inv/dca.avg,val=owned*cur,pnl=val-dca.inv,pct=(pnl/dca.inv*100).toFixed(1);var el=document.getElementById('dca-pnl-d');if(el){el.textContent=(pnl>=0?'+€':'-€')+Math.abs(Math.round(pnl)).toLocaleString('fr')+' ('+pct+'%)';el.style.color=pnl>=0?'rgba(134,239,172,1)':'rgba(255,150,150,1)';}}
+function saveDCA(){
+  var inv=parseFloat(document.getElementById('dca-inv').value);
+  var avg=parseFloat(document.getElementById('dca-avg').value);
+  if(isNaN(inv)||isNaN(avg))return toast('Remplis les deux champs');
+  sv('btc_dca',{inv:inv,avg:avg});
+  var cached=ld('cached_btc',null);
+  if(cached)updateDCAPnL(cached);
+  toast('DCA sauvegardé ✓');
+}
+function renderDCA(){
+  var dca=ld('btc_dca',null);
+  if(!dca)return;
+  var ii=document.getElementById('dca-inv');if(ii)ii.value=dca.inv;
+  var ai=document.getElementById('dca-avg');if(ai)ai.value=dca.avg;
+  updateDCAPnL();
+}
+function updateDCAPnL(cur){
+  var dca=ld('btc_dca',null);if(!dca||!dca.inv||!dca.avg)return;
+  var owned=dca.inv/dca.avg,val=owned*cur,pnl=val-dca.inv,pct=(pnl/dca.inv*100).toFixed(1);
+  var sats=Math.round(owned*1e8);
+  var color=pnl>=0?'#6ee7b7':'#ff8a80';
+  var pnlEl=document.getElementById('dca-pnl-v');
+  if(pnlEl){pnlEl.textContent=(pnl>=0?'+':'')+Math.round(pnl).toLocaleString('fr')+'€';pnlEl.style.color=color;}
+  var sEl=document.getElementById('dca-stack');
+  if(sEl)sEl.textContent=sats.toLocaleString('fr');
+  var avgEl=document.getElementById('dca-avg-v');
+  if(avgEl)avgEl.textContent='€'+Math.round(dca.avg).toLocaleString('fr');
+  // pre-fill inputs
+  var ii=document.getElementById('dca-inv');if(ii)ii.value=dca.inv;
+  var ai=document.getElementById('dca-avg');if(ai)ai.value=dca.avg;
+}
 
 // ============================================================
 // BRIEF
@@ -1190,16 +1376,215 @@ function updateApnStats(){}
 function renderSleepChart(){}
 function updateSleepStreak(){}
 
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.regist
+// ============================================================
+// NUTRITION TABS
+// ============================================================
+
+function switchNutriTab(tab){
+  _nutriTab=tab;
+  var tabs=['ia','bank','search','keys'];
+  var activeStyle='background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));color:white';
+  var inactiveStyle='background:transparent;color:var(--ink3)';
+  tabs.forEach(function(t){
+    var btn=document.getElementById('ntab-'+t);
+    var sec=document.getElementById('ns-'+t);
+    if(btn)btn.style.cssText='flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 11px var(--f);cursor:pointer;'+(t===tab?activeStyle:inactiveStyle);
+    if(sec)sec.style.display=t===tab?'block':'none';
+  });
+}
+
+function filterRecipes(ctx,btn){
+  _recipeCtx=ctx;
+  _rOffset=0;
+  document.querySelectorAll('.rfilter').forEach(function(b){
+    b.style.background='var(--white)';b.style.borderColor='var(--line)';b.style.color='var(--ink3)';
+  });
+  if(btn){btn.style.background='var(--nutri-a)';btn.style.borderColor='var(--nutri-a)';btn.style.color='white';}
+  renderStaticRecipes();
+}
+
+er('./sw.js').catch(function(){});});}
 
 // ============================================================
 // INIT
 // ============================================================
+
+// ============================================================
+// MULTI-SEARCH EXPLORE
+// ============================================================
+function multiSearch(){
+  var q=document.getElementById('explore-q');
+  if(!q||!q.value.trim()){toast('Entre un mot-clé');return;}
+  var query=q.value.trim();
+  var res=document.getElementById('multi-results');
+  var home=document.getElementById('explore-home');
+  var grid=document.getElementById('multi-grid');
+  var title=document.getElementById('multi-title');
+  if(!res||!grid)return;
+  res.style.display='block';
+  if(home)home.style.display='none';
+  if(title)title.textContent='Chercher «'+query+'» sur :';
+  grid.innerHTML='';
+  ENGINES.forEach(function(eng){
+    var a=document.createElement('a');
+    a.href=eng.url+encodeURIComponent(query);
+    a.target='_blank';a.rel='noopener noreferrer';
+    a.style.cssText='display:flex;align-items:center;gap:12px;background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:14px;margin-bottom:8px;text-decoration:none;color:inherit;';
+    a.innerHTML='<div style="width:38px;height:38px;border-radius:10px;background:'+eng.color+'22;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+eng.icon+'</div>'+
+      '<div style="flex:1"><div style="font:700 13px var(--f)">'+eng.name+'</div>'+
+      '<div style="font:400 11px var(--f);color:var(--ink3);margin-top:1px">via '+eng.name+'</div></div>'+
+      '<div style="background:'+eng.color+';color:white;border-radius:8px;padding:4px 10px;font:700 10px var(--f)">Ouvrir →</div>';
+    grid.appendChild(a);
+  });
+}
+
+
+
+
+
+function clearExploreSearch(){
+  var res=document.getElementById('exp-results');
+  var home=document.getElementById('exp-home');
+  if(res)res.innerHTML='';
+  if(home)home.style.display='block';
+  var q=document.getElementById('explore-q');if(q)q.value='';
+}
+
+
+function clearMultiSearch(){
+  var res=document.getElementById('multi-results');
+  var home=document.getElementById('explore-home');
+  if(res)res.style.display='none';
+  if(home)home.style.display='block';
+}
+
+// ============================================================
+// BODY TABS
+// ============================================================
+function switchBodyTab(tab){
+  ['habits','sleep','apnee','focus'].forEach(function(t){
+    var btn=document.getElementById('btab-'+t);
+    var sec=document.getElementById('bs-'+t);
+    var on=t===tab;
+    if(btn)btn.style.cssText='flex:1;border:none;border-radius:9px;padding:8px 4px;font:700 10px var(--f);cursor:pointer;'+(on?'background:linear-gradient(135deg,var(--routine-a),var(--routine-b));color:white':'background:transparent;color:var(--ink3)');
+    if(sec)sec.style.display=on?'block':'none';
+  });
+}
+
+// ============================================================
+// FOCUS INLINE (Body tab)
+// ============================================================
+function setFocusMode(mins,name){
+  _fT=mins*60;_fR=_fT;
+  if(_fInt){clearInterval(_fInt);_fInt=null;}_fRun=false;
+  var lbl=document.getElementById('fo-label');if(lbl)lbl.textContent=name;
+  var btn=document.getElementById('fo-play');if(btn)btn.textContent='▶ Démarrer';
+  updateFD();
+}
+
+// ============================================================
+// SLEEP LOG
+// ============================================================
+var _sleepQ=3;
+function selectSleepQ(q,btn){
+  _sleepQ=q;
+  document.querySelectorAll('.sq-btn').forEach(function(b){b.style.background='var(--cream)';b.style.borderColor='var(--line)';b.style.color='var(--ink)';});
+  if(btn){btn.style.background='var(--body-a)';btn.style.borderColor='var(--body-a)';btn.style.color='white';}
+}
+function logSleep(){
+  var bed=document.getElementById('sleep-bed').value;
+  var wake=document.getElementById('sleep-wake').value;
+  if(!bed||!wake){toast('Entre heure coucher + réveil');return;}
+  var bh=parseInt(bed.split(':')[0]),bm=parseInt(bed.split(':')[1]);
+  var wh=parseInt(wake.split(':')[0]),wm=parseInt(wake.split(':')[1]);
+  var dur=(wh*60+wm)-(bh*60+bm);if(dur<0)dur+=1440;
+  var logs=ld('sleep_log',[]);
+  logs.unshift({date:td(),bed:bed,wake:wake,duration:dur,quality:_sleepQ});
+  sv('sleep_log',logs.slice(0,14));
+  renderSleepLog();updateScore();toast('Nuit enregistrée ✓');
+}
+function renderSleepLog(){
+  var el=document.getElementById('sleep-log-list');if(!el)return;
+  var logs=ld('sleep_log',[]);
+  if(!logs.length){el.innerHTML='<div style="font:400 11px var(--f);color:var(--ink3)">Aucune nuit enregistrée.</div>';return;}
+  el.innerHTML='';
+  logs.slice(0,7).forEach(function(l){
+    var h=Math.floor(l.duration/60),m=l.duration%60;
+    var col=l.duration>=420?'var(--nutri-a)':l.duration>=360?'var(--body-a)':'var(--acc)';
+    var ql=['','😫','😐','🙂','😊','🤩'][l.quality||3];
+    var d=document.createElement('div');
+    d.style.cssText='display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)';
+    d.innerHTML='<div style="font:600 10px var(--f);color:var(--ink3);width:55px">'+l.date.slice(5)+'</div>'+
+      '<div style="font:700 14px var(--f);color:'+col+'">'+h+'h'+String(m).padStart(2,'0')+'</div>'+
+      '<div style="font:500 11px var(--f);color:var(--ink3);flex:1">'+l.bed+' → '+l.wake+'</div>'+
+      '<div>'+ql+'</div>';
+    el.appendChild(d);
+  });
+}
+
+// ============================================================
+// APNEA TIMER
+// ============================================================
+var _apnStart=null,_apnRunning=false,_apnInt=null;
+function toggleApnTimer(){
+  var btn=document.getElementById('apn-btn');
+  var phase=document.getElementById('apn-phase');
+  var display=document.getElementById('apn-timer-display');
+  if(_apnRunning){
+    clearInterval(_apnInt);_apnRunning=false;
+    var elapsed=Math.floor((Date.now()-_apnStart)/1000);
+    var m=Math.floor(elapsed/60),s=elapsed%60;
+    _apnStart=elapsed; // store seconds for log
+    if(btn){btn.textContent='▶ Démarrer';btn.style.background='var(--body-a)';}
+    if(phase)phase.textContent='Retenu: '+m+':'+String(s).padStart(2,'0')+' — tap + Log pour sauvegarder';
+  } else {
+    _apnStart=Date.now();_apnRunning=true;
+    if(btn){btn.textContent='⏹ Stop';btn.style.background='var(--acc)';}
+    if(phase)phase.textContent='En apnée... concentration maximale';
+    _apnInt=setInterval(function(){
+      if(!display)return;
+      var s=Math.floor((Date.now()-_apnStart)/1000);
+      display.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+    },200);
+  }
+}
+function logApnea(){
+  if(typeof _apnStart==='number'&&!_apnRunning){
+    var secs=_apnStart;
+    var records=ld('apn_records',[]);
+    records.unshift({date:td(),secs:secs});
+    sv('apn_records',records.slice(0,10));
+    renderApnRecords();toast('Apnée enregistrée ✓');
+    var d=document.getElementById('apn-timer-display');if(d)d.textContent='0:00';
+    _apnStart=null;
+    var p=document.getElementById('apn-phase');if(p)p.textContent='Prêt · Appuie pour démarrer';
+  } else {toast("Arrête le timer d'abord");}
+}
+function renderApnRecords(){
+  var el=document.getElementById('apn-records');if(!el)return;
+  var records=ld('apn_records',[]);
+  if(!records.length){el.innerHTML='<div style="font:400 11px var(--f);color:var(--ink3)">Aucun record enregistré.</div>';return;}
+  var best=Math.max.apply(null,records.map(function(r){return r.secs;}));
+  el.innerHTML='';
+  records.slice(0,6).forEach(function(r){
+    var m=Math.floor(r.secs/60),s=r.secs%60;
+    var isBest=r.secs===best;
+    var d=document.createElement('div');
+    d.style.cssText='display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)';
+    d.innerHTML='<div style="font:600 10px var(--f);color:var(--ink3);width:55px">'+r.date.slice(5)+'</div>'+
+      '<div style="font:800 16px var(--f);color:'+(isBest?'var(--acc)':'var(--body-a)')+'">'+m+':'+String(s).padStart(2,'0')+'</div>'+
+      (isBest?'<div style="background:var(--acc);color:white;border-radius:6px;padding:2px 7px;font:700 8px var(--f)">RECORD</div>':'');
+    el.appendChild(d);
+  });
+}
+
+
 window.addEventListener('DOMContentLoaded',function(){
 initTheme();
 initTopbar();
 renderCryptoLearn();renderPEA();renderPie();renderDCA();
-renderStaticRecipes();renderAliments();
+renderStaticRecipes();renderAliments();renderSleepLog();renderApnRecords();
 renderHabits();renderStreak();renderTasks();renderAgenda();
 updateWater();
 fetchCrypto();fetchFearGreed();fetchBTCChart();
