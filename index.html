@@ -1,5 +1,4 @@
-<!DOC
-<button onclick="toggleDark()" id="dark-btn" style="background:none;border:1.5px solid var(--line);border-radius:50px;padding:4px 10px;font:600 11px var(--f);cursor:pointer;color:var(--ink)">🌙</button>TYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -270,6 +269,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div class="tb-logo">LIFE<span>OS</span></div>
 <div class="tb-right">
 <span class="tb-date" id="tb-date"></span>
+<button class="ico" id="dark-btn" onclick="toggleDark()" style="font-size:16px">🌙</button>
 <button class="ico" onclick="openFocus('deep',90,'🎯 Deep Work','Téléphone dans une autre pièce.')">⏱</button>
 </div>
 </div>
@@ -1158,21 +1158,10 @@ intents.forEach(function(item){var el=document.createElement('div');el.className
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
 
 window.addEventListener('DOMContentLoaded',function(){
-initTopbar();initQuotes();renderFeed();renderCryptoLearn();renderPEA();renderPie();renderDCA();
-renderStaticRecipes();renderAliments();renderHabits();renderStreak();renderTasks();renderAgenda();
+initTopbar();initQuotes();renderCryptoLearn();renderPEA();renderPie();renderDCA();
+renderHabits();renderStreak();renderTasks();renderAgenda();
 restoreSleep();renderSleepChart();updateSleepStreak();updateApnStats();renderApnChart();
 
-// ========== RECETTES (TheMealDB) ==========
-
-
-
-
-var _activeNewsCat='sport';
-
-
-
-
-// ===== FEED (RSS via rss2json) =====
 var FEED_SOURCES = [
   {id:'sport', label:'Sport', color:'#10b981', url:'https://www.lequipe.fr/rss/actu_rss_TouteLEquipe.xml'},
   {id:'crypto', label:'Crypto', color:'#f59e0b', url:'https://cointelegraph.com/rss'},
@@ -1269,7 +1258,7 @@ function loadFeed() {
 }
 
 
-// ===== MEALS (TheMealDB) =====
+// ===== MEALS =====
 async function searchMeals(q) {
   var input = document.getElementById('meal-q');
   var query = q || (input && input.value.trim()) || 'chicken';
@@ -1339,7 +1328,7 @@ async function openMeal(id) {
   }
 }
 
-// ===== EXPLORE (multi-engine, no AI) =====
+// ===== EXPLORE =====
 var ENGINES = [
   {id:'google', name:'Google', icon:'G', color:'#4285f4', url:'https://www.google.com/search?q='},
   {id:'youtube', name:'YouTube', icon:'▶', color:'#ff0000', url:'https://www.youtube.com/results?search_query='},
@@ -1420,9 +1409,57 @@ function initTheme() {
 }
 initTheme();
 updateWater();fetchCrypto();fetchFearGreed();fetchBTCChart();initBrief();initFeed();loadFeed();searchMeals("chicken");initExplore();
-renderExploreFilters();renderExploreList();
 document.getElementById('ht-matin').className='btn btn-sm btn-p';
 });
+
+// Stub functions for removed features
+function renderStaticRecipes() {
+  var el = document.getElementById('static-recipes');
+  if (!el) return;
+  var html = '';
+  RECIPES.forEach(function(r) { html += makeRecipeCard(r); });
+  el.innerHTML = html;
+}
+function renderAliments() {
+  var el = document.getElementById('aliments-list');
+  if (!el) return;
+  var items = [
+    {e:'🥚', n:'Oeufs', d:'Leucine complète · 6g prot/oeuf · Biodispo max', c:'var(--nutri-a)'},
+    {e:'🍗', n:'Blanc de poulet', d:'32g prot/100g · Post-JJB idéal', c:'var(--nutri-a)'},
+    {e:'🐟', n:'Saumon / Thon', d:'Oméga-3 + prot · Anti-inflam naturel', c:'var(--body-a)'},
+    {e:'🍠', n:'Patate douce', d:'Glucides lents · Potassium · Glycogène', c:'var(--routine-a)'},
+    {e:'🥑', n:'Avocat', d:'Bons lipides · Magnésium · Satiété', c:'var(--nutri-b)'},
+    {e:'🍌', n:'Banane', d:'Énergie rapide · Potassium · Post-effort', c:'var(--feed-b)'},
+  ];
+  var html = '';
+  items.forEach(function(it) {
+    html += '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1.5px solid var(--line)">';
+    html += '<div style="width:36px;height:36px;border-radius:10px;background:'+it.c+'22;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+it.e+'</div>';
+    html += '<div><div style="font:600 13px var(--f)">'+it.n+'</div><div style="font:400 11px var(--f);color:var(--ink2)">'+it.d+'</div></div></div>';
+  });
+  el.innerHTML = html;
+}
+function renderNotes() {}
+function renderJournal() {}
+function genRecipe() {
+  var ingr = document.getElementById('ai-ingr');
+  var ctx = document.getElementById('ai-ctx');
+  if (!ingr || !ingr.value.trim()) return toast('Entre des ingrédients !');
+  var q = ingr.value.trim().toLowerCase();
+  var ctxVal = ctx ? ctx.value : '';
+  // Find matching recipe
+  var match = RECIPES.filter(function(r) {
+    if (ctxVal && r.ctx.indexOf(ctxVal) < 0) return false;
+    return r.keys.some(function(k) { return q.indexOf(k) >= 0; });
+  });
+  if (!match.length) match = RECIPES.filter(function(r) { return !ctxVal || r.ctx.indexOf(ctxVal) >= 0; });
+  if (!match.length) match = RECIPES;
+  var r = match[Math.floor(Math.random() * match.length)];
+  var res = document.getElementById('recipe-result');
+  if (res) { res.style.display = 'block'; res.innerHTML = makeRecipeCard(r); }
+  toast('Recette générée ✓');
+}
+
 </script>
 </body>
 </html>
