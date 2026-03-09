@@ -635,44 +635,11 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div id="toast"></div>
 
 <script>
-var ARTICLE_BANK=[
-{cat:'JJB',time:'Maintenant',title:'Le guard retention : pourquoi tu le perds et comment le garder',text:'La plupart des débutants perdent leur garde car ils réagissent trop tard. La clé est de sentir le déséquilibre de ton adversaire AVANT qu\'il passe, pas après. Drill quotidien : 5 min de grip fighting en guard fermée, focus sur les hanches.',keys:['Garde','Technique','Drill']},
-{cat:'JJB',time:'Maintenant',title:'Le kimura depuis la garde : setup que personne ne voit venir',text:'Le kimura est une des soumissions les plus versatiles du JJB. Setup efficace : attirer l\'adversaire en avant avec un faux coup de coude, puis capturer le poignet. Une fois le kimura grip établi, tu contrôles tout le haut du corps.',keys:['Kimura','Garde','Soumission']},
-{cat:'JJB',time:'Maintenant',title:'Pourquoi driller seul 10 min par jour change tout',text:'Roger Gracie drillait ses mouvements préférés des centaines de fois avant chaque entraînement. Le solo drilling améliore la fluidité musculaire sans la fatigue du sparring. 10 min de shrimping et de bridge chaque matin = progression mesurable en 4 semaines.',keys:['Solo drill','Progression','Habitude']},
-{cat:'Crypto',time:'Maintenant',title:'Bitcoin halving 2024 : ce que l\'histoire dit du prix post-halving',text:'Les 3 précédents halvings (2012, 2016, 2020) ont tous été suivis d\'un ATH dans les 12-18 mois. La logique est simple : offre réduite de moitié, demande stable ou croissante = pression haussière. Ce n\'est pas une garantie, mais c\'est le pattern le plus documenté en crypto.',keys:['Halving','Bitcoin','Analyse']},
-{cat:'Crypto',time:'Maintenant',title:'Pourquoi le DCA mensuel bat le market timing sur 10 ans',text:'Une étude sur 10 ans montre qu\'un investisseur DCA mensuel surperforme le market timer dans 90% des cas. Raison : ton cerveau surestimera toujours sa capacité à prédire. Le DCA enlève l\'émotion de l\'équation et profite de la moyenne des prix sur le cycle.',keys:['DCA','Long terme','Stratégie']},
-{cat:'Crypto',time:'Maintenant',title:'Layer 2 Bitcoin : Lightning Network expliqué simplement',text:'Le Lightning Network permet des transactions Bitcoin instantanées et quasi-gratuites en créant des canaux de paiement off-chain. Utile pour les micro-paiements. L\'adoption augmente : 5 000+ BTC sont actuellement lockés dans le réseau Lightning.',keys:['Lightning','L2','Tech']},
-{cat:'Nutrition',time:'Maintenant',title:'La fenêtre anabolique : mythe ou réalité ?',text:'La "fenêtre" post-entraînement est réelle mais plus large qu\'on le pensait : 2-4h, pas 30 min. Ce qui compte vraiment : ton apport total en protéines sur la journée (1.6-2.2g/kg). Si tu manges bien, boire un shake immédiatement après n\'est pas obligatoire.',keys:['Protéines','Récupération','Science']},
-{cat:'Nutrition',time:'Maintenant',title:'Créatine : le seul supplément avec autant de preuves',text:'Plus de 1000 études cliniques confirment l\'efficacité de la créatine monohydrate. 3-5g par jour suffisent (pas besoin de charge). Effets : +8% force maximale, meilleure récupération, possible bénéfice cognitif. C\'est le supplément le plus rentable pour la performance.',keys:['Créatine','Supplément','Force']},
-{cat:'Nutrition',time:'Maintenant',title:'Pois chiches : l\'aliment sous-estimé du sportif',text:'100g de pois chiches secs = 19g de protéines, 61g de glucides complexes, 6g de fibres. IG bas = énergie stable sur 4h. Riche en leucine pour la synthèse protéique. Idéal en pre-training ou déjeuner. Associe avec du riz pour un profil d\'acides aminés complet.',keys:['Légumineuses','Protéines végétales','IG bas']},
-{cat:'Mindset',time:'Maintenant',title:'L\'effet de la comparaison : pourquoi elle te freine',text:'Comparer ta progression à celle des autres active le cortex préfrontal en mode menace. Résultat : moins de prise de risque, moins de créativité. La solution n\'est pas d\'ignorer les autres mais de redéfinir la comparaison : toi vs toi d\'il y a 6 mois.',keys:['Psychologie','Focus','Progression']},
-{cat:'Mindset',time:'Maintenant',title:'Systèmes vs objectifs : la leçon de James Clear',text:'Un objectif = destination. Un système = le chemin. Les personnes qui atteignent leurs objectifs et celles qui échouent ont souvent les mêmes buts. La différence : les systèmes quotidiens. Construis une identité ("je suis quelqu\'un qui s\'entraîne") plutôt que des objectifs ("je veux perdre 5kg").',keys:['Atomic Habits','Système','Identité']},
-{cat:'Science',time:'Maintenant',title:'Sommeil profond et mémoire motrice : le lien direct',text:'Le stade 3-4 du sommeil (ondes lentes) est le moment où le cerveau consolide les séquences motrices apprises dans la journée. Walker (2019) : 90 min de sommeil profond améliorent de 20-30% la rétention des gestes techniques. C\'est pourquoi dormir après un bon entraînement JJB est aussi important que l\'entraînement lui-même.',keys:['Sommeil','Mémoire','JJB']},
-{cat:'Science',time:'Maintenant',title:'La respiration 4-7-8 : science derrière la technique',text:'La technique 4-7-8 (inspire 4s, retiens 7s, expire 8s) active le système nerveux parasympathique via le nerf vague. Résultat : cortisol réduit, fréquence cardiaque abaissée, meilleure oxygénation cérébrale. 4 cycles avant de dormir = endormissement accéléré de 40% selon une étude Stanford.',keys:['Respiration','Stress','Sommeil']},
-{cat:'Apnée',time:'Maintenant',title:'CO₂ vs O₂ : ce qui limite vraiment ton apnée',text:'Contrairement à l\'intuition, ce n\'est pas le manque d\'O₂ qui te force à respirer — c\'est l\'accumulation de CO₂. Les tables CO₂ entraînent ta tolérance à ce gaz, repoussant le point de rupture. Une fois à l\'aise, tu peux travailler les tables O₂ pour étendre la durée réelle.',keys:['CO₂','Tables','Freediving']},
-{cat:'Apnée',time:'Maintenant',title:'La relaxation avant la plongée : protocole en 3 étapes',text:'1. Expire complètement (vide tes poumons à 30%). 2. Inspire lentement sur 6s jusqu\'à 80% de capacité. 3. Relax totale : visage, mâchoire, épaules. Chaque tension musculaire consomme de l\'O₂. Un corps détendu = 15-20% de temps en plus sous l\'eau.',keys:['Relaxation','Technique','O₂']},
-];
+
 
 var _bankIndex=0;
 
-async function callAI(body){
-  try{
-    var r=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify(body)
-    });
-    if(!r.ok)throw new Error('status '+r.status);
-    return r.json();
-  }catch(e){
-    console.log('callAI fallback (bank)');
-    return null;
-  }
-}
+
 var ld=function(k,d){try{var v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch(e){return d;}};
 var sv=function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
 var td=function(){return new Date().toISOString().slice(0,10);};
@@ -698,14 +665,7 @@ var j=document.getElementById('j-date');if(j)j.textContent=D[d.getDay()]+' '+d.g
 function openM(id){document.getElementById(id).classList.add('on');}
 function closeM(id){document.getElementById(id).classList.remove('on');}
 
-var FEED_DATA=[
-{cat:'Finance',col:'var(--crypto-a)',bg:'rgba(108,99,255,.08)',time:"Aujourd'hui",title:'Pourquoi le DCA bat presque toujours le market timing',text:"Le DCA (Dollar Cost Averaging) consiste à investir une somme fixe à intervalles réguliers, peu importe le prix. Études à l'appui : sur 10 ans, un investisseur qui DCA mensuellement surperforme dans 90% des cas un investisseur qui attend le bon moment. Ton cerveau surestimera toujours sa capacité à prédire les marchés.",keys:['Investissement','Long terme','DCA'],keyColors:['rgba(108,99,255,.1)','rgba(108,99,255,.1)','rgba(108,99,255,.1)'],keyText:['var(--crypto-a)','var(--crypto-a)','var(--crypto-a)']},
-{cat:'Science',col:'var(--body-a)',bg:'rgba(14,165,233,.08)',time:'Hier',title:'Le sommeil profond consolide tes apprentissages JJB',text:"Pendant le sommeil à ondes lentes (stade 3-4), le cerveau rejoue les séquences motrices apprises dans la journée. Une étude de Walker (2019) montre que 90 min de sommeil profond améliorent de 20-30% la rétention des mouvements techniques. Dormir 8h n'est pas optionnel si tu veux progresser vite.",keys:['Sommeil','Performance','Neuroscience'],keyColors:['rgba(14,165,233,.1)','rgba(14,165,233,.1)','rgba(14,165,233,.1)'],keyText:['var(--body-a)','var(--body-a)','var(--body-a)']},
-{cat:'JJB',col:'var(--nutri-a)',bg:'rgba(34,197,94,.08)',time:'Cette semaine',title:'La règle des 10 000 répétitions vue par un champion',text:"Roger Gracie, considéré comme le meilleur BJJ de l'histoire, explique qu'il a drillé le triangle et le cross-collar choke des milliers de fois avant de les utiliser en compétition. Pas de variété inutile : maîtrise 2-3 techniques à 100% plutôt que 20 à 50%. La profondeur bat la largeur.",keys:['Technique','Mindset','Progression'],keyColors:['rgba(34,197,94,.1)','rgba(34,197,94,.1)','rgba(34,197,94,.1)'],keyText:['var(--nutri-a)','var(--nutri-a)','var(--nutri-a)']},
-{cat:'Nutrition',col:'var(--feed-a)',bg:'rgba(255,107,53,.08)',time:'Cette semaine',title:'Les 4 nutriments critiques pour la récupération post-entraînement',text:"1. Leucine (œufs, poulet) — déclenche la synthèse protéique. 2. Glucides rapides (banane, riz) — rechargent le glycogène dans les 30-45 min. 3. Oméga-3 (saumon, sardine) — réduisent l'inflammation musculaire. 4. Magnésium (épinards, amandes) — améliore la qualité du sommeil post-effort.",keys:['Récupération','Protéines','Post-JJB'],keyColors:['rgba(255,107,53,.1)','rgba(255,107,53,.1)','rgba(255,107,53,.1)'],keyText:['var(--feed-a)','var(--feed-a)','var(--feed-a)']},
-{cat:'Psychologie',col:'var(--mind-a)',bg:'rgba(236,72,153,.08)',time:'Cette semaine',title:"L'effet Zeigarnik : pourquoi les tâches inachevées t'obsèdent",text:"Le cerveau maintient une boucle ouverte sur chaque tâche non terminée, consommant des ressources cognitives en arrière-plan. Solution : externaliser dans un système (app, carnet) — le cerveau libère la boucle dès qu'il sait que l'info est capturée ailleurs.",keys:['Productivité','Cognition','GTD'],keyColors:['rgba(236,72,153,.1)','rgba(236,72,153,.1)','rgba(236,72,153,.1)'],keyText:['var(--mind-a)','var(--mind-a)','var(--mind-a)']},
-{cat:'Apnée',col:'var(--body-a)',bg:'rgba(14,165,233,.08)',time:'Cette semaine',title:'CO₂ vs O₂ : comprendre ce qui limite vraiment ton apnée',text:"Contrairement à l'intuition, ce n'est pas le manque d'oxygène qui te force à respirer, c'est l'accumulation de CO₂. Les tables CO₂ entraînent ta tolérance à ce gaz. Une fois à l'aise avec le CO₂ élevé, tu peux travailler les tables O₂ pour étendre ta durée réelle.",keys:['Freediving','Physiologie','Progression'],keyColors:['rgba(14,165,233,.1)','rgba(14,165,233,.1)','rgba(14,165,233,.1)'],keyText:['var(--body-a)','var(--body-a)','var(--body-a)']},
-];
+
 
 var _feedFilter = 'Tous';
 var FEED_CAT_COLORS = {
@@ -721,40 +681,11 @@ var FEED_CAT_COLORS = {
 };
 function getCatStyle(cat){return FEED_CAT_COLORS[cat]||{col:'var(--ink2)',bg:'var(--cream)',keyC:'var(--cream)',keyT:'var(--ink2)'};;}
 
-function renderFeedFilters(){
-  var el=document.getElementById('feed-filters');if(!el)return;
-  var cats=['Tous'].concat(FEED_DATA.map(function(i){return i.cat;}).filter(function(v,i,a){return a.indexOf(v)===i;}));
-  el.innerHTML='';
-  cats.forEach(function(cat){
-    var btn=document.createElement('button');
-    var active=_feedFilter===cat;
-    btn.style.cssText='padding:7px 14px;border-radius:50px;font:700 11px var(--f);white-space:nowrap;cursor:pointer;border:1.5px solid '+(active?'transparent':'var(--line)')+';background:'+(active?'var(--ink)':'var(--white)')+';color:'+(active?'white':'var(--ink2)')+';flex-shrink:0';
-    btn.textContent=cat;
-    btn.onclick=(function(c2){return function(){_feedFilter=c2;renderFeedFilters();renderFeedList();};})(cat);
-    el.appendChild(btn);
-  });
-}
 
-function renderFeedList(){
-  var list=document.getElementById('feed-list');if(!list)return;
-  var items=_feedFilter==='Tous'?FEED_DATA:FEED_DATA.filter(function(i){return i.cat===_feedFilter;});
-  list.innerHTML='';
-  items.forEach(function(item){
-    var cs=getCatStyle(item.cat);
-    var col=item.col||cs.col;var bg=item.bg||cs.bg;
-    var keys='';(item.keys||[]).forEach(function(k,i){
-      var kc=(item.keyColors&&item.keyColors[i])||cs.keyC;
-      var kt=(item.keyText&&item.keyText[i])||cs.keyT;
-      keys+='<span class="feed-pill" style="background:'+kc+';color:'+kt+'">'+k+'</span>';
-    });
-    var el=document.createElement('div');el.className='feed-item';
-    el.innerHTML='<div class="feed-header" style="background:'+bg+'"><div class="feed-cat-dot" style="background:'+col+'"></div><span class="feed-cat" style="color:'+col+'">'+item.cat+'</span><span class="feed-time">'+item.time+'</span></div><div class="feed-body"><div class="feed-title">'+item.title+'</div><div class="feed-text">'+item.text+'</div><div class="feed-key">'+keys+'</div></div>';
-    list.appendChild(el);
-  });
-  if(!items.length)list.innerHTML='<div style="text-align:center;padding:30px 0;font:400 13px var(--f);color:var(--ink3)">Aucun article dans cette categorie.</div>';
-}
 
-function renderFeed(){renderFeedFilters();renderFeedList();}
+
+
+
 
 
 var CRYPTO_LEARN=[
@@ -892,50 +823,10 @@ var steps='';r.steps.forEach(function(s,i){steps+='<div class="recipe-step" data
 return '<div class="recipe-hero"><div class="recipe-top"><div class="recipe-icon">'+r.icon+'</div><div class="recipe-name">'+r.name+'</div><div class="recipe-meta"><span class="recipe-m">⏱ '+r.time+'</span></div></div><div class="recipe-body"><div class="recipe-section">Ingrédients</div>'+ing+'<div class="recipe-section">Préparation</div>'+steps+'<div class="recipe-section">Macros</div><div class="macro-row"><div class="macro-box"><div class="macro-v" style="color:var(--nutri-a)">'+r.macros[0]+'</div><div class="macro-l">Prot</div></div><div class="macro-box"><div class="macro-v" style="color:var(--routine-a)">'+r.macros[1]+'</div><div class="macro-l">Glucides</div></div><div class="macro-box"><div class="macro-v" style="color:var(--body-a)">'+r.macros[2]+'</div><div class="macro-l">Lipides</div></div><div class="macro-box"><div class="macro-v">'+r.macros[3]+'</div><div class="macro-l">kcal</div></div></div><div style="background:rgba(34,197,94,.08);border-radius:10px;padding:10px;margin-top:10px;font:400 12px var(--s);font-style:italic;color:var(--nutri-a)">✦ '+r.why+'</div></div></div>';
 }
 
-function renderStaticRecipes(){
-var list=document.getElementById('static-recipes');if(!list)return;list.innerHTML='';
-RECIPES.slice(0,3).forEach(function(r){var el=document.createElement('div');el.innerHTML=makeRecipeCard(r);list.appendChild(el);});
-}
 
-async function genRecipe(){
-var raw=document.getElementById('ai-ingr').value.trim();if(!raw)return toast('Entre tes ingredients !');
-var ctx=document.getElementById('ai-ctx').value||'post-jjb';
-var btn=document.getElementById('recipe-btn');
-var box=document.getElementById('recipe-result');if(!box)return;
-btn.disabled=true;btn.textContent='Recherche...';
-box.style.display='block';
-box.innerHTML='<div style="text-align:center;padding:30px 0;font:500 13px var(--f);color:var(--ink2)">Recherche de recette...</div>';
-var firstIng=raw.split(/[,;\s]+/).filter(function(w){return w.length>2;})[0]||'chicken';
-try{
-  var rb=await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s='+encodeURIComponent(firstIng));
-  var db=await rb.json();
-  if(db.meals&&db.meals.length>0){
-    var m=db.meals[0];
-    var ings=[];
-    for(var i=1;i<=20;i++){var ing=m['strIngredient'+i],mes=m['strMeasure'+i];if(ing&&ing.trim())ings.push((mes?mes.trim()+' ':'')+ing.trim());}
-    box.innerHTML='<div style="font:900 18px var(--f);margin-bottom:4px">'+m.strMeal+'</div>'+
-      '<div style="font:500 11px var(--f);color:var(--ink3);margin-bottom:12px">'+m.strCategory+' · '+m.strArea+'</div>'+
-      '<img src="'+m.strMealThumb+'/preview" style="width:100%;height:140px;object-fit:cover;border-radius:12px;margin-bottom:12px">'+
-      '<div style="font:700 12px var(--f);margin-bottom:6px">Ingredients</div>'+
-      '<div style="background:var(--cream);border-radius:10px;padding:10px;margin-bottom:12px;font:500 11px var(--f)">'+ings.map(function(i){return '- '+i;}).join('<br>')+'</div>'+
-      '<div style="font:700 12px var(--f);margin-bottom:6px">Etapes</div>'+
-      '<div style="font:500 11px var(--f);line-height:1.7">'+m.strInstructions.split('\n').filter(function(s){return s.trim().length>10;}).slice(0,6).map(function(s,i){return '<b>'+(i+1)+'.</b> '+s.trim();}).join('<br>')+'</div>'+
-      (m.strYoutube?'<a href="'+m.strYoutube+'" target="_blank" style="display:block;margin-top:12px;background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));color:white;text-align:center;border-radius:50px;padding:10px;font:700 12px var(--f);text-decoration:none">Voir sur YouTube</a>':'');
-  }else{
-    box.innerHTML='<div style="text-align:center;padding:20px;color:var(--ink3);font:500 12px var(--f)">Aucune recette trouvee. Essaie en anglais : chicken, rice, beef...</div>';
-  }
-}catch(e){
-  box.innerHTML='<div style="text-align:center;padding:20px;color:var(--ink3);font:500 12px var(--f)">Erreur de connexion.</div>';
-}
-btn.textContent='Autre recette';
-btn.disabled=false;
-}
-function renderAliments(){
-var list=document.getElementById('aliments-list');if(!list)return;
-var aliments=[{e:'🥚',n:'Œufs',d:'Leucine — synthèse protéique. 6g prot/œuf.'},{e:'🐟',n:'Thon / Saumon',d:'Protéines complètes + Oméga-3 anti-inflammatoires.'},{e:'🥑',n:'Avocat',d:'Lipides mono-insaturés. Satiété longue durée.'},{e:'🍠',n:'Patate douce',d:'Glucides complexes. IG bas. Idéal pré-JJB.'},{e:'🫐',n:'Myrtilles',d:"Antioxydants. Réduisent l'inflammation musculaire."},{e:'🌰',n:'Amandes',d:'Magnésium + Vitamine E. Sommeil + récup.'},{e:'🥦',n:'Brocoli',d:'Fer, calcium, vitamine C. Densité nutritive maximale.'},{e:'🍌',n:'Banane',d:'Potassium + glucides rapides. Post-entraînement.'}];
-list.innerHTML='';
-aliments.forEach(function(a){var el=document.createElement('div');el.style.cssText='display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1.5px solid var(--line)';el.innerHTML='<div style="font-size:24px;flex-shrink:0">'+a.e+'</div><div><div style="font:600 14px var(--f);margin-bottom:2px">'+a.n+'</div><div style="font:400 12px var(--f);color:var(--ink2)">'+a.d+'</div></div>';list.appendChild(el);});
-}
+
+
+
 
 var HABITS={
 matin:[{id:'eau',e:'💧',l:'Eau au réveil (avant téléphone)',c:'var(--body-a)'},{id:'lumiere',e:'☀️',l:'Lumière naturelle 10 min',c:'var(--routine-a)'},{id:'jjb-mat',e:'🥋',l:'JJB session matin',c:'var(--nutri-a)'},{id:'cafe',e:'☕',l:'Café noir (pas de sucre)',c:'var(--feed-a)'}],
@@ -1117,13 +1008,7 @@ var entries=ld('journal',[]);entries.unshift({date:td(),appris:a,bien:b,ameliore
 ['j-appris','j-bien','j-amel','j-pages'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
 renderJournal();toast('Journal sauvegardé ✓');
 }
-function renderJournal(){
-var list=document.getElementById('journal-list');if(!list)return;
-var entries=ld('journal',[]).slice(0,5);
-if(!entries.length){list.innerHTML='<div style="font:400 12px var(--f);color:var(--ink3)">Aucune entrée.</div>';return;}
-list.innerHTML='';
-entries.forEach(function(e){var el=document.createElement('div');el.className='ent';el.innerHTML='<div class="ehd"><div class="etit">'+e.date+'</div>'+(e.pages?'<span style="background:rgba(236,72,153,.1);color:var(--mind-a);padding:2px 8px;border-radius:20px;font:700 10px var(--f)">'+e.pages+'p</span>':'')+'</div>'+(e.appris?'<div class="ebody"><strong>Appris :</strong> '+e.appris+'</div>':'')+(e.bien?'<div class="ebody"><strong>Bien :</strong> '+e.bien+'</div>':'')+(e.ameliorer?'<div class="ebody"><strong>Améliorer :</strong> '+e.ameliorer+'</div>':'');list.appendChild(el);});
-}
+
 
 function addNote(){
 var title=document.getElementById('note-title').value.trim();var body=document.getElementById('note-body').value.trim();if(!title)return;
@@ -1131,48 +1016,16 @@ var notes=ld('notes',[]);notes.unshift({title:title,body:body,date:td()});sv('no
 document.getElementById('note-title').value='';document.getElementById('note-body').value='';
 closeM('m-note');renderNotes();toast('Note sauvegardée ✓');
 }
-function renderNotes(){
-var list=document.getElementById('notes-list');if(!list)return;var notes=ld('notes',[]);
-if(!notes.length){list.innerHTML='<div style="font:400 12px var(--f);color:var(--ink3)">Aucune note.</div>';return;}
-list.innerHTML='';
-notes.forEach(function(n,i){var el=document.createElement('div');el.className='ent';el.innerHTML='<div class="ehd"><div class="etit">'+n.title+'</div><button style="background:none;border:none;color:var(--ink3);cursor:pointer;font-size:14px" onclick="delNote('+i+')">✕</button></div>'+(n.body?'<div class="ebody">'+n.body+'</div>':'');list.appendChild(el);});
-}
+
 function delNote(i){var n=ld('notes',[]);n.splice(i,1);sv('notes',n);renderNotes();}
 
-function renderBooks(){
-var list=document.getElementById('books-list');if(!list)return;
-var books=[
-{t:"L'Homme sans qualités",a:"Robert Musil",s:"EN COURS",c:"var(--mind-a)",bg:"rgba(236,72,153,.08)",desc:"Roman-fleuve sur l\'identité et la modernité. Ton livre actuel."},
-{t:"Atomic Habits",a:"James Clear",s:"À LIRE",c:"var(--nutri-a)",bg:"rgba(34,197,94,.08)",desc:"Les petites habitudes de 1% composées sur le temps. Directement applicable à ta routine."},
-{t:"Why We Sleep",a:"Matthew Walker",s:"À LIRE",c:"var(--body-a)",bg:"rgba(14,165,233,.08)",desc:"La science du sommeil. Indispensable si tu fais 2 sessions JJB/jour."},
-{t:"The Art of Learning",a:"Josh Waitzkin",s:"À LIRE",c:"var(--routine-a)",bg:"rgba(245,158,11,.08)",desc:"Comment apprendre profondément. Très pertinent pour ta pratique des arts martiaux."},
-{t:"La Psychologie de l\'Argent",a:"Morgan Housel",s:"À LIRE",c:"var(--crypto-a)",bg:"rgba(108,99,255,.08)",desc:"Comment penser à l\'argent sur le long terme. Parfait complément à ton PEA et ta stratégie DCA."},
-{t:"Deep Work",a:"Cal Newport",s:"À LIRE",c:"var(--feed-a)",bg:"rgba(255,107,53,.08)",desc:"La concentration profonde comme super-pouvoir."},
-];
-list.innerHTML='';
-books.forEach(function(b){var el=document.createElement('div');el.style.cssText='background:'+b.bg+';border:1.5px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px';el.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font:700 15px var(--f);letter-spacing:-.02em">'+b.t+'</div><span style="background:'+b.c+'22;color:'+b.c+';padding:3px 9px;border-radius:20px;font:700 9px var(--f)">'+b.s+'</span></div><div style="font:500 11px var(--f);color:var(--ink2);margin-bottom:6px">'+b.a+'</div><div style="font:400 12px var(--s);font-style:italic;color:var(--ink2);line-height:1.55">'+b.desc+'</div>';list.appendChild(el);});
-}
+
 
 function addWater(ml){sv('water_'+td(),Math.max(0,ld('water_'+td(),0)+ml));updateWater();}
 function resetWater(){sv('water_'+td(),0);updateWater();}
 function updateWater(){var w=ld('water_'+td(),0);var el=document.getElementById('water-disp');if(el)el.textContent=(w/1000).toFixed(1)+' / 3L';var bar=document.getElementById('water-bar');if(bar)bar.style.width=Math.min(100,w/3000*100)+'%';}
 
-function exportPDF(){
-var entries=ld('journal',[]);var days=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push(d.toISOString().slice(0,10));}
-var weekEntries=entries.filter(function(e){return days.includes(e.date);});
-var pagesTotal=weekEntries.reduce(function(s,e){return s+(e.pages||0);},0);
-var w=window.open('','_blank');if(!w){toast('Active les popups');return;}
-var dateStr=new Date().toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Bilan LIFE OS</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Georgia,serif;background:#fff;color:#1a1a1a;padding:40px;max-width:680px;margin:0 auto}h1{font-size:28px;font-weight:900;margin-bottom:4px}.sub{font-size:12px;color:#888;margin-bottom:32px;font-style:italic}h2{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:#888;margin:28px 0 12px;border-bottom:1px solid #eee;padding-bottom:6px}.sr{display:flex;gap:16px;margin-bottom:8px}.sv2{text-align:center;padding:16px;border:1px solid #eee;border-radius:12px;flex:1}.svv{font-size:26px;font-weight:900;color:#22c55e}.svl{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-top:4px}.e{border:1px solid #eee;border-radius:10px;padding:16px;margin-bottom:12px}.ed{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:8px}.et{font-size:13px;color:#555;line-height:1.6;margin-bottom:5px}.footer{margin-top:32px;font-size:10px;color:#aaa;text-align:center;padding-top:16px;border-top:1px solid #eee}</style></head><body>';
-html+='<h1>Bilan hebdomadaire</h1><div class="sub">'+dateStr+' · LIFE OS</div>';
-html+='<h2>Résumé</h2><div class="sr"><div class="sv2"><div class="svv">'+weekEntries.length+'</div><div class="svl">Entrées</div></div><div class="sv2"><div class="svv">'+pagesTotal+'p</div><div class="svl">Pages lues</div></div></div>';
-html+='<h2>Journal</h2>';
-if(weekEntries.length){weekEntries.forEach(function(e){html+='<div class="e"><div class="ed">'+e.date+'</div>'+(e.appris?'<div class="et"><strong>Appris :</strong> '+e.appris+'</div>':'')+(e.bien?'<div class="et"><strong>Bien :</strong> '+e.bien+'</div>':'')+(e.ameliorer?'<div class="et"><strong>Améliorer :</strong> '+e.ameliorer+'</div>':'')+'</div>';});}
-else html+='<p style="color:#aaa;font-style:italic">Aucune entrée cette semaine.</p>';
-html+='<div class="footer">LIFE OS · '+days[0]+' au '+days[6]+'</div>';
-html+='<script>window.onload=function(){setTimeout(function(){window.print();},400);};<\/script></body></html>';
-w.document.write(html);w.document.close();toast('PDF en cours…');
-}
+
 
 var _fT=0,_fR=0,_fRun=false,_fInt=null;
 function openFocus(type,mins,name,sub){
@@ -1206,35 +1059,12 @@ var EXPLORE_SHORTCUTS=[
   {label:'Nutrition récup',q:'post workout nutrition recovery',engine:'google',icon:'🥗'},
 ];
 
-function renderExploreEngines(){
-  var el=document.getElementById('explore-engines');if(!el)return;el.innerHTML='';
-  EXPLORE_ENGINES.forEach(function(e){
-    var btn=document.createElement('button');
-    var active=_activeEngine===e.id;
-    btn.style.cssText='padding:8px 14px;border-radius:50px;font:700 11px var(--f);white-space:nowrap;cursor:pointer;display:flex;align-items:center;gap:5px;border:1.5px solid '+(active?'transparent':'var(--line)')+';background:'+(active?e.col:'var(--white)')+';color:'+(active?'white':'var(--ink2)')+';flex-shrink:0';
-    btn.innerHTML='<span>'+e.icon+'</span>'+e.label;
-    btn.onclick=(function(eid){return function(){_activeEngine=eid;renderExploreEngines();};})(e.id);
-    el.appendChild(btn);
-  });
-}
 
-function renderExploreShortcuts(){
-  var el=document.getElementById('explore-shortcuts');if(!el)return;el.innerHTML='';
-  var grid=document.createElement('div');
-  grid.style.cssText='display:grid;grid-template-columns:1fr 1fr;gap:10px';
-  EXPLORE_SHORTCUTS.forEach(function(s){
-    var eng=EXPLORE_ENGINES.find(function(e){return e.id===s.engine;})||EXPLORE_ENGINES[0];
-    var btn=document.createElement('button');
-    btn.style.cssText='background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:14px 12px;text-align:left;cursor:pointer;transition:.15s';
-    btn.innerHTML='<div style="font:500 18px var(--f);margin-bottom:4px">'+s.icon+'</div><div style="font:700 12px var(--f);color:var(--ink);margin-bottom:3px">'+s.label+'</div><div style="font:500 10px var(--f);color:'+eng.col+'">'+eng.label+'</div>';
-    btn.onclick=function(){window.open(eng.url+encodeURIComponent(s.q),'_blank');};
-    grid.appendChild(btn);
-  });
-  el.appendChild(grid);
-}
 
-function renderExploreFilters(){}
-function renderExploreList(){renderExploreEngines();renderExploreShortcuts();}
+
+
+
+
 
 var QBRIEF=[
 {t:"L'excellence n\'est pas un acte, c\'est une habitude.",a:'Aristote'},
@@ -1589,7 +1419,7 @@ function initTheme() {
   }
 }
 initTheme();
-updateWater();fetchCrypto();fetchFearGreed();fetchBTCChart();initBrief();initFeed();loadFeed();initExplore();
+updateWater();fetchCrypto();fetchFearGreed();fetchBTCChart();initBrief();initFeed();loadFeed();searchMeals("chicken");initExplore();
 renderExploreFilters();renderExploreList();
 document.getElementById('ht-matin').className='btn btn-sm btn-p';
 });
