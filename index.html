@@ -7,254 +7,191 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#f7f5f0">
 <meta name="apple-mobile-web-app-title" content="LIFE OS">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>LIFE OS</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
 <style>
-:root {
---cream: #f7f5f0;
---white: #ffffff;
---ink: #1a1714;
---ink2: #6b6560;
---ink3: #b0aba5;
---line: #e8e4de;
---feed-a: #ff6b35;
---feed-b: #ff9f1c;
---crypto-a: #6c63ff;
---crypto-b: #a78bfa;
---nutri-a: #22c55e;
---nutri-b: #86efac;
---body-a: #0ea5e9;
---body-b: #7dd3fc;
---routine-a: #f59e0b;
---routine-b: #fcd34d;
---mind-a: #ec4899;
---mind-b: #f9a8d4;
---r: 20px;
---rs: 12px;
---f: 'Outfit', sans-serif;
---s: 'Lora', Georgia, serif;
---sb: env(safe-area-inset-bottom, 0px);
---st: env(safe-area-inset-top, 0px);
+:root{
+--cream:#f7f5f0;--white:#fff;--ink:#1a1714;--ink2:#6b6560;--ink3:#b0aba5;--line:#e8e4de;
+--feed-a:#ff6b35;--feed-b:#ff9f1c;--crypto-a:#6c63ff;--crypto-b:#a78bfa;
+--nutri-a:#22c55e;--nutri-b:#86efac;--body-a:#0ea5e9;--body-b:#7dd3fc;
+--routine-a:#f59e0b;--routine-b:#fcd34d;--mind-a:#ec4899;--mind-b:#f9a8d4;
+--r:20px;--rs:12px;--f:'Outfit',sans-serif;--s:'Lora',Georgia,serif;
+--sb:env(safe-area-inset-bottom,0px);--st:env(safe-area-inset-top,0px);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; background: var(--cream); color: var(--ink); font-family: var(--f); overscroll-behavior: none; }
-#app { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
-#topbar { padding: calc(var(--st) + 14px) 20px 14px; display: flex; align-items: center; justify-content: space-between; background: var(--cream); flex-shrink: 0; }
-.tb-logo { font: 900 22px var(--f); letter-spacing: -.04em; color: var(--ink); }
-.tb-logo span { background: linear-gradient(135deg, var(--feed-a), var(--crypto-a)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.tb-right { display: flex; gap: 10px; align-items: center; }
-.tb-date { font: 500 12px var(--f); color: var(--ink2); }
-.ico { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--white); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
-.ico:active { background: var(--line); }
-#content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-#content::-webkit-scrollbar { display: none; }
-.page { display: none; padding: 0 0 calc(90px + var(--sb)); }
-.page.on { display: block; animation: fadeUp .25s ease; }
-@keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-#navbar { position: fixed; bottom: 0; left: 0; right: 0; padding: 10px 8px calc(10px + var(--sb)); background: rgba(247,245,240,.95); backdrop-filter: blur(20px); border-top: 1.5px solid var(--line); display: flex; justify-content: space-around; z-index: 100; }
-.nb { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 6px 10px; background: none; border: none; cursor: pointer; transition: .15s; }
-.nb-ico { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: .2s; background: transparent; }
-.nb.on .nb-ico { transform: scale(1.1); }
-.nb-lbl { font: 600 8px var(--f); letter-spacing: .05em; text-transform: uppercase; color: var(--ink3); transition: .15s; }
-.nb.on .nb-lbl { color: var(--ink); }
-.sec { padding: 0 20px; margin-top: 20px; }
-.sec-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-.sec-title { font: 700 13px var(--f); letter-spacing: -.01em; color: var(--ink); }
-.sec-sub { font: 400 12px var(--f); color: var(--ink2); margin-top: 1px; }
-.sec-act { font: 700 11px var(--f); color: var(--ink2); cursor: pointer; background: none; border: none; padding: 6px 12px; border-radius: 20px; border: 1.5px solid var(--line); }
-.sec-act:active { background: var(--line); }
-.hero { margin: 0 20px; border-radius: var(--r); padding: 22px 20px; position: relative; overflow: hidden; }
-.hero::before { content: ''; position: absolute; top: -30%; right: -10%; width: 200px; height: 200px; border-radius: 50%; background: rgba(255,255,255,.12); }
-.hero::after { content: ''; position: absolute; bottom: -20%; left: 20%; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,.08); }
-.hero-tag { font: 700 10px var(--f); letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.7); margin-bottom: 6px; }
-.hero-val { font: 900 56px var(--f); letter-spacing: -.04em; line-height: 1; color: white; }
-.hero-lbl { font: 500 13px var(--f); color: rgba(255,255,255,.8); margin-top: 4px; }
-.hero-row { display: flex; gap: 0; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.2); }
-.hero-f { flex: 1; text-align: center; }
-.hero-f:not(:last-child) { border-right: 1px solid rgba(255,255,255,.2); }
-.hero-fv { font: 700 16px var(--f); color: white; }
-.hero-fl { font: 500 10px var(--f); color: rgba(255,255,255,.65); margin-top: 2px; }
-.card { background: var(--white); border-radius: var(--r); padding: 18px; margin-bottom: 12px; border: 1.5px solid var(--line); }
-.card-sm { padding: 14px 16px; }
-.card-title { font: 700 15px var(--f); letter-spacing: -.02em; margin-bottom: 4px; }
-.card-sub { font: 400 12px var(--f); color: var(--ink2); line-height: 1.5; }
-.gcard { border-radius: var(--r); padding: 18px; margin-bottom: 12px; position: relative; overflow: hidden; }
-.gcard::after { content: ''; position: absolute; top: -40%; right: -20%; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,.15); pointer-events: none; }
-.feed-item { background: var(--white); border-radius: var(--r); margin-bottom: 14px; border: 1.5px solid var(--line); overflow: hidden; }
-.feed-header { padding: 16px 16px 12px; display: flex; align-items: center; gap: 10px; }
-.feed-cat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.feed-cat { font: 700 10px var(--f); letter-spacing: .1em; text-transform: uppercase; }
-.feed-time { font: 400 10px var(--f); color: var(--ink3); margin-left: auto; }
-.feed-body { padding: 0 16px 16px; }
-.feed-title { font: 700 16px var(--f); letter-spacing: -.02em; line-height: 1.3; margin-bottom: 8px; }
-.feed-text { font: 400 13px var(--s); font-style: italic; line-height: 1.65; color: var(--ink2); }
-.feed-key { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
-.feed-pill { padding: 4px 10px; border-radius: 20px; font: 600 10px var(--f); }
-.feed-action { padding: 12px 16px; border-top: 1.5px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
-.feed-save { font: 600 11px var(--f); color: var(--ink2); background: none; border: none; cursor: pointer; }
-.feed-read { font: 700 11px var(--f); color: var(--ink); background: var(--cream); border: none; border-radius: 20px; padding: 6px 14px; cursor: pointer; }
-.cx-big { background: linear-gradient(135deg, var(--crypto-a), var(--crypto-b)); border-radius: var(--r); padding: 20px; margin-bottom: 12px; color: white; }
-.cx-price { font: 900 38px var(--f); letter-spacing: -.04em; }
-.cx-name { font: 600 12px var(--f); opacity: .8; margin-bottom: 6px; }
-.cx-chg { font: 700 14px var(--f); }
-.cx-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
-.cx-stat { background: rgba(255,255,255,.15); border-radius: 12px; padding: 12px; }
-.cx-sv { font: 700 14px var(--f); }
-.cx-sl { font: 500 10px var(--f); opacity: .7; margin-top: 2px; }
-.learn-card { background: var(--white); border-radius: var(--r); border: 1.5px solid var(--line); padding: 18px; margin-bottom: 12px; }
-.learn-num { font: 900 48px var(--f); letter-spacing: -.05em; line-height: 1; margin-bottom: 8px; }
-.learn-q { font: 700 15px var(--f); letter-spacing: -.02em; line-height: 1.3; margin-bottom: 8px; }
-.learn-a { font: 400 13px var(--s); font-style: italic; color: var(--ink2); line-height: 1.65; }
-.learn-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
-.learn-tag { padding: 4px 10px; background: var(--cream); border-radius: 20px; font: 600 10px var(--f); color: var(--ink2); }
-.recipe-hero { border-radius: var(--r); overflow: hidden; margin-bottom: 12px; }
-.recipe-top { background: linear-gradient(135deg, var(--nutri-a), var(--nutri-b)); padding: 20px; color: white; }
-.recipe-icon { font-size: 40px; margin-bottom: 8px; }
-.recipe-name { font: 800 20px var(--f); letter-spacing: -.03em; }
-.recipe-meta { display: flex; gap: 12px; margin-top: 8px; }
-.recipe-m { font: 600 11px var(--f); background: rgba(255,255,255,.25); padding: 4px 10px; border-radius: 20px; }
-.recipe-body { background: var(--white); border: 1.5px solid var(--line); border-top: none; border-radius: 0 0 var(--r) var(--r); padding: 16px; }
-.recipe-section { font: 700 10px var(--f); letter-spacing: .12em; text-transform: uppercase; color: var(--ink3); margin-bottom: 8px; margin-top: 14px; }
-.recipe-section:first-child { margin-top: 0; }
-.recipe-ing { font: 500 13px var(--f); color: var(--ink2); padding: 5px 0; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 8px; }
-.recipe-ing:last-child { border-bottom: none; }
-.recipe-ing::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--nutri-a); flex-shrink: 0; }
-.recipe-step { font: 400 13px var(--f); color: var(--ink2); padding: 6px 0 6px 24px; position: relative; line-height: 1.5; }
-.recipe-step::before { content: attr(data-n); position: absolute; left: 0; font: 700 11px var(--f); color: var(--nutri-a); }
-.macro-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-top: 12px; }
-.macro-box { background: var(--cream); border-radius: 12px; padding: 10px 8px; text-align: center; }
-.macro-v { font: 700 15px var(--f); }
-.macro-l { font: 500 9px var(--f); color: var(--ink3); margin-top: 2px; text-transform: uppercase; letter-spacing: .05em; }
-.hab-item { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1.5px solid var(--line); }
-.hab-item:last-child { border-bottom: none; }
-.hab-ico { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-.hab-label { font: 600 14px var(--f); flex: 1; }
-.hab-label.dn { color: var(--ink3); text-decoration: line-through; }
-.hab-chk { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line); flex-shrink: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: .2s; }
-.hab-chk.dn { border-color: var(--nutri-a); background: var(--nutri-a); }
-.hab-chk.dn::after { content: '✓'; font: 700 12px var(--f); color: white; }
-.sleep-big { font: 900 64px var(--f); letter-spacing: -.05em; line-height: 1; }
-.rings { display: flex; gap: 8px; justify-content: space-around; padding: 16px 0; }
-.ri { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.rl { font: 600 9px var(--f); letter-spacing: .08em; text-transform: uppercase; color: var(--ink3); }
-.rw { position: relative; width: 66px; height: 66px; }
-.rw svg { position: absolute; top:0; left:0; transform: rotate(-90deg); }
-.rc { position: absolute; inset:0; display:flex; align-items:center; justify-content:center; font: 700 13px var(--f); }
-.journal-field { background: var(--cream); border: none; border-radius: var(--rs); padding: 14px; font: 400 14px var(--f); color: var(--ink); width: 100%; outline: none; resize: none; min-height: 80px; line-height: 1.6; }
-.journal-field::placeholder { color: var(--ink3); }
-.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-.field label { font: 700 10px var(--f); letter-spacing: .1em; text-transform: uppercase; color: var(--ink3); }
-input, select, textarea { background: var(--cream); border: 1.5px solid var(--line); border-radius: var(--rs); color: var(--ink); font: 500 14px var(--f); padding: 12px 14px; width: 100%; outline: none; transition: border .15s; -webkit-appearance: none; appearance: none; }
-input:focus, select:focus, textarea:focus { border-color: var(--crypto-a); }
-textarea { resize: vertical; min-height: 70px; }
-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b0aba5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
-.btn { padding: 14px 20px; border-radius: var(--rs); border: none; font: 700 13px var(--f); cursor: pointer; transition: .15s; letter-spacing: -.01em; }
-.btn:active { transform: scale(.97); }
-.btn-p { background: var(--ink); color: white; }
-.btn-g { background: var(--cream); border: 1.5px solid var(--line); color: var(--ink2); }
-.btn-full { width: 100%; }
-.btn-sm { padding: 8px 14px; font-size: 11px; border-radius: 20px; }
-.btn-colored { color: white; }
-.tag { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font: 700 9px var(--f); letter-spacing: .06em; text-transform: uppercase; }
-#toast { position: fixed; bottom: calc(80px + var(--sb) + 12px); left: 50%; transform: translateX(-50%) translateY(12px); background: var(--ink); color: white; border-radius: 24px; padding: 10px 20px; font: 600 12px var(--f); white-space: nowrap; opacity: 0; transition: .25s; pointer-events: none; z-index: 999; }
-#toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
-.mbg { position: fixed; inset:0; background: rgba(26,23,20,.6); display:none; align-items:flex-end; justify-content:center; z-index:200; backdrop-filter:blur(8px); }
-.mbg.on { display: flex; }
-.mbox { background: var(--white); border-radius: var(--r) var(--r) 0 0; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; padding:24px 20px calc(24px + var(--sb)); animation: su .25s cubic-bezier(.4,0,.2,1); }
-@keyframes su { from { transform:translateY(100%); } to { transform:translateY(0); } }
-.mhd { display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; }
-.mtit { font: 800 18px var(--f); letter-spacing:-.03em; }
-.mx { width:32px; height:32px; border-radius:50%; background:var(--cream); border:none; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; color:var(--ink2); }
-#fov { position:fixed; inset:0; background:var(--ink); z-index:300; display:none; flex-direction:column; align-items:center; justify-content:center; gap:20px; padding:40px 24px; }
-#fov.on { display:flex; }
-.fo-cl { position:absolute; top:calc(var(--st) + 14px); right:20px; background:rgba(255,255,255,.1); border:none; }
-.fo-tag { font:700 10px var(--f); letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.5); }
-.fo-name { font:900 24px var(--f); text-align:center; color:white; }
-.fo-sub { font:400 13px var(--s); font-style:italic; color:rgba(255,255,255,.6); text-align:center; max-width:260px; }
-.fo-ring { position:relative; width:220px; height:220px; }
-.fo-ring svg { position:absolute; top:0; left:0; transform:rotate(-90deg); }
-.fo-in { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-.fo-time { font:900 48px var(--f); letter-spacing:-.05em; color:white; }
-.fo-lbl { font:500 10px var(--f); letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-top:3px; }
-.fo-btns { display:flex; gap:12px; }
-.fo-pre { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
-.fop { padding:8px 16px; background:rgba(255,255,255,.1); border:none; border-radius:20px; font:600 11px var(--f); color:rgba(255,255,255,.8); cursor:pointer; }
-.fop:active { background:rgba(255,255,255,.2); }
-.sgrid { display:grid; grid-template-columns:repeat(10,1fr); gap:4px; }
-.sd { aspect-ratio:1; border-radius:5px; display:flex; align-items:center; justify-content:center; font:600 7px var(--f); }
-.sd.hit { background: linear-gradient(135deg,var(--nutri-a),var(--nutri-b)); color:white; }
-.sd.miss { background:var(--cream); color:var(--ink3); }
-.sd.now { background:var(--cream); border:2px solid var(--routine-a); color:var(--routine-a); }
-.bw { height:90px; display:flex; align-items:flex-end; gap:4px; }
-.bc { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; height:100%; justify-content:flex-end; }
-.bf { width:100%; border-radius:4px 4px 0 0; min-height:3px; }
-.bl { font:500 7px var(--f); color:var(--ink3); }
-.ti { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1.5px solid var(--line); }
-.ti:last-child { border-bottom:none; }
-.tc { width:22px; height:22px; border:2px solid var(--line); border-radius:6px; flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:.15s; }
-.tc.dn { background:var(--routine-a); border-color:var(--routine-a); }
-.tc.dn::after { content:'✓'; font:700 11px var(--f); color:white; }
-.tt { font:500 14px var(--f); flex:1; }
-.tt.dn { color:var(--ink3); text-decoration:line-through; }
-.td { background:none; border:none; color:var(--ink3); cursor:pointer; font-size:16px; padding:2px; }
-.wtrack { height:8px; background:var(--cream); border-radius:4px; margin:12px 0; overflow:hidden; }
-.wfill { height:100%; background:linear-gradient(90deg,var(--body-a),var(--body-b)); border-radius:4px; transition:width .4s; }
-.wbtns { display:flex; gap:8px; }
-.wb { flex:1; padding:10px; background:var(--cream); border:1.5px solid var(--line); border-radius:var(--rs); font:700 12px var(--f); color:var(--ink2); cursor:pointer; text-align:center; }
-.wb:active { background:var(--line); }
-.ai { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1.5px solid var(--line); }
-.ai:last-child { border-bottom:none; }
-.at { font:700 11px var(--f); color:var(--ink3); width:38px; flex-shrink:0; padding-top:2px; }
-.ad { width:6px; height:6px; border-radius:50%; margin-top:6px; flex-shrink:0; }
-.ab { flex:1; }
-.an { font:600 14px var(--f); }
-.as2 { font:400 12px var(--f); color:var(--ink2); margin-top:1px; }
-.adel { background:none; border:none; color:var(--ink3); font-size:14px; cursor:pointer; padding:2px 6px; }
-.cislider { width:100%; height:5px; -webkit-appearance:none; appearance:none; background:var(--cream); border-radius:3px; outline:none; cursor:pointer; border:none; padding:0; margin-top:8px; }
-.cislider::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:white; cursor:pointer; border:3px solid currentColor; box-shadow:0 2px 8px rgba(0,0,0,.15); }
-.cirow { margin-bottom:18px; }
-.cilabel { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
-.cin { font:600 13px var(--f); }
-.civ { font:800 18px var(--f); }
-.div { height:1.5px; background:var(--line); margin:16px 0; }
-.tog { position:relative; width:44px; height:24px; flex-shrink:0; }
-.tog input { opacity:0; width:0; height:0; }
-.togtr { position:absolute; inset:0; background:var(--line); border-radius:12px; cursor:pointer; transition:.2s; }
-.togtr::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:white; transition:.2s; box-shadow:0 1px 4px rgba(0,0,0,.2); }
-.tog input:checked+.togtr { background:var(--nutri-a); }
-.tog input:checked+.togtr::after { transform:translateX(20px); }
-.ent { padding:12px 0; border-bottom:1.5px solid var(--line); }
-.ent:last-child { border-bottom:none; }
-.ehd { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
-.etit { font:700 14px var(--f); letter-spacing:-.01em; }
-.ebody { font:400 13px var(--s); font-style:italic; color:var(--ink2); line-height:1.55; }
-.pier { display:flex; align-items:center; gap:20px; }
-.piel { flex:1; display:flex; flex-direction:column; gap:8px; }
-.pii { display:flex; align-items:center; gap:8px; }
-.pid { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
-.pin { font:500 13px var(--f); flex:1; }
-.pip { font:700 12px var(--f); color:var(--ink2); }
-.clearn-item { background:var(--white); border:1.5px solid var(--line); border-radius:var(--r); padding:18px; margin-bottom:12px; }
-.clearn-q { font:700 15px var(--f); letter-spacing:-.02em; margin-bottom:8px; }
-.clearn-a { font:400 13px var(--s); font-style:italic; color:var(--ink2); line-height:1.65; }
-.clearn-more { margin-top:12px; padding-top:12px; border-top:1.5px solid var(--line); font:600 12px var(--f); color:var(--crypto-a); cursor:pointer; background:none; width:100%; text-align:left; border-left:none; border-right:none; border-bottom:none; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--cream);color:var(--ink);font-family:var(--f);overscroll-behavior:none}
+#app{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+#topbar{padding:calc(var(--st) + 14px) 20px 14px;display:flex;align-items:center;justify-content:space-between;background:var(--cream);flex-shrink:0}
+.tb-logo{font:900 22px var(--f);letter-spacing:-.04em;color:var(--ink)}
+.tb-logo span{background:linear-gradient(135deg,var(--feed-a),var(--crypto-a));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tb-right{display:flex;gap:10px;align-items:center}
+.tb-date{font:500 12px var(--f);color:var(--ink2)}
+.ico{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);background:var(--white);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+.ico:active{background:var(--line)}
+#content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#content::-webkit-scrollbar{display:none}
+.page{display:none;padding:0 0 calc(90px + var(--sb))}
+.page.on{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+#navbar{position:fixed;bottom:0;left:0;right:0;padding:10px 8px calc(10px + var(--sb));background:rgba(247,245,240,.95);backdrop-filter:blur(20px);border-top:1.5px solid var(--line);display:flex;justify-content:space-around;z-index:100}
+.nb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 10px;background:none;border:none;cursor:pointer;transition:.15s}
+.nb-ico{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;transition:.2s;background:transparent}
+.nb.on .nb-ico{transform:scale(1.1)}
+.nb-lbl{font:600 8px var(--f);letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);transition:.15s}
+.nb.on .nb-lbl{color:var(--ink)}
+.card{background:var(--white);border-radius:var(--r);padding:18px;margin-bottom:12px;border:1.5px solid var(--line)}
+.card-sm{padding:14px 16px}
+.card-title{font:700 15px var(--f);letter-spacing:-.02em;margin-bottom:4px}
+.card-sub{font:400 12px var(--f);color:var(--ink2);line-height:1.5}
+.hero{margin:0 20px;border-radius:var(--r);padding:22px 20px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-30%;right:-10%;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.12)}
+.hero::after{content:'';position:absolute;bottom:-20%;left:20%;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero-tag{font:700 10px var(--f);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:6px}
+.hero-val{font:900 56px var(--f);letter-spacing:-.04em;line-height:1;color:white}
+.hero-lbl{font:500 13px var(--f);color:rgba(255,255,255,.8);margin-top:4px}
+.hero-row{display:flex;gap:0;margin-top:18px;padding-top:16px;border-top:1px solid rgba(255,255,255,.2)}
+.hero-f{flex:1;text-align:center}
+.hero-f:not(:last-child){border-right:1px solid rgba(255,255,255,.2)}
+.hero-fv{font:700 16px var(--f);color:white}
+.hero-fl{font:500 10px var(--f);color:rgba(255,255,255,.65);margin-top:2px}
+.cx-big{background:linear-gradient(135deg,var(--crypto-a),var(--crypto-b));border-radius:var(--r);padding:20px;margin-bottom:12px;color:white}
+.cx-price{font:900 38px var(--f);letter-spacing:-.04em}
+.cx-name{font:600 12px var(--f);opacity:.8;margin-bottom:6px}
+.cx-chg{font:700 14px var(--f)}
+.cx-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.cx-stat{background:rgba(255,255,255,.15);border-radius:12px;padding:12px}
+.cx-sv{font:700 14px var(--f)}
+.cx-sl{font:500 10px var(--f);opacity:.7;margin-top:2px}
+.clearn-item{background:var(--white);border:1.5px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:12px}
+.clearn-q{font:700 15px var(--f);letter-spacing:-.02em;margin-bottom:8px}
+.clearn-a{font:400 13px var(--s);font-style:italic;color:var(--ink2);line-height:1.65}
+.clearn-more{margin-top:12px;padding-top:12px;border-top:1.5px solid var(--line);font:600 12px var(--f);color:var(--crypto-a);cursor:pointer;background:none;width:100%;text-align:left;border-left:none;border-right:none;border-bottom:none}
+.recipe-hero{border-radius:var(--r);overflow:hidden;margin-bottom:12px}
+.recipe-top{background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));padding:20px;color:white}
+.recipe-icon{font-size:40px;margin-bottom:8px}
+.recipe-name{font:800 20px var(--f);letter-spacing:-.03em}
+.recipe-meta{display:flex;gap:12px;margin-top:8px}
+.recipe-m{font:600 11px var(--f);background:rgba(255,255,255,.25);padding:4px 10px;border-radius:20px}
+.recipe-body{background:var(--white);border:1.5px solid var(--line);border-top:none;border-radius:0 0 var(--r) var(--r);padding:16px}
+.recipe-section{font:700 10px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;margin-top:14px}
+.recipe-section:first-child{margin-top:0}
+.recipe-ing{font:500 13px var(--f);color:var(--ink2);padding:5px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.recipe-ing:last-child{border-bottom:none}
+.recipe-ing::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--nutri-a);flex-shrink:0}
+.recipe-step{font:400 13px var(--f);color:var(--ink2);padding:6px 0 6px 24px;position:relative;line-height:1.5}
+.recipe-step::before{content:attr(data-n);position:absolute;left:0;font:700 11px var(--f);color:var(--nutri-a)}
+.macro-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.macro-box{background:var(--cream);border-radius:12px;padding:10px 8px;text-align:center}
+.macro-v{font:700 15px var(--f)}
+.macro-l{font:500 9px var(--f);color:var(--ink3);margin-top:2px;text-transform:uppercase;letter-spacing:.05em}
+.hab-item{display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1.5px solid var(--line)}
+.hab-item:last-child{border-bottom:none}
+.hab-ico{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.hab-label{font:600 14px var(--f);flex:1}
+.hab-label.dn{color:var(--ink3);text-decoration:line-through}
+.hab-chk{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s}
+.hab-chk.dn{border-color:var(--nutri-a);background:var(--nutri-a)}
+.hab-chk.dn::after{content:'✓';font:700 12px var(--f);color:white}
+.sgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.sd{aspect-ratio:1;border-radius:5px;display:flex;align-items:center;justify-content:center;font:600 7px var(--f)}
+.sd.hit{background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));color:white}
+.sd.miss{background:var(--cream);color:var(--ink3)}
+.sd.now{background:var(--cream);border:2px solid var(--routine-a);color:var(--routine-a)}
+.bw{height:90px;display:flex;align-items:flex-end;gap:4px}
+.bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end}
+.bf{width:100%;border-radius:4px 4px 0 0;min-height:3px}
+.bl{font:500 7px var(--f);color:var(--ink3)}
+.ti{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1.5px solid var(--line)}
+.ti:last-child{border-bottom:none}
+.tc{width:22px;height:22px;border:2px solid var(--line);border-radius:6px;flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+.tc.dn{background:var(--routine-a);border-color:var(--routine-a)}
+.tc.dn::after{content:'✓';font:700 11px var(--f);color:white}
+.tt{font:500 14px var(--f);flex:1}
+.tt.dn{color:var(--ink3);text-decoration:line-through}
+.td{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:16px;padding:2px}
+.wtrack{height:8px;background:var(--cream);border-radius:4px;margin:12px 0;overflow:hidden}
+.wfill{height:100%;background:linear-gradient(90deg,var(--body-a),var(--body-b));border-radius:4px;transition:width .4s}
+.wbtns{display:flex;gap:8px}
+.wb{flex:1;padding:10px;background:var(--cream);border:1.5px solid var(--line);border-radius:var(--rs);font:700 12px var(--f);color:var(--ink2);cursor:pointer;text-align:center}
+.wb:active{background:var(--line)}
+.ai{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1.5px solid var(--line)}
+.ai:last-child{border-bottom:none}
+.at{font:700 11px var(--f);color:var(--ink3);width:38px;flex-shrink:0;padding-top:2px}
+.ad{width:6px;height:6px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.ab{flex:1}
+.an{font:600 14px var(--f)}
+.as2{font:400 12px var(--f);color:var(--ink2);margin-top:1px}
+.adel{background:none;border:none;color:var(--ink3);font-size:14px;cursor:pointer;padding:2px 6px}
+.pier{display:flex;align-items:center;gap:20px}
+.piel{flex:1;display:flex;flex-direction:column;gap:8px}
+.pii{display:flex;align-items:center;gap:8px}
+.pid{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.pin{font:500 13px var(--f);flex:1}
+.pip{font:700 12px var(--f);color:var(--ink2)}
+.ent{padding:12px 0;border-bottom:1.5px solid var(--line)}
+.ent:last-child{border-bottom:none}
+.ehd{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font:700 10px var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+input,select,textarea{background:var(--cream);border:1.5px solid var(--line);border-radius:var(--rs);color:var(--ink);font:500 14px var(--f);padding:12px 14px;width:100%;outline:none;transition:border .15s;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--crypto-a)}
+textarea{resize:vertical;min-height:70px}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b0aba5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.btn{padding:14px 20px;border-radius:var(--rs);border:none;font:700 13px var(--f);cursor:pointer;transition:.15s;letter-spacing:-.01em}
+.btn:active{transform:scale(.97)}
+.btn-p{background:var(--ink);color:white}
+.btn-g{background:var(--cream);border:1.5px solid var(--line);color:var(--ink2)}
+.btn-full{width:100%}
+.btn-sm{padding:8px 14px;font-size:11px;border-radius:20px}
+.btn-colored{color:white}
+.mbg{position:fixed;inset:0;background:rgba(26,23,20,.6);display:none;align-items:flex-end;justify-content:center;z-index:200;backdrop-filter:blur(8px)}
+.mbg.on{display:flex}
+.mbox{background:var(--white);border-radius:var(--r) var(--r) 0 0;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;padding:24px 20px calc(24px + var(--sb));animation:su .25s cubic-bezier(.4,0,.2,1)}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mhd{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.mtit{font:800 18px var(--f);letter-spacing:-.03em}
+.mx{width:32px;height:32px;border-radius:50%;background:var(--cream);border:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--ink2)}
+#fov{position:fixed;inset:0;background:var(--ink);z-index:300;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px 24px}
+#fov.on{display:flex}
+.fo-cl{position:absolute;top:calc(var(--st) + 14px);right:20px;background:rgba(255,255,255,.1);border:none}
+.fo-tag{font:700 10px var(--f);letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.fo-name{font:900 24px var(--f);text-align:center;color:white}
+.fo-sub{font:400 13px var(--s);font-style:italic;color:rgba(255,255,255,.6);text-align:center;max-width:260px}
+.fo-ring{position:relative;width:220px;height:220px}
+.fo-ring svg{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+.fo-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fo-time{font:900 48px var(--f);letter-spacing:-.05em;color:white}
+.fo-lbl{font:500 10px var(--f);letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:3px}
+.fo-btns{display:flex;gap:12px}
+.fo-pre{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.fop{padding:8px 16px;background:rgba(255,255,255,.1);border:none;border-radius:20px;font:600 11px var(--f);color:rgba(255,255,255,.8);cursor:pointer}
+#toast{position:fixed;bottom:calc(80px + var(--sb) + 12px);left:50%;transform:translateX(-50%) translateY(12px);background:var(--ink);color:white;border-radius:24px;padding:10px 20px;font:600 12px var(--f);white-space:nowrap;opacity:0;transition:.25s;pointer-events:none;z-index:999}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
-[data-theme="dark"] {
-  --ink: #f1f5f9;
-  --ink2: #94a3b8;
-  --ink3: #64748b;
-  --white: #1e293b;
-  --cream: #0f172a;
-  --line: #334155;
-  --bg: #0f172a;
+/* ENGINE GRID */
+.eng-btn{border-radius:14px;padding:14px;text-align:center;cursor:pointer;transition:.15s;border:1.5px solid var(--line);background:var(--white)}
+.eng-btn.on{border-width:2px}
+.eng-btn:active{transform:scale(.95)}
+.eng-icon{font:900 20px var(--f);margin-bottom:4px}
+.eng-name{font:700 10px var(--f)}
+
+/* FEED ITEMS */
+.feed-link{display:block;background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px;text-decoration:none;color:inherit;transition:.1s}
+.feed-link:active{background:var(--cream)}
+.feed-pill{display:inline-block;border-radius:6px;padding:2px 8px;font:700 9px var(--f);color:white;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.feed-title{font:700 13px var(--f);line-height:1.45;margin-bottom:4px}
+.feed-source{font:400 11px var(--f);color:var(--ink2)}
+
+[data-theme="dark"]{
+--ink:#f1f5f9;--ink2:#94a3b8;--ink3:#64748b;
+--white:#1e293b;--cream:#0f172a;--line:#334155
 }
-[data-theme="dark"] body { background: #0f172a; }
-[data-theme="dark"] #navbar { background: #1e293b; border-top: 1px solid #334155; }
-[data-theme="dark"] .field input, [data-theme="dark"] .field textarea, [data-theme="dark"] .field select { background: #0f172a; color: #f1f5f9; border-color: #334155; }
-[data-theme="dark"] #topbar { background: #1e293b; border-bottom: 1px solid #334155; }
+[data-theme="dark"] body{background:#0f172a}
+[data-theme="dark"] #navbar{background:rgba(15,23,42,.95);border-top:1px solid #334155}
+[data-theme="dark"] #topbar{background:#1e293b;border-bottom:1px solid #334155}
+[data-theme="dark"] input,[data-theme="dark"] textarea,[data-theme="dark"] select{background:#0f172a;color:#f1f5f9;border-color:#334155}
 </style>
 </head>
 <body>
@@ -264,7 +201,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink:0">
 <rect width="28" height="28" rx="8" fill="url(#lg)"/>
 <defs><linearGradient id="lg" x1="0" y1="0" x2="28" y2="28"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#f97316"/></linearGradient></defs>
-<text x="14" y="19" text-anchor="middle" font-size="14" font-weight="900" fill="white" font-family="Inter,sans-serif">L</text>
+<text x="14" y="19" text-anchor="middle" font-size="14" font-weight="900" fill="white" font-family="Outfit,sans-serif">L</text>
 </svg>
 <div class="tb-logo">LIFE<span>OS</span></div>
 <div class="tb-right">
@@ -276,18 +213,65 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 
 <div id="content">
 
+<!-- BRIEF -->
+<div class="page on" id="p-brief">
+<div style="padding:0 20px;margin-top:16px">
+<div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:2px">Morning <span style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Brief</span></div>
+<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:20px" id="brief-date-sub">Chargement...</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
+<div style="background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:16px;padding:14px;color:white;text-align:center">
+<div style="font:900 16px var(--f)" id="brief-btc">--</div>
+<div style="font:600 9px var(--f);opacity:.6;margin-top:3px;text-transform:uppercase">Bitcoin</div>
+</div>
+<div style="background:linear-gradient(135deg,var(--body-a),var(--body-b));border-radius:16px;padding:14px;color:white;text-align:center">
+<div style="font:900 20px var(--f)" id="brief-temp">--</div>
+<div style="font:600 9px var(--f);opacity:.7;margin-top:3px;text-transform:uppercase" id="brief-city">Meteo</div>
+</div>
+<div style="background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));border-radius:16px;padding:14px;color:white;text-align:center">
+<div style="font:900 20px var(--f)" id="brief-score">--</div>
+<div style="font:600 9px var(--f);opacity:.7;margin-top:3px;text-transform:uppercase">Hier</div>
+</div>
+</div>
+<div style="background:var(--white);border:1.5px solid var(--line);border-left:4px solid var(--routine-a);border-radius:0 16px 16px 0;padding:16px;margin-bottom:14px">
+<div style="font:700 9px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--routine-a);margin-bottom:8px">Citation du jour</div>
+<div style="font:400 15px var(--s);font-style:italic;line-height:1.65;color:var(--ink)" id="brief-quote"></div>
+<div style="font:700 10px var(--f);color:var(--ink3);margin-top:8px" id="brief-author"></div>
+</div>
+<div style="background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px">
+<div style="font:700 9px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px">Ta journée</div>
+<div id="brief-agenda"></div>
+</div>
+<div style="background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px">
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+<div style="font:700 9px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)">Habitudes hier</div>
+<div style="font:800 14px var(--f)" id="brief-hab-score">--</div>
+</div>
+<div style="height:8px;background:var(--cream);border-radius:4px;overflow:hidden">
+<div id="brief-hab-bar" style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--nutri-a),var(--nutri-b));transition:width .6s ease;width:0%"></div>
+</div>
+</div>
+<div style="background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px">
+<div style="font:700 9px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Mon intention aujourd'hui</div>
+<textarea id="brief-intent" style="background:var(--cream);border:none;border-radius:12px;padding:12px;font:500 14px var(--f);color:var(--ink);width:100%;outline:none;resize:none;min-height:64px;line-height:1.6" placeholder="La chose la plus importante que je fais aujourd'hui..."></textarea>
+<button class="btn btn-p btn-full" style="margin-top:10px" onclick="saveIntent()">Commencer la journée ✓</button>
+</div>
+<div style="font:700 13px var(--f);margin-bottom:12px">Intentions récentes</div>
+<div class="card card-sm"><div id="intent-list"></div></div>
+</div>
+</div>
+
 <!-- FEED -->
-<div class="page on" id="p-feed">
+<div class="page" id="p-feed">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px">Ton <span style="background:linear-gradient(135deg,var(--feed-a),var(--feed-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Feed</span></div>
-<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:14px">Actu en temps réel.</div>
-<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;-webkit-overflow-scrolling:touch;scrollbar-width:none" id="feed-cats"></div>
-<button onclick="loadFeed()" style="width:100%;background:var(--white);border:1.5px solid var(--line);border-radius:50px;padding:9px;font:700 11px var(--f);cursor:pointer;margin-bottom:14px;color:var(--ink)">↺ Actualiser</button>
+<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:14px">Liens curatés par thème.</div>
+<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px;-webkit-overflow-scrolling:touch;scrollbar-width:none" id="feed-cats"></div>
+<button onclick="loadFeed()" style="width:100%;background:var(--white);border:1.5px solid var(--line);border-radius:50px;padding:9px;font:700 11px var(--f);cursor:pointer;margin-bottom:14px;color:var(--ink)">↺ Nouveaux articles</button>
 <div id="feed-articles"></div>
 </div>
 </div>
 
-<!-- CRYPTO -->
+<!-- FINANCE -->
 <div class="page" id="p-crypto">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px">Crypto <span style="background:linear-gradient(135deg,var(--crypto-a),var(--crypto-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">&amp; Finance</span></div>
@@ -298,21 +282,21 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div class="cx-chg" id="btc-c"></div>
 <div class="cx-stats">
 <div class="cx-stat"><div class="cx-sv" id="dca-inv-d">—</div><div class="cx-sl">Investi DCA</div></div>
-<div class="cx-stat"><div class="cx-sv" id="dca-pnl-d">—</div><div class="cx-sl">P&amp;L estimé</div></div>
-<div class="cx-stat"><div class="cx-sv" id="dca-avg-d">—</div><div class="cx-sl">Prix moy. achat</div></div>
+<div class="cx-stat"><div class="cx-sv" id="dca-pnl-d">—</div><div class="cx-sl">P&L estimé</div></div>
+<div class="cx-stat"><div class="cx-sv" id="dca-avg-d">—</div><div class="cx-sl">Prix moy.</div></div>
 <div class="cx-stat"><div class="cx-sv" id="btc-mktcap">—</div><div class="cx-sl">Market Cap</div></div>
 </div>
 </div>
 <div style="background:linear-gradient(135deg,#374151,#6b7280);border-radius:var(--r);padding:18px;margin-bottom:12px;color:white">
 <div class="cx-name">Ethereum · ETH/EUR</div>
-<div class="cx-price" style="font:900 30px var(--f);letter-spacing:-.04em" id="eth-p">—</div>
+<div style="font:900 30px var(--f);letter-spacing:-.04em" id="eth-p">—</div>
 <div class="cx-chg" id="eth-c"></div>
 </div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
 <div style="background:var(--white);border:1.5px solid var(--line);border-radius:var(--r);padding:16px">
 <div style="font:700 10px var(--f);letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px">Fear & Greed</div>
 <div style="font:900 32px var(--f);letter-spacing:-.04em" id="fg-value">—</div>
-<div style="font:600 11px var(--f);margin-top:2px" id="fg-label">Chargement...</div>
+<div style="font:600 11px var(--f);margin-top:2px" id="fg-label">...</div>
 <div style="margin-top:10px;height:6px;background:var(--line);border-radius:3px;overflow:hidden"><div id="fg-bar" style="height:100%;width:0%;border-radius:3px;transition:width 1s ease;background:linear-gradient(90deg,#ef4444,#f59e0b,#22c55e)"></div></div>
 </div>
 <div style="background:var(--white);border:1.5px solid var(--line);border-radius:var(--r);padding:16px">
@@ -337,10 +321,6 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div style="font:700 10px var(--f);letter-spacing:.12em;text-transform:uppercase;opacity:.7;margin-bottom:6px">ETF Défense · CTO</div>
 <div style="font:800 22px var(--f);letter-spacing:-.03em;margin-bottom:8px">DFND</div>
 <div style="font:400 13px var(--f);opacity:.85;line-height:1.55">Exposition au secteur défense &amp; aérospatial européen. Diversification hors tech/crypto. Horizon 10+ ans.</div>
-<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">
-<div style="background:rgba(255,255,255,.15);border-radius:10px;padding:8px 12px"><div style="font:700 13px var(--f)">Défense EU</div><div style="font:500 10px var(--f);opacity:.7">Exposition sectorielle</div></div>
-<div style="background:rgba(255,255,255,.15);border-radius:10px;padding:8px 12px"><div style="font:700 13px var(--f)">CTO</div><div style="font:500 10px var(--f);opacity:.7">Hors PEA</div></div>
-</div>
 </div>
 <div class="card">
 <div class="card-title" style="margin-bottom:14px">📐 Répartition portfolio</div>
@@ -359,10 +339,12 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px"><span style="background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));-webkit-background-clip:text;-webkit-text-fill-color:transparent">Nutrition</span> JJB</div>
 <div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:20px">Manger pour performer.</div>
+
+<!-- GÉNÉRATEUR IA -->
 <div class="card" style="border:2px solid var(--nutri-a)">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
 <div style="width:36px;height:36px;background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px">🤖</div>
-<div><div style="font:700 14px var(--f)">Générateur de recettes</div><div style="font:400 11px var(--f);color:var(--ink2)">Entre tes ingrédients</div></div>
+<div><div style="font:700 14px var(--f)">Générateur IA de recettes</div><div style="font:400 11px var(--f);color:var(--ink2)">Entre tes ingrédients ou laisse vide pour une surprise</div></div>
 </div>
 <div class="field"><textarea id="ai-ingr" placeholder="ex: œufs, riz, thon, avocat, citron..." style="min-height:54px"></textarea></div>
 <div class="field"><label>Contexte</label>
@@ -377,6 +359,8 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <button class="btn btn-full btn-colored" style="background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b))" onclick="genRecipe()" id="recipe-btn">✦ Générer une recette</button>
 <div id="recipe-result" style="display:none;margin-top:16px"></div>
 </div>
+
+<!-- EAU -->
 <div class="card">
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
 <div class="card-title">💧 Hydratation</div>
@@ -390,17 +374,22 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div class="wb" onclick="addWater(-250)" style="color:var(--ink3)">−250</div>
 </div>
 </div>
-<div style="font:700 13px var(--f);margin-bottom:12px;margin-top:4px">Recettes JJB essentielles</div>
-<div id="static-recipes"></div>
-<div style="margin:20px 0 12px;display:flex;align-items:center;justify-content:space-between">
-<div style="font:700 13px var(--f)">🍽 Chercher une recette</div>
+
+<!-- RECETTES BANQUE -->
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:4px">
+<div style="font:700 13px var(--f)">Recettes JJB essentielles</div>
+<button class="btn btn-g btn-sm" onclick="shuffleStaticRecipes()">↺ Nouvelles</button>
 </div>
+<div id="static-recipes"></div>
+
+<!-- MEALDB SEARCH -->
+<div style="margin:20px 0 12px;font:700 13px var(--f)">🔍 Chercher une recette</div>
 <div style="position:relative;margin-bottom:10px">
 <input type="text" id="meal-q" placeholder="Poulet, saumon, riz..." style="padding-left:40px;padding-right:44px;border-radius:50px;font:500 13px var(--f)" onkeydown="if(event.key==='Enter')searchMeals()">
 <div style="position:absolute;left:13px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:14px">🔍</div>
 <button onclick="searchMeals()" style="position:absolute;right:5px;top:50%;transform:translateY(-50%);background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));color:white;border:none;border-radius:50px;width:30px;height:30px;font:700 13px var(--f);cursor:pointer">→</button>
 </div>
-<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;-webkit-overflow-scrolling:touch;scrollbar-width:none">
+<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none">
 <button onclick="searchMeals('chicken')" style="flex-shrink:0;background:var(--white);border:1.5px solid var(--line);border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer">🐔 Poulet</button>
 <button onclick="searchMeals('beef')" style="flex-shrink:0;background:var(--white);border:1.5px solid var(--line);border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer">🥩 Boeuf</button>
 <button onclick="searchMeals('salmon')" style="flex-shrink:0;background:var(--white);border:1.5px solid var(--line);border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer">🐟 Saumon</button>
@@ -408,8 +397,8 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <button onclick="searchMeals('rice')" style="flex-shrink:0;background:var(--white);border:1.5px solid var(--line);border-radius:50px;padding:5px 12px;font:600 10px var(--f);cursor:pointer">🍚 Riz</button>
 </div>
 <div id="meal-results"></div>
-<div class="card">
-<div class="card-title" style="margin-bottom:12px">⭐ Aliments clés</div>
+<div class="card" style="margin-top:8px">
+<div class="card-title" style="margin-bottom:12px">⭐ Aliments clés JJB</div>
 <div id="aliments-list"></div>
 </div>
 </div>
@@ -458,91 +447,39 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div style="font:700 13px var(--f);margin-bottom:12px;margin-top:4px">Timers Focus</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
 <div class="card card-sm" style="cursor:pointer;text-align:center;border:2px solid transparent;background:linear-gradient(var(--white),var(--white)) padding-box,linear-gradient(135deg,var(--routine-a),var(--routine-b)) border-box" onclick="openFocus('deep',90,'🎯 Deep Work','Une tâche. Téléphone ailleurs.')">
-<div style="font-size:26px;margin-bottom:6px">🎯</div>
-<div style="font:700 13px var(--f)">Deep Work</div>
-<div style="font:500 11px var(--f);color:var(--ink2)">90 min</div>
+<div style="font-size:26px;margin-bottom:6px">🎯</div><div style="font:700 13px var(--f)">Deep Work</div><div style="font:500 11px var(--f);color:var(--ink2)">90 min</div>
 </div>
 <div class="card card-sm" style="cursor:pointer;text-align:center" onclick="openFocus('nap',26,'😴 Nap Café','Café bu. Allongé.')">
-<div style="font-size:26px;margin-bottom:6px">😴</div>
-<div style="font:700 13px var(--f)">Nap Café</div>
-<div style="font:500 11px var(--f);color:var(--ink2)">26 min</div>
+<div style="font-size:26px;margin-bottom:6px">😴</div><div style="font:700 13px var(--f)">Nap Café</div><div style="font:500 11px var(--f);color:var(--ink2)">26 min</div>
 </div>
 <div class="card card-sm" style="cursor:pointer;text-align:center" onclick="openFocus('jjb',90,'🥋 JJB','Bonne session !')">
-<div style="font-size:26px;margin-bottom:6px">🥋</div>
-<div style="font:700 13px var(--f)">JJB</div>
-<div style="font:500 11px var(--f);color:var(--ink2)">90 min</div>
+<div style="font-size:26px;margin-bottom:6px">🥋</div><div style="font:700 13px var(--f)">JJB</div><div style="font:500 11px var(--f);color:var(--ink2)">90 min</div>
 </div>
 <div class="card card-sm" style="cursor:pointer;text-align:center" onclick="openFocus('read',30,'📖 Lecture','30 pages minimum.')">
-<div style="font-size:26px;margin-bottom:6px">📖</div>
-<div style="font:700 13px var(--f)">Lecture</div>
-<div style="font:500 11px var(--f);color:var(--ink2)">30 min</div>
+<div style="font-size:26px;margin-bottom:6px">📖</div><div style="font:700 13px var(--f)">Lecture</div><div style="font:500 11px var(--f);color:var(--ink2)">30 min</div>
 </div>
 </div>
 </div>
 </div>
-
-<!-- CORPS -->
-<!-- JOURNAL -->
-<!-- BRIEF -->
-<div class="page" id="p-brief">
-<div style="padding:0 20px;margin-top:16px">
-<div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:2px">Morning <span style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Brief</span></div>
-<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:20px" id="brief-date-sub">Chargement...</div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">
-<div style="background:linear-gradient(135deg,#0f172a,#1e3a5f);border-radius:16px;padding:14px;color:white;text-align:center">
-<div style="font:900 16px var(--f)" id="brief-btc">--</div>
-<div style="font:600 9px var(--f);opacity:.6;margin-top:3px;text-transform:uppercase">Bitcoin</div>
-</div>
-<div style="background:linear-gradient(135deg,var(--body-a),var(--body-b));border-radius:16px;padding:14px;color:white;text-align:center">
-<div style="font:900 20px var(--f)" id="brief-temp">--</div>
-<div style="font:600 9px var(--f);opacity:.7;margin-top:3px;text-transform:uppercase" id="brief-city">Meteo</div>
-</div>
-<div style="background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));border-radius:16px;padding:14px;color:white;text-align:center">
-<div style="font:900 20px var(--f)" id="brief-score">--</div>
-<div style="font:600 9px var(--f);opacity:.7;margin-top:3px;text-transform:uppercase">Hier</div>
-</div>
-</div>
-<div style="background:var(--white);border:1.5px solid var(--line);border-left:4px solid var(--routine-a);border-radius:0 16px 16px 0;padding:16px;margin-bottom:14px">
-<div style="font:700 9px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--routine-a);margin-bottom:8px">Citation du jour</div>
-<div style="font:400 15px var(--s);font-style:italic;line-height:1.65;color:var(--ink)" id="brief-quote"></div>
-<div style="font:700 10px var(--f);color:var(--ink3);margin-top:8px" id="brief-author"></div>
-</div>
-<div style="background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px">
-<div style="font:700 9px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px">Ta journée</div>
-<div id="brief-agenda"></div>
-</div>
-<div style="background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px">
-<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-<div style="font:700 9px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)">Habitudes hier</div>
-<div style="font:800 14px var(--f)" id="brief-hab-score">--</div>
-</div>
-<div style="height:8px;background:var(--cream);border-radius:4px;overflow:hidden">
-<div id="brief-hab-bar" style="height:100%;border-radius:4px;background:linear-gradient(90deg,var(--nutri-a),var(--nutri-b));transition:width .6s ease;width:0%"></div>
-</div>
-</div>
-<div style="background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px">
-<div style="font:700 9px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Mon intention aujourd'hui</div>
-<textarea id="brief-intent" style="background:var(--cream);border:none;border-radius:12px;padding:12px;font:500 14px var(--f);color:var(--ink);width:100%;outline:none;resize:none;min-height:64px;line-height:1.6" placeholder="La chose la plus importante que je fais aujourd'hui..."></textarea>
-<button class="btn btn-p btn-full" style="margin-top:10px" onclick="saveIntent()">Commencer la journée ✓</button>
-</div>
-<div style="font:700 13px var(--f);margin-bottom:12px">Intentions récentes</div>
-<div class="card card-sm"><div id="intent-list"></div></div>
-</div>
-</div>
-
 
 <!-- EXPLORE -->
 <div class="page" id="p-explore">
 <div style="padding:0 20px;margin-top:16px">
 <div style="font:900 28px var(--f);letter-spacing:-.04em;margin-bottom:4px"><span style="background:linear-gradient(135deg,#8b5cf6,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Explore</span></div>
-<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:14px">Choisis ton moteur, lance ta recherche.</div>
+<div style="font:400 13px var(--f);color:var(--ink2);margin-bottom:14px">Sélectionne un moteur puis recherche.</div>
+
+<!-- SEARCH BAR -->
 <div style="position:relative;margin-bottom:16px">
-<input type="text" id="explore-q" placeholder="bitcoin, triangle choke..." style="padding-left:42px;padding-right:50px;border-radius:50px;font:500 14px var(--f)" onkeydown="if(event.key==='Enter')doSearch()">
+<input type="text" id="explore-q" placeholder="bitcoin, triangle choke..." style="padding-left:42px;padding-right:56px;border-radius:50px;font:500 14px var(--f)" onkeydown="if(event.key==='Enter')doSearch()">
 <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--ink3)">🔍</div>
-<button onclick="doSearch()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:var(--ink);color:white;border:none;border-radius:50px;width:32px;height:32px;font:700 14px var(--f);cursor:pointer">→</button>
+<button onclick="doSearch()" style="position:absolute;right:6px;top:50%;transform:translateY(-50%);background:var(--ink);color:white;border:none;border-radius:50px;padding:7px 16px;font:700 12px var(--f);cursor:pointer">Go →</button>
 </div>
+
+<!-- MOTEURS -->
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px" id="engine-grid"></div>
-<div style="font:700 10px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Raccourcis</div>
+
+<!-- RACCOURCIS -->
+<div style="font:700 10px var(--f);letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Raccourcis rapides</div>
 <div id="shortcuts-grid"></div>
 </div>
 </div>
@@ -551,12 +488,12 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 
 <!-- NAVBAR -->
 <div id="navbar">
-<button class="nb" onclick="goPage('brief',this)">
-<div class="nb-ico" style="background:var(--cream)">☀</div>
+<button class="nb on" onclick="goPage('brief',this)">
+<div class="nb-ico" style="background:linear-gradient(135deg,#f59e0b,#f97316)">☀</div>
 <span class="nb-lbl">Brief</span>
 </button>
-<button class="nb on" onclick="goPage('feed',this)">
-<div class="nb-ico" style="background:linear-gradient(135deg,var(--feed-a),var(--feed-b))">📡</div>
+<button class="nb" onclick="goPage('feed',this)">
+<div class="nb-ico" style="background:var(--cream)">📡</div>
 <span class="nb-lbl">Feed</span>
 </button>
 <button class="nb" onclick="goPage('crypto',this)">
@@ -576,7 +513,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <span class="nb-lbl">Explore</span>
 </button>
 </div>
-</div><!-- /app -->
+</div>
 
 <!-- FOCUS OVERLAY -->
 <div id="fov">
@@ -596,7 +533,7 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <button class="btn" style="background:rgba(255,255,255,.15);color:white" onclick="resetTimer()">↺</button>
 </div>
 <div class="fo-pre">
-<div class="fop" onclick="openFocus('deep',90,'🎯 Deep Work','Une tâche. Téléphone ailleurs.')">Deep Work 90</div>
+<div class="fop" onclick="openFocus('deep',90,'🎯 Deep Work','Une tâche. Téléphone ailleurs.')">Deep 90</div>
 <div class="fop" onclick="openFocus('nap',26,'😴 Nap Café','Café bu. Allongé.')">Nap 26</div>
 <div class="fop" onclick="openFocus('jjb',90,'🥋 JJB','Bonne session !')">JJB 90</div>
 <div class="fop" onclick="openFocus('read',30,'📖 Lecture','30 pages.')">Lecture 30</div>
@@ -608,12 +545,6 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div class="mbox"><div class="mhd"><div class="mtit">Nouvelle tâche</div><button class="mx" onclick="closeM('m-task')">✕</button></div>
 <div class="field"><label>Tâche</label><input type="text" id="task-in" placeholder="Décris la tâche..."></div>
 <button class="btn btn-p btn-full" onclick="addTask()">Ajouter</button></div>
-</div>
-<div class="mbg" id="m-note" onclick="if(event.target===this)closeM('m-note')">
-<div class="mbox"><div class="mhd"><div class="mtit">Nouvelle note</div><button class="mx" onclick="closeM('m-note')">✕</button></div>
-<div class="field"><label>Titre</label><input type="text" id="note-title" placeholder="Sujet"></div>
-<div class="field"><label>Contenu</label><textarea id="note-body" placeholder="Ta note..."></textarea></div>
-<button class="btn btn-p btn-full" onclick="addNote()">Sauvegarder</button></div>
 </div>
 <div class="mbg" id="m-agenda" onclick="if(event.target===this)closeM('m-agenda')">
 <div class="mbox"><div class="mhd"><div class="mtit">Nouveau bloc agenda</div><button class="mx" onclick="closeM('m-agenda')">✕</button></div>
@@ -631,15 +562,12 @@ select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 <button class="btn btn-p btn-full" onclick="addAgenda()">Ajouter</button></div>
 </div>
-
 <div id="toast"></div>
 
 <script>
-
-
-var _bankIndex=0;
-
-
+// ============================================================
+// UTILS
+// ============================================================
 var ld=function(k,d){try{var v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch(e){return d;}};
 var sv=function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}};
 var td=function(){return new Date().toISOString().slice(0,10);};
@@ -650,187 +578,400 @@ function goPage(id,btn){
 document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
 document.querySelectorAll('.nb').forEach(function(b){b.classList.remove('on');var ico=b.querySelector('.nb-ico');if(ico)ico.style.background='var(--cream)';});
 document.getElementById('p-'+id).classList.add('on');
-if(btn){btn.classList.add('on');var ico=btn.querySelector('.nb-ico');var colors={brief:'linear-gradient(135deg,#f59e0b,#f97316)',feed:'linear-gradient(135deg,var(--feed-a),var(--feed-b))',crypto:'linear-gradient(135deg,var(--crypto-a),var(--crypto-b))',nutri:'linear-gradient(135deg,var(--nutri-a),var(--nutri-b))',routine:'linear-gradient(135deg,var(--routine-a),var(--routine-b))',recettes:'linear-gradient(135deg,#f97316,#ef4444)',news:'linear-gradient(135deg,#3b82f6,#8b5cf6)',explore:'linear-gradient(135deg,#8b5cf6,#06b6d4)'};if(ico&&colors[id])ico.style.background=colors[id];}
+if(btn){btn.classList.add('on');var ico=btn.querySelector('.nb-ico');var colors={brief:'linear-gradient(135deg,#f59e0b,#f97316)',feed:'linear-gradient(135deg,var(--feed-a),var(--feed-b))',crypto:'linear-gradient(135deg,var(--crypto-a),var(--crypto-b))',nutri:'linear-gradient(135deg,var(--nutri-a),var(--nutri-b))',routine:'linear-gradient(135deg,var(--routine-a),var(--routine-b))',explore:'linear-gradient(135deg,#8b5cf6,#06b6d4)'};if(ico&&colors[id])ico.style.background=colors[id];}
 document.getElementById('content').scrollTo(0,0);
 }
-
-function initTopbar(){
-var d=new Date();
-var D=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-var M=['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','nov','déc'];
-var e=document.getElementById('tb-date');if(e)e.textContent=D[d.getDay()]+' '+d.getDate()+' '+M[d.getMonth()];
-var j=document.getElementById('j-date');if(j)j.textContent=D[d.getDay()]+' '+d.getDate()+' '+M[d.getMonth()];
-}
-
 function openM(id){document.getElementById(id).classList.add('on');}
 function closeM(id){document.getElementById(id).classList.remove('on');}
+function initTopbar(){var d=new Date();var D=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];var M=['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','nov','déc'];var e=document.getElementById('tb-date');if(e)e.textContent=D[d.getDay()]+' '+d.getDate()+' '+M[d.getMonth()];}
 
+// ============================================================
+// DARK MODE
+// ============================================================
+function toggleDark(){
+var html=document.documentElement;var btn=document.getElementById('dark-btn');
+if(html.getAttribute('data-theme')==='dark'){html.removeAttribute('data-theme');if(btn)btn.textContent='🌙';localStorage.setItem('theme','light');}
+else{html.setAttribute('data-theme','dark');if(btn)btn.textContent='☀';localStorage.setItem('theme','dark');}
+}
+function initTheme(){var s=localStorage.getItem('theme');if(s==='dark'){document.documentElement.setAttribute('data-theme','dark');var btn=document.getElementById('dark-btn');if(btn)btn.textContent='☀';}}
 
-
-var _feedFilter = 'Tous';
-var FEED_CAT_COLORS = {
-  'Finance': {col:'var(--crypto-a)',bg:'rgba(108,99,255,.08)',keyC:'rgba(108,99,255,.1)',keyT:'var(--crypto-a)'},
-  'Science': {col:'var(--body-a)',bg:'rgba(14,165,233,.08)',keyC:'rgba(14,165,233,.1)',keyT:'var(--body-a)'},
-  'JJB': {col:'var(--nutri-a)',bg:'rgba(34,197,94,.08)',keyC:'rgba(34,197,94,.1)',keyT:'var(--nutri-a)'},
-  'Nutrition': {col:'var(--feed-a)',bg:'rgba(255,107,53,.08)',keyC:'rgba(255,107,53,.1)',keyT:'var(--feed-a)'},
-  'Psychologie': {col:'var(--mind-a)',bg:'rgba(236,72,153,.08)',keyC:'rgba(236,72,153,.1)',keyT:'var(--mind-a)'},
-  'Mindset': {col:'var(--mind-a)',bg:'rgba(236,72,153,.08)',keyC:'rgba(236,72,153,.1)',keyT:'var(--mind-a)'},
-  'Crypto': {col:'var(--crypto-a)',bg:'rgba(108,99,255,.08)',keyC:'rgba(108,99,255,.1)',keyT:'var(--crypto-a)'},
-  'Sport': {col:'var(--routine-a)',bg:'rgba(245,158,11,.08)',keyC:'rgba(245,158,11,.1)',keyT:'var(--routine-a)'},
-  'Apnee': {col:'var(--body-a)',bg:'rgba(14,165,233,.08)',keyC:'rgba(14,165,233,.1)',keyT:'var(--body-a)'},
+// ============================================================
+// FEED — vraiment aléatoire à chaque clic
+// ============================================================
+var FEED_DATA = {
+  sport:[
+    {t:'Comment progresser en JJB sans gi : les 5 clés',u:'https://www.bjjheroes.com',d:'BJJ Heroes · Technique'},
+    {t:'Pourquoi le sommeil est plus important que l\'entraînement',u:'https://www.sleepfoundation.org/physical-activity',d:'Sleep Foundation · Science'},
+    {t:'Freediving : protocole CO2 pour augmenter l\'apnée',u:'https://www.diveassure.com/blog',d:'DiveAssure · Freediving'},
+    {t:'Les 7 erreurs de nutrition qui sabotent ta récup JJB',u:'https://www.bjjfanatics.com/blogs/news',d:'BJJ Fanatics · Nutrition'},
+    {t:'Récupération active vs passive : que dit la science ?',u:'https://examine.com/articles/active-vs-passive-recovery/',d:'Examine.com'},
+    {t:'L\'Equipe : toute l\'actu sport du moment',u:'https://www.lequipe.fr',d:'L\'Equipe · Sport FR'},
+    {t:'Analyse tactique MMA : ce que le JJB apporte',u:'https://www.mmamania.com',d:'MMA Mania · Analyse'},
+    {t:'VO2 max : comment l\'améliorer efficacement',u:'https://www.trainingpeaks.com',d:'TrainingPeaks · Cardio'},
+    {t:'Hypertrophie vs force : guide complet 2025',u:'https://www.strongerbyscience.com',d:'Stronger By Science'},
+    {t:'10 exercices de mobilité post-JJB',u:'https://www.instagram.com/bjj_globe_trotter',d:'BJJ Globe Trotter'},
+    {t:'La science du stretching avant entraînement',u:'https://examine.com',d:'Examine.com · Récup'},
+    {t:'Periodization pour les arts martiaux',u:'https://www.onnit.com/academy',d:'ONNIT Academy'},
+  ],
+  crypto:[
+    {t:'Bitcoin : le cycle des halvings expliqué simplement',u:'https://bitcoinmagazine.com',d:'Bitcoin Magazine'},
+    {t:'DCA vs lump sum : quelle stratégie est la meilleure ?',u:'https://dcabtc.com',d:'DCA BTC · Calculateur'},
+    {t:'Fear & Greed Index : comment l\'utiliser pour trader',u:'https://alternative.me/crypto/fear-and-greed-index/',d:'Alternative.me'},
+    {t:'ETF Bitcoin : tout ce qu\'il faut savoir',u:'https://www.coindesk.com/learn/bitcoin-etfs-everything-you-need-to-know/',d:'CoinDesk · Éducation'},
+    {t:'On-chain analytics : lire les données blockchain',u:'https://glassnode.com/insights',d:'Glassnode · On-chain'},
+    {t:'Actu marchés crypto en temps réel',u:'https://cointelegraph.com/news',d:'CoinTelegraph · News'},
+    {t:'Ethereum vs Bitcoin : comparatif long terme',u:'https://cointelegraph.com',d:'CoinTelegraph'},
+    {t:'Portfolio crypto diversifié : guide pour débutant',u:'https://www.coingecko.com/learn',d:'CoinGecko · Learn'},
+    {t:'Bitcoin dominance : ce que ça signifie',u:'https://coinmarketcap.com',d:'CoinMarketCap'},
+    {t:'Analyse technique BTC : support et résistances',u:'https://www.tradingview.com',d:'TradingView'},
+    {t:'Les stablecoins expliqués',u:'https://www.ledger.com/fr/academy',d:'Ledger Academy'},
+    {t:'Macro et Bitcoin : corrélation avec le dollar',u:'https://bitcoinmagazine.com',d:'Bitcoin Magazine'},
+  ],
+  sante:[
+    {t:'Protocole Huberman : routine matinale optimale',u:'https://hubermanlab.com',d:'Huberman Lab · Neuroscience'},
+    {t:'Les meilleurs suppléments pour la récupération',u:'https://examine.com/supplements/creatine/',d:'Examine.com · Créatine'},
+    {t:'Comment optimiser ton sommeil profond',u:'https://www.sleepfoundation.org',d:'Sleep Foundation'},
+    {t:'Jeûne intermittent et performance sportive',u:'https://examine.com/articles/intermittent-fasting/',d:'Examine.com · IF'},
+    {t:'Protéines : combien par jour pour un athlète ?',u:'https://examine.com/nutrition/how-much-protein-do-you-need/',d:'Examine.com'},
+    {t:'Anti-inflammatoires naturels : curcuma, oméga-3',u:'https://examine.com/supplements/fish-oil/',d:'Examine.com · Oméga-3'},
+    {t:'Stress et cortisol : comment gérer le surmenage',u:'https://hubermanlab.com',d:'Huberman Lab'},
+    {t:'La science du cold plunge pour la récupération',u:'https://examine.com',d:'Examine.com · Froid'},
+    {t:'Microbiome et performance sportive',u:'https://www.ncbi.nlm.nih.gov',d:'PubMed · Science'},
+    {t:'Magnésium : pourquoi les sportifs en manquent',u:'https://examine.com/supplements/magnesium/',d:'Examine.com'},
+    {t:'Sommeil polyphasique : mythe ou réalité ?',u:'https://www.sleepfoundation.org',d:'Sleep Foundation'},
+    {t:'Caféine et performance : guide complet',u:'https://examine.com/supplements/caffeine/',d:'Examine.com · Caféine'},
+  ],
+  tech:[
+    {t:'Hacker News : les projets tech du moment',u:'https://news.ycombinator.com',d:'Hacker News · Tech'},
+    {t:'Les meilleurs outils IA gratuits en 2025',u:'https://www.producthunt.com/topics/artificial-intelligence',d:'Product Hunt · IA'},
+    {t:'GitHub Trending : projets open source populaires',u:'https://github.com/trending',d:'GitHub · Open Source'},
+    {t:'01net : actualité tech en français',u:'https://www.01net.com/actualites/',d:'01net · FR'},
+    {t:'The Verge : toute la tech du moment',u:'https://www.theverge.com',d:'The Verge · EN'},
+    {t:'Comment apprendre à coder efficacement en 2025',u:'https://roadmap.sh',d:'roadmap.sh'},
+    {t:'Notion vs Obsidian : quel outil de productivité ?',u:'https://www.reddit.com/r/productivity',d:'Reddit · Productivité'},
+    {t:'Claude vs GPT-4o : comparatif détaillé',u:'https://www.anthropic.com',d:'Anthropic · IA'},
+    {t:'Web3 et IA : les tendances 2025',u:'https://www.wired.com',d:'Wired · Tech'},
+    {t:'Les bases du self-hosting pour développeurs',u:'https://selfh.st',d:'SelfHosted.show'},
+    {t:'PWA vs App native : que choisir ?',u:'https://web.dev',d:'web.dev · Google'},
+    {t:'Cursor AI : l\'éditeur de code qui change tout',u:'https://cursor.sh',d:'Cursor · Dev'},
+  ],
+  monde:[
+    {t:'Le Monde : international',u:'https://www.lemonde.fr/international/',d:'Le Monde · FR'},
+    {t:'France 24 : info internationale en continu',u:'https://www.france24.com/fr/',d:'France 24'},
+    {t:'BBC News World : actualité mondiale',u:'https://www.bbc.com/news/world',d:'BBC · EN'},
+    {t:'The Guardian : journalisme indépendant',u:'https://www.theguardian.com/world',d:'The Guardian · EN'},
+    {t:'Reuters : dépêches et analyses mondiales',u:'https://www.reuters.com/world/',d:'Reuters'},
+    {t:'Courrier International : presse étrangère',u:'https://www.courrierinternational.com',d:'Courrier International'},
+    {t:'Arte Info : documentaires et reportages',u:'https://www.arte.tv/fr/',d:'Arte · FR/DE'},
+    {t:'RFI : radio France internationale',u:'https://www.rfi.fr/fr/',d:'RFI · Monde FR'},
+    {t:'Géopolitique : les conflits qui façonnent 2025',u:'https://www.bbc.com/news/world',d:'BBC · Géopolitique'},
+    {t:'L\'Australie et l\'Indo-Pacifique : enjeux 2025',u:'https://www.theguardian.com/australia-news',d:'The Guardian AU'},
+    {t:'Économie mondiale : les prévisions FMI',u:'https://www.imf.org',d:'FMI · Économie'},
+    {t:'BRICS et dédollarisation : état des lieux',u:'https://www.reuters.com',d:'Reuters · Finance'},
+  ]
 };
-function getCatStyle(cat){return FEED_CAT_COLORS[cat]||{col:'var(--ink2)',bg:'var(--cream)',keyC:'var(--cream)',keyT:'var(--ink2)'};;}
+var _feedCat = 'sport';
+var _feedSeed = Date.now();
 
+function initFeed(){
+  var el=document.getElementById('feed-cats');
+  if(!el)return;
+  el.innerHTML='';
+  var cats=[
+    {id:'sport',label:'Sport',color:'#10b981'},
+    {id:'crypto',label:'Crypto',color:'#f59e0b'},
+    {id:'sante',label:'Santé',color:'#84cc16'},
+    {id:'tech',label:'Tech',color:'#3b82f6'},
+    {id:'monde',label:'Monde',color:'#8b5cf6'}
+  ];
+  cats.forEach(function(c){
+    var btn=document.createElement('button');
+    btn.textContent=c.label;
+    btn.dataset.cat=c.id;
+    var on=c.id===_feedCat;
+    btn.style.cssText='flex-shrink:0;border-radius:50px;padding:6px 16px;font:600 11px var(--f);cursor:pointer;border:1.5px solid '+(on?c.color:'var(--line)')+';background:'+(on?c.color:'var(--white)')+';color:'+(on?'white':'var(--ink)');
+    btn.addEventListener('click',function(){_feedCat=this.dataset.cat;_feedSeed=Date.now();initFeed();loadFeed();});
+    el.appendChild(btn);
+  });
+}
 
+function loadFeed(){
+  var el=document.getElementById('feed-articles');
+  if(!el)return;
+  var items=(FEED_DATA[_feedCat]||FEED_DATA.sport).slice();
+  // True random shuffle using timestamp seed
+  for(var i=items.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=items[i];items[i]=items[j];items[j]=tmp;
+  }
+  var catColors={sport:'#10b981',crypto:'#f59e0b',sante:'#84cc16',tech:'#3b82f6',monde:'#8b5cf6'};
+  var color=catColors[_feedCat]||'var(--ink2)';
+  var html='';
+  items.forEach(function(a){
+    html+='<a href="'+a.u+'" target="_blank" class="feed-link">';
+    html+='<div class="feed-pill" style="background:'+color+'">'+_feedCat+'</div>';
+    html+='<div class="feed-title">'+a.t+'</div>';
+    html+='<div class="feed-source">'+a.d+' →</div></a>';
+  });
+  el.innerHTML=html;
+}
 
+// ============================================================
+// EXPLORE — ouvre dans un NOUVEL ONGLET
+// ============================================================
+var ENGINES=[
+  {id:'google',name:'Google',icon:'🌐',color:'#4285f4',url:'https://www.google.com/search?q='},
+  {id:'youtube',name:'YouTube',icon:'▶',color:'#ff0000',url:'https://www.youtube.com/results?search_query='},
+  {id:'reddit',name:'Reddit',icon:'🤙',color:'#ff4500',url:'https://www.reddit.com/search/?q='},
+  {id:'pubmed',name:'PubMed',icon:'🔬',color:'#336699',url:'https://pubmed.ncbi.nlm.nih.gov/?term='},
+  {id:'scholar',name:'Scholar',icon:'📚',color:'#1a73e8',url:'https://scholar.google.com/scholar?q='},
+  {id:'x',name:'X',icon:'✕',color:'#000',url:'https://x.com/search?q='}
+];
+var _activeEngine='google';
 
-
-
-
-
-var CRYPTO_LEARN=[
-{q:"C'est quoi vraiment le Bitcoin ?",a:"Bitcoin est un réseau de paiement décentralisé créé en 2009 par Satoshi Nakamoto. Il n'y aura jamais plus de 21 millions de BTC. C'est sa rareté programmée qui lui donne de la valeur."},
-{q:"Halving Bitcoin : pourquoi c'est important pour toi ?",a:"Toutes les 210 000 blocs (~4 ans), la récompense des mineurs est divisée par 2. Moins de nouveaux BTC créés = pression haussière sur le prix historiquement. Le prochain : 2028."},
-{q:"ETF vs action : quelle différence ?",a:"Une action = tu achètes une part d'une entreprise. Un ETF = tu achètes un panier d'actions en une seule transaction. Ton DFND est un ETF défense."},
-{q:"PEA : pourquoi 5 ans c'est crucial ?",a:"Les gains sur un PEA ouvert depuis moins de 5 ans sont taxés à 30%. Après 5 ans : seulement 17,2% de prélèvements sociaux, 0% d'impôt sur le revenu."},
-{q:"DCA : comment calculer si tu es en profit ?",a:"Formule : (Prix actuel ÷ Prix moyen d'achat - 1) × 100 = ta performance en %. Si tu as acheté à 60 000€ et BTC est à 80 000€ : +33.3%."},
-{q:"Ethereum vs Bitcoin : pourquoi garder les deux ?",a:"Bitcoin = réserve de valeur numérique. Ethereum = plateforme d'applications décentralisées. Les deux ont des cas d'usage différents et des cycles parfois indépendants."},
+var SHORTCUTS=[
+  {label:'BTC analyse',q:'bitcoin price analysis 2025',engine:'youtube',icon:'📈'},
+  {label:'JJB technique',q:'bjj technique tutorial guard passing',engine:'youtube',icon:'🥋'},
+  {label:'Apnée CO2 tables',q:'freediving CO2 training tables',engine:'youtube',icon:'🌊'},
+  {label:'Sommeil science',q:'sleep deep work cognitive performance',engine:'pubmed',icon:'😴'},
+  {label:'DCA stratégie',q:'DCA bitcoin long term strategy',engine:'reddit',icon:'💰'},
+  {label:'Nutrition récup',q:'post workout recovery nutrition protein',engine:'pubmed',icon:'🥗'},
 ];
 
-function renderCryptoLearn(){
-var list=document.getElementById('crypto-learn-list');if(!list)return;
-list.innerHTML='';
-CRYPTO_LEARN.forEach(function(item,i){
-var el=document.createElement('div');el.className='clearn-item';
-var expanded=false;
-el.innerHTML='<div class="clearn-q">'+item.q+'</div><div class="clearn-a" id="cla-'+i+'" style="display:none">'+item.a+'</div><button class="clearn-more" id="clb-'+i+'">Lire la réponse ↓</button>';
-list.appendChild(el);
-(function(idx){
-var btn=document.getElementById('clb-'+idx);var ans=document.getElementById('cla-'+idx);var exp=false;
-btn.addEventListener('click',function(){exp=!exp;ans.style.display=exp?'block':'none';btn.textContent=exp?'Réduire ↑':'Lire la réponse ↓';});
-})(i);
-});
+function initExplore(){
+  var grid=document.getElementById('engine-grid');
+  if(grid){
+    grid.innerHTML='';
+    ENGINES.forEach(function(eng){
+      var btn=document.createElement('div');
+      var on=eng.id===_activeEngine;
+      btn.className='eng-btn'+(on?' on':'');
+      if(on){btn.style.background=eng.color;btn.style.borderColor=eng.color;}
+      btn.innerHTML='<div class="eng-icon" style="color:'+(on?'white':eng.color)+'">'+eng.icon+'</div><div class="eng-name" style="color:'+(on?'white':'var(--ink)')+'">'+eng.name+'</div>';
+      btn.dataset.eid=eng.id;
+      btn.addEventListener('click',function(){_activeEngine=this.dataset.eid;initExplore();});
+      grid.appendChild(btn);
+    });
+  }
+  var sc=document.getElementById('shortcuts-grid');
+  if(sc){
+    sc.innerHTML='';
+    SHORTCUTS.forEach(function(s){
+      var eng=ENGINES.find(function(e){return e.id===s.engine;})||ENGINES[0];
+      var a=document.createElement('a');
+      a.href=eng.url+encodeURIComponent(s.q);
+      a.target='_blank'; // OUVRE DANS NOUVEL ONGLET
+      a.rel='noopener noreferrer';
+      a.style.cssText='display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;text-decoration:none;color:inherit';
+      a.innerHTML='<div style="font-size:18px">'+s.icon+'</div><div style="flex:1"><div style="font:600 12px var(--f)">'+s.label+'</div><div style="font:500 10px var(--f);color:var(--ink3);margin-top:1px">via '+eng.name+'</div></div><div style="background:'+eng.color+';color:white;border-radius:8px;padding:3px 8px;font:700 9px var(--f)">'+eng.name+'</div><div style="color:var(--ink3);font:600 12px var(--f)">→</div>';
+      sc.appendChild(a);
+    });
+  }
 }
 
-function renderPEA(){
-var list=document.getElementById('pea-list');if(!list)return;
-var pea=[['ASML','Tech sémiconducteurs','var(--crypto-a)'],['BNP Paribas','Banque','var(--body-a)'],['Schneider Electric','Énergie & Automatisation','var(--nutri-a)'],['TotalEnergies','Énergie','var(--nutri-a)'],['Air Liquide','Industrie','var(--body-a)'],['Capgemini','Tech & Consulting','var(--crypto-a)'],['AXA','Assurance','var(--routine-a)']];
-list.innerHTML='';
-pea.forEach(function(p){
-var el=document.createElement('div');el.style.cssText='display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1.5px solid var(--line)';
-el.innerHTML='<div style="width:8px;height:8px;border-radius:50%;background:'+p[2]+';flex-shrink:0"></div><div style="flex:1"><div style="font:600 13px var(--f)">'+p[0]+'</div><div style="font:400 11px var(--f);color:var(--ink2)">'+p[1]+'</div></div>';
-list.appendChild(el);
-});
+function doSearch(){
+  var q=document.getElementById('explore-q');
+  if(!q||!q.value.trim()){toast('Entre un terme de recherche');return;}
+  var eng=ENGINES.find(function(e){return e.id===_activeEngine;})||ENGINES[0];
+  var url=eng.url+encodeURIComponent(q.value.trim());
+  window.open(url,'_blank'); // OUVRE DANS NOUVEL ONGLET — ne quitte pas l'app
 }
 
-function renderPie(){
-var svg=document.getElementById('pie-svg');var legend=document.getElementById('pie-legend');if(!svg||!legend)return;
-var segs=[{name:'PEA Actions',pct:55,c:'#c8a84b'},{name:'Bitcoin',pct:20,c:'#f7931a'},{name:'DFND ETF',pct:15,c:'#2563eb'},{name:'Cash',pct:10,c:'#e5e7eb'}];
-var cx=50,cy=50,r=42;var cum=0;svg.innerHTML='';legend.innerHTML='';
-segs.forEach(function(s){
-var a1=(cum/100)*2*Math.PI-Math.PI/2,a2=((cum+s.pct)/100)*2*Math.PI-Math.PI/2;cum+=s.pct;
-var x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2);
-var path=document.createElementNS('http://www.w3.org/2000/svg','path');
-path.setAttribute('d','M'+cx+','+cy+' L'+x1+','+y1+' A'+r+','+r+' 0 '+(s.pct>50?1:0)+',1 '+x2+','+y2+' Z');
-path.setAttribute('fill',s.c);svg.appendChild(path);
-legend.innerHTML+='<div class="pii"><div class="pid" style="background:'+s.c+'"></div><div class="pin">'+s.name+'</div><div class="pip">'+s.pct+'%</div></div>';
-});
-var hole=document.createElementNS('http://www.w3.org/2000/svg','circle');hole.setAttribute('cx',cx);hole.setAttribute('cy',cy);hole.setAttribute('r','26');hole.setAttribute('fill','white');svg.appendChild(hole);
-}
-
-async function fetchFearGreed(){
-try{
-var r=await fetch('https://api.alternative.me/fng/');
-var d=await r.json();
-if(d.data&&d.data[0]){
-var val=parseInt(d.data[0].value);
-var lbl=d.data[0].value_classification;
-var lblMap={'Extreme Fear':'Peur Extreme','Fear':'Peur','Neutral':'Neutre','Greed':'Avidite','Extreme Greed':'Avidite Extreme'};
-var col=val<25?'#ef4444':val<45?'#f59e0b':val<55?'#94a3b8':val<75?'#22c55e':'#16a34a';
-var fgv=document.getElementById('fg-value');if(fgv){fgv.textContent=val;fgv.style.color=col;}
-var fgl=document.getElementById('fg-label');if(fgl){fgl.textContent=lblMap[lbl]||lbl;fgl.style.color=col;}
-var fgb=document.getElementById('fg-bar');if(fgb)setTimeout(function(){fgb.style.width=val+'%';},200);
-}
-}catch(e){var fgv=document.getElementById('fg-value');if(fgv)fgv.textContent='N/A';}
-}
-
-async function fetchBTCChart(){
-try{
-var r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=eur&days=7&interval=daily');
-var d=await r.json();
-if(d.prices&&d.prices.length){
-var prices=d.prices.map(function(p){return p[1];});
-var min=Math.min.apply(null,prices);var max=Math.max.apply(null,prices);
-var el=document.getElementById('btc-sparkline');if(!el)return;
-el.innerHTML='';
-prices.forEach(function(p){
-var pct=max===min?50:((p-min)/(max-min)*100);
-var col=p>=prices[0]?'#22c55e':'#ef4444';
-var bar=document.createElement('div');
-bar.style.cssText='flex:1;border-radius:3px 3px 0 0;min-height:4px;transition:height .5s;background:'+col+';opacity:.85';
-bar.style.height=Math.max(pct,5)+'%';
-el.appendChild(bar);
-});
-var chg=((prices[prices.length-1]-prices[0])/prices[0]*100);
-var chgEl=document.getElementById('btc-7d-chg');
-if(chgEl){chgEl.textContent=(chg>=0?'+':'')+chg.toFixed(1)+'% sur 7j';chgEl.style.color=chg>=0?'var(--nutri-a)':'#ef4444';}
-}
-}catch(e){var el=document.getElementById('btc-sparkline');if(el)el.innerHTML='<div style="font:400 11px var(--f);color:var(--ink3)">Indisponible</div>';}
-}
-
-async function fetchCrypto(){
-try{
-var [rBTC,rETH]=await Promise.all([fetch('https://api.coinbase.com/v2/prices/BTC-EUR/spot'),fetch('https://api.coinbase.com/v2/prices/ETH-EUR/spot')]);
-var dBTC=await rBTC.json();var dETH=await rETH.json();
-if(dBTC.data){var p=parseFloat(dBTC.data.amount);var pe=document.getElementById('btc-p');if(pe)pe.textContent='€'+Math.round(p).toLocaleString('fr');var mc=document.getElementById('btc-mktcap');if(mc)mc.textContent='~€'+Math.round(p*19700000/1e9)+'Md';sv('cached_btc',p);updateDCAPnL(p);}
-if(dETH.data){var ep=parseFloat(dETH.data.amount);var epe=document.getElementById('eth-p');if(epe)epe.textContent='€'+Math.round(ep).toLocaleString('fr');}
-toast('Cours actualisés ✓');
-}catch(e){var pe=document.getElementById('btc-p');if(pe&&pe.textContent==='Chargement...')pe.textContent='Indisponible';}
-}
-
-function saveDCA(){
-var inv=parseFloat(document.getElementById('dca-inv-in').value);var avg=parseFloat(document.getElementById('dca-avg-in').value);
-if(isNaN(inv)||isNaN(avg))return toast('Remplis les deux champs');
-sv('btc_dca',{inv:inv,avg:avg});renderDCA();toast('DCA sauvegardé ✓');
-}
-function renderDCA(){
-var dca=ld('btc_dca',null);if(!dca)return;
-var ie=document.getElementById('dca-inv-d');if(ie)ie.textContent='€'+dca.inv.toLocaleString('fr');
-var ae=document.getElementById('dca-avg-d');if(ae)ae.textContent='€'+Math.round(dca.avg).toLocaleString('fr');
-var iin=document.getElementById('dca-inv-in');if(iin)iin.value=dca.inv;
-var ain=document.getElementById('dca-avg-in');if(ain)ain.value=dca.avg;
-}
-function updateDCAPnL(cur){
-var dca=ld('btc_dca',null);if(!dca||!dca.inv||!dca.avg)return;
-var owned=dca.inv/dca.avg,val=owned*cur,pnl=val-dca.inv,pct=(pnl/dca.inv*100).toFixed(1);
-var el=document.getElementById('dca-pnl-d');
-if(el){el.textContent=(pnl>=0?'+€':'-€')+Math.abs(Math.round(pnl)).toLocaleString('fr')+' ('+pct+'%)';el.style.color=pnl>=0?'rgba(134,239,172,1)':'rgba(255,150,150,1)';}
-}
-
+// ============================================================
+// RECETTES — shuffle VRAI aléatoire
+// ============================================================
 var RECIPES=[
-{name:'Bowl riz-thon-avocat',icon:'🥣',time:'8 min',ctx:['post-jjb','rapide'],keys:['riz','thon','avocat','citron','soja'],ing:['150g riz précuit','1 boîte thon naturel (140g)','½ avocat','1 c.s. sauce soja','½ citron'],steps:['Chauffer le riz 2 min au micro-ondes.','Égoutter le thon, trancher l\'avocat.','Assembler dans un bol.','Arroser sauce soja + jus de citron.'],macros:['38g','52g','14g','490'],why:'Ratio prot/glucides idéal pour recharger le glycogène.'},
-{name:'Omelette épinards-fromage',icon:'🍳',time:'7 min',ctx:['matin','rapide','soir'],keys:['oeuf','epinard','fromage'],ing:['3 œufs','50g épinards frais','30g fromage râpé','Sel, poivre'],steps:['Battre les œufs, assaisonner.','Faire revenir épinards 2 min.','Verser les œufs + fromage.','Plier et servir.'],macros:['28g','3g','22g','320'],why:'Riche en leucine et fer. Énergie stable.'},
-{name:'Overnight Oats protéiné',icon:'🥣',time:'5 min (veille)',ctx:['matin','batch'],keys:['avoine','flocon','lait','yaourt','banane'],ing:['80g flocons avoine','200ml lait','150g yaourt grec','1 banane','1 c.s. beurre amande'],steps:['Mélanger flocons + lait + yaourt.','Ajouter beurre d\'amande.','Frigo toute la nuit.','Fruits frais le matin.'],macros:['24g','68g','12g','480'],why:'IG bas, énergie sur 4h sans crash.'},
-{name:'Batch poulet-patate douce',icon:'🍗',time:'35 min',ctx:['batch','post-jjb'],keys:['poulet','patate','courgette','four'],ing:['400g blanc de poulet','2 patates douces','1 courgette','Huile, paprika, cumin'],steps:['Four à 200°C.','Couper en cubes + épices.','Enfourner 30 min.','Diviser en 4 portions.'],macros:['42g','38g','10g','410'],why:'4 repas en une cuisson. Charge glycémique modérée.'},
-{name:'Shake récup express',icon:'🥤',time:'3 min',ctx:['post-jjb','rapide'],keys:['banane','lait','avoine','amande'],ing:['1 banane mûre','300ml lait','40g flocons avoine','2 c.s. beurre amande'],steps:['Tout dans un blender.','Mixer 30 secondes.','Boire dans les 30 min post-entraînement.'],macros:['22g','62g','16g','480'],why:'Fenêtre anabolique : glycogène + acides aminés.'},
-{name:'Salade saumon-quinoa',icon:'🥗',time:'15 min',ctx:['soir','post-jjb'],keys:['saumon','quinoa','roquette','avocat'],ing:['150g saumon fumé','100g quinoa cuit','Roquette','½ avocat','Huile d\'olive, citron'],steps:['Cuire le quinoa 12 min.','Assembler roquette + quinoa.','Ajouter saumon + avocat.','Huile + citron.'],macros:['36g','30g','22g','460'],why:'Oméga-3 anti-inflammatoires. Idéal le soir.'},
-{name:'Toast avocat-œufs pochés',icon:'🥑',time:'8 min',ctx:['matin','rapide'],keys:['pain','avocat','oeuf','citron'],ing:['2 tranches pain complet','1 avocat','2 œufs','Citron, piment, sel'],steps:['Toaster le pain.','Écraser avocat + citron + sel.','Pocher les œufs 3 min.','Assembler.'],macros:['20g','34g','22g','415'],why:'Bons lipides + protéines = satiété jusqu\'à midi.'},
+{name:'Bowl riz-thon-avocat',icon:'🥣',time:'8 min',ctx:['post-jjb','rapide'],keys:['riz','thon','avocat'],ing:['150g riz précuit','140g thon naturel','1/2 avocat','1cs sauce soja','1/2 citron','Graines sésame'],steps:['Chauffer le riz 2 min micro-ondes.','Égoutter le thon, trancher avocat.','Assembler dans un bol.','Soja + citron + sésame.'],macros:['38g','52g','14g','490'],why:'Ratio prot/glucides idéal post-effort. Glycogène rechargé en 30 min.'},
+{name:'Shake récup banane-amande',icon:'🥤',time:'3 min',ctx:['post-jjb','rapide'],keys:['banane','lait','amande','avoine'],ing:['1 banane mûre','300ml lait entier','40g flocons avoine','2cs beurre amande','1 pincée sel'],steps:['Tout dans le blender.','Mixer 30 sec.','Boire dans les 30 min post-training.'],macros:['22g','62g','16g','480'],why:'Fenêtre anabolique : sucres rapides + acides aminés essentiels.'},
+{name:'Wrap poulet-riz-légumes',icon:'🌯',time:'12 min',ctx:['post-jjb','batch'],keys:['poulet','riz','poivron','wrap'],ing:['150g blanc poulet','100g riz cuit','1/2 poivron rouge','1 tortilla complète','Sauce sriracha'],steps:['Cuire poulet à la poêle 6 min.','Trancher en lamelles.','Assembler : riz, poulet, poivron.','Rouler serré.'],macros:['45g','48g','10g','460'],why:'Complet : protéines + glucides + fibres.'},
+{name:'Oeufs brouillés patate douce',icon:'🍳',time:'10 min',ctx:['post-jjb','matin'],keys:['oeuf','patate','epinard'],ing:['3 oeufs','150g patate douce rôtie','Poignée épinards','Sel, curcuma, poivre'],steps:['Écraser la patate douce.','Faire revenir épinards 2 min.','Ajouter oeufs battus, mélanger.','Servir chaud.'],macros:['24g','32g','14g','350'],why:'Anti-inflammatoire. Curcuma accélère la récupération musculaire.'},
+{name:'Saumon patate douce haricots',icon:'🐟',time:'20 min',ctx:['post-jjb','soir'],keys:['saumon','patate','haricot'],ing:['180g filet saumon','200g patate douce','100g haricots verts','Citron, aneth, huile olive'],steps:['Four 200°C 15 min pour saumon + patate.','Blanchir haricots 5 min.','Dresser avec citron et aneth.'],macros:['40g','35g','18g','460'],why:'Oméga-3 anti-inflammatoires + potassium pour les crampes.'},
+{name:'Overnight Oats protéine',icon:'🥣',time:'5 min',ctx:['matin','batch'],keys:['avoine','yaourt','banane','lait'],ing:['80g flocons avoine','200ml lait','150g yaourt grec','1 banane','1cs beurre amande'],steps:['Mélanger flocons + lait + yaourt.','Ajouter beurre amande.','Frigo toute la nuit.','Garnir banane le matin.'],macros:['24g','68g','12g','480'],why:'IG bas. Énergie stable sur 4h sans crash.'},
+{name:'Toast avocat oeufs pochés',icon:'🥑',time:'8 min',ctx:['matin','rapide'],keys:['pain','avocat','oeuf'],ing:['2 tranches pain complet','1 avocat mûr','2 oeufs','Citron, piment, fleur de sel'],steps:['Toaster le pain.','Écraser avocat + citron + sel.','Pocher oeufs 3 min.','Assembler.'],macros:['20g','34g','22g','415'],why:'Bons lipides + protéines = satiété jusqu\'à midi.'},
+{name:'Smoothie vert performance',icon:'🥬',time:'4 min',ctx:['matin','rapide'],keys:['epinard','banane','gingembre'],ing:['2 poignées épinards','1 banane congelée','1cm gingembre','250ml lait amande','1cs graines chia'],steps:['Tout dans le blender.','Mixer 45 sec.','Boire frais.'],macros:['8g','38g','6g','240'],why:'Nitrates des épinards +5% perf. Gingembre = anti-inflam.'},
+{name:'Batch poulet-patate douce',icon:'🍗',time:'35 min',ctx:['batch','post-jjb'],keys:['poulet','patate','courgette'],ing:['400g blanc poulet','2 patates douces','1 courgette','Paprika, cumin, huile olive'],steps:['Four 200°C.','Cuber tout + épices.','Enfourner 30 min.','Diviser 4 portions.'],macros:['42g','38g','10g','410'],why:'4 repas en 1 cuisson. Gain de temps max.'},
+{name:'Salade thon-pois chiches',icon:'🥗',time:'5 min',ctx:['rapide','soir'],keys:['thon','pois','citron','olive'],ing:['140g thon','200g pois chiches','Tomates cerises','Huile olive, citron'],steps:['Égoutter thon et pois chiches.','Couper tomates.','Mélanger + assaisonnement.'],macros:['35g','30g','10g','350'],why:'Zéro cuisson. Protéines + fibres + bons glucides.'},
+{name:'Curry lentilles corail',icon:'🍛',time:'20 min',ctx:['soir','batch'],keys:['lentille','tomate','lait coco'],ing:['200g lentilles corail','400ml lait coco','2 tomates','Curry, cumin, gingembre'],steps:['Faire revenir épices 1 min.','Ajouter lentilles + tomates + lait coco.','15 min feu moyen.'],macros:['22g','45g','14g','400'],why:'Tryptophane des lentilles = meilleur sommeil.'},
+{name:'Omelette expresse 3 ingrédients',icon:'🍳',time:'5 min',ctx:['rapide','matin','soir'],keys:['oeuf','epinard','fromage'],ing:['3 oeufs','Poignée épinards','30g gruyère râpé','Sel poivre'],steps:['Battre oeufs, assaisonner.','Épinards 1 min à la poêle.','Verser oeufs + fromage.','Plier.'],macros:['28g','3g','22g','320'],why:'Leucine complète pour synthèse protéique. 5 min chrono.'},
+{name:'Buddha bowl quinoa',icon:'🥗',time:'15 min',ctx:['soir','batch','post-jjb'],keys:['quinoa','pois','avocat'],ing:['100g quinoa cuit','1 boîte pois chiches','½ avocat','Tomates cerises','Tahini, citron'],steps:['Rincer les pois chiches.','Assembler quinoa + légumes.','Mélanger tahini + citron.','Napper et servir.'],macros:['22g','58g','18g','470'],why:'Fer et fibres — idéal récupération inflammatoire.'},
+{name:'Riz sauté poulet wok',icon:'🍳',time:'12 min',ctx:['post-jjb','rapide'],keys:['riz','poulet','carotte','oeuf'],ing:['200g riz cuit','150g blanc poulet','1 carotte','2 oeufs','Sauce soja, ail'],steps:['Cuire poulet en dés 5 min.','Ajouter carotte, ail.','Brouiller les oeufs séparément.','Mélanger avec le riz + soja.'],macros:['44g','55g','12g','500'],why:'Repas complet façon wok — rapide et dense.'},
+{name:'Pancakes protéinés',icon:'🥞',time:'12 min',ctx:['matin'],keys:['avoine','oeuf','banane'],ing:['2 bananes','3 oeufs','80g flocons avoine','100ml lait','Cannelle'],steps:['Mixer bananes + oeufs + flocons + lait.','Chauffer poêle anti-adhésive.','Verser louches de pâte.','Cuire 2 min chaque côté.'],macros:['28g','62g','10g','450'],why:'Énergie progressive sans sucre ajouté.'},
+{name:'Soupe miso poulet-nouilles',icon:'🍜',time:'10 min',ctx:['soir','rapide'],keys:['poulet','nouille','miso'],ing:['150g poulet cuit effiloché','80g nouilles soba','1cs pâte miso','Gingembre frais','Cébettes'],steps:['Faire bouillir 500ml eau.','Dissoudre le miso hors feu.','Cuire les nouilles 4 min.','Assembler avec poulet.'],macros:['38g','48g','6g','395'],why:'Probiotiques du miso + protéines = récup optimale.'},
+{name:'Dahl lentilles corail-coco',icon:'🍛',time:'20 min',ctx:['batch','soir'],keys:['lentille','coco','curry'],ing:['200g lentilles corail','400ml lait coco','1 boîte tomates','Curry, curcuma, cumin'],steps:['Faire revenir épices 2 min.','Ajouter lentilles + tomates + coco.','Cuire 15 min à feu moyen.'],macros:['24g','52g','14g','430'],why:'Anti-inflammatoire puissant. 4 portions en batch.'},
+{name:'Steak haché patate douce',icon:'🥩',time:'18 min',ctx:['post-jjb','soir'],keys:['boeuf','patate','oignon'],ing:['200g steak haché 5%','1 grande patate douce','1 oignon','Paprika, thym'],steps:['Four 200°C — patate douce 20 min.','Cuire l\'oignon 3 min.','Ajouter steak, émietter 5 min.','Servir ensemble.'],macros:['40g','44g','12g','445'],why:'Fer héminique + glucides complexes. Post-training parfait.'},
+{name:'Egg muffins épinards-feta',icon:'🧁',time:'20 min',ctx:['batch','matin'],keys:['oeuf','epinard','feta'],ing:['6 oeufs','100g épinards','60g feta','Tomates séchées'],steps:['Four 180°C. Graisser moules.','Mélanger oeufs + épinards + feta.','Remplir les moules.','Cuire 15-18 min.'],macros:['18g','4g','14g','210'],why:'6 muffins en batch — protéines pour toute la semaine.'},
+{name:'Ceviche saumon-mangue',icon:'🐟',time:'15 min',ctx:['soir','rapide'],keys:['saumon','mangue','citron','avocat'],ing:['200g saumon frais','½ mangue','1 avocat','2 citrons verts','Piment, coriandre'],steps:['Couper saumon en cubes.','Mariner 10 min dans citron.','Ajouter mangue + avocat.','Garnir coriandre.'],macros:['32g','22g','20g','395'],why:'Cru = enzymes préservées. Léger et anti-inflammatoire.'},
+{name:'Poulet rôti légumes vapeur',icon:'🍗',time:'25 min',ctx:['soir','post-jjb'],keys:['poulet','brocoli','carotte'],ing:['200g cuisse poulet sans peau','1 brocoli','2 carottes','Ail, citron, romarin'],steps:['Mariner poulet ail + citron.','Four 200°C 20 min.','Légumes vapeur 10 min.'],macros:['44g','20g','12g','370'],why:'Protéines + zinc pour récupération nocturne.'},
+{name:'Tartines ricotta-saumon',icon:'🍞',time:'5 min',ctx:['matin','rapide'],keys:['pain','saumon','fromage'],ing:['2 tranches pain complet','100g ricotta','80g saumon fumé','Aneth, citron, câpres'],steps:['Toaster le pain.','Étaler la ricotta.','Disposer saumon + aneth.','Zeste citron + câpres.'],macros:['28g','30g','18g','390'],why:'Oméga-3 + calcium + glucides lents = démarrage parfait.'},
+{name:'Salade de dinde légère',icon:'🥗',time:'8 min',ctx:['soir','rapide'],keys:['dinde','salade','concombre'],ing:['150g blanc dinde','Salade verte','1 concombre','Tomates cerises','Citron, moutarde'],steps:['Trancher dinde.','Préparer salade + légumes.','Vinaigrette légère.','Assembler.'],macros:['38g','8g','4g','220'],why:'220 kcal seulement. Protéines pour préserver muscle en sèche.'},
 ];
+
+function _shuffleArr(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
 
 function makeRecipeCard(r){
-var ing='';r.ing.forEach(function(i){ing+='<div class="recipe-ing">'+i+'</div>';});
-var steps='';r.steps.forEach(function(s,i){steps+='<div class="recipe-step" data-n="'+(i+1)+'">'+s+'</div>';});
-return '<div class="recipe-hero"><div class="recipe-top"><div class="recipe-icon">'+r.icon+'</div><div class="recipe-name">'+r.name+'</div><div class="recipe-meta"><span class="recipe-m">⏱ '+r.time+'</span></div></div><div class="recipe-body"><div class="recipe-section">Ingrédients</div>'+ing+'<div class="recipe-section">Préparation</div>'+steps+'<div class="recipe-section">Macros</div><div class="macro-row"><div class="macro-box"><div class="macro-v" style="color:var(--nutri-a)">'+r.macros[0]+'</div><div class="macro-l">Prot</div></div><div class="macro-box"><div class="macro-v" style="color:var(--routine-a)">'+r.macros[1]+'</div><div class="macro-l">Glucides</div></div><div class="macro-box"><div class="macro-v" style="color:var(--body-a)">'+r.macros[2]+'</div><div class="macro-l">Lipides</div></div><div class="macro-box"><div class="macro-v">'+r.macros[3]+'</div><div class="macro-l">kcal</div></div></div><div style="background:rgba(34,197,94,.08);border-radius:10px;padding:10px;margin-top:10px;font:400 12px var(--s);font-style:italic;color:var(--nutri-a)">✦ '+r.why+'</div></div></div>';
+  var ing='';r.ing.forEach(function(i){ing+='<div class="recipe-ing">'+i+'</div>';});
+  var steps='';r.steps.forEach(function(s,i){steps+='<div class="recipe-step" data-n="'+(i+1)+'">'+s+'</div>';});
+  return '<div class="recipe-hero"><div class="recipe-top"><div class="recipe-icon">'+r.icon+'</div><div class="recipe-name">'+r.name+'</div><div class="recipe-meta"><span class="recipe-m">⏱ '+r.time+'</span></div></div><div class="recipe-body"><div class="recipe-section">Ingrédients</div>'+ing+'<div class="recipe-section">Préparation</div>'+steps+'<div class="recipe-section">Macros</div><div class="macro-row"><div class="macro-box"><div class="macro-v" style="color:var(--nutri-a)">'+r.macros[0]+'</div><div class="macro-l">Prot</div></div><div class="macro-box"><div class="macro-v" style="color:var(--routine-a)">'+r.macros[1]+'</div><div class="macro-l">Glucides</div></div><div class="macro-box"><div class="macro-v" style="color:var(--body-a)">'+r.macros[2]+'</div><div class="macro-l">Lipides</div></div><div class="macro-box"><div class="macro-v">'+r.macros[3]+'</div><div class="macro-l">kcal</div></div></div><div style="background:rgba(34,197,94,.08);border-radius:10px;padding:10px;margin-top:10px;font:400 12px var(--s);font-style:italic;color:var(--nutri-a)">✦ '+r.why+'</div></div></div>';
 }
 
+function renderStaticRecipes(){
+  var el=document.getElementById('static-recipes');
+  if(!el)return;
+  var picks=_shuffleArr(RECIPES).slice(0,4);
+  var html='';picks.forEach(function(r){html+=makeRecipeCard(r);});
+  el.innerHTML=html;
+}
 
+function shuffleStaticRecipes(){
+  renderStaticRecipes();
+  toast('4 nouvelles recettes ↺');
+}
 
+async function genRecipe(){
+  var ingr=document.getElementById('ai-ingr');
+  var ctx=document.getElementById('ai-ctx');
+  var ctxLabels={'post-jjb':'Post-JJB récupération','matin':'Matin avant entraînement','batch':'Batch cook','rapide':'Ultra-rapide moins de 10 min','soir':'Dîner léger'};
+  var ctxVal=ctx?ctx.value:'post-jjb';
+  var q=ingr?ingr.value.trim():'';
+  var res=document.getElementById('recipe-result');
+  var btn=document.getElementById('recipe-btn');
+  if(!res)return;
 
+  // Sans ingrédients → banque locale filtrée et mélangée
+  if(!q){
+    var filtered=RECIPES.filter(function(r){return r.ctx&&r.ctx.indexOf(ctxVal)>=0;});
+    if(!filtered.length)filtered=RECIPES;
+    var pick=_shuffleArr(filtered)[0];
+    res.style.display='block';
+    res.innerHTML=makeRecipeCard(pick);
+    return;
+  }
 
+  // Avec ingrédients → IA Claude
+  if(btn){btn.textContent='⏳ Génération...';btn.disabled=true;}
+  res.style.display='block';
+  res.innerHTML='<div style="text-align:center;padding:24px;color:var(--ink3);font:500 13px var(--f)">🤖 Claude cuisine pour toi...</div>';
 
+  try{
+    var prompt='Tu es nutritionniste sportif expert JJB. Génère UNE recette JSON exactement ainsi:\n{"name":"...","icon":"...","time":"...","why":"pourquoi idéal JJB en 1 phrase","macros":["Xg prot","Xg gluc","Xg lip","Xkcal"],"ing":["...","..."],"steps":["...","..."]}\n\nIngrédients: '+q+'\nContexte: '+(ctxLabels[ctxVal]||ctxVal)+'\nRéponds UNIQUEMENT avec le JSON brut.';
+
+    var response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:700,messages:[{role:'user',content:prompt}]})
+    });
+    var data=await response.json();
+    var text=data.content&&data.content[0]?data.content[0].text:'';
+    var clean=text.replace(/```json|```/g,'').trim();
+    var recipe=JSON.parse(clean);
+
+    var ing='';(recipe.ing||[]).forEach(function(i){ing+='<div class="recipe-ing">'+i+'</div>';});
+    var steps='';(recipe.steps||[]).forEach(function(s,i){steps+='<div class="recipe-step" data-n="'+(i+1)+'">'+s+'</div>';});
+    var macros=recipe.macros||['—','—','—','—'];
+    var html='<div style="background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));border-radius:16px 16px 0 0;padding:16px 18px;color:white;display:flex;align-items:center;gap:12px">';
+    html+='<div style="font-size:32px">'+(recipe.icon||'🍽')+'</div>';
+    html+='<div><div style="font:800 17px var(--f)">'+(recipe.name||'Recette')+'</div><div style="font:500 11px var(--f);opacity:.8;margin-top:2px">⏱ '+(recipe.time||'—')+'</div></div>';
+    html+='<div style="margin-left:auto;background:rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font:700 9px var(--f)">✦ IA</div></div>';
+    html+='<div style="background:var(--white);border:1.5px solid var(--line);border-top:none;border-radius:0 0 16px 16px;padding:16px">';
+    html+='<div class="recipe-section">Ingrédients</div>'+ing;
+    html+='<div class="recipe-section">Préparation</div>'+steps;
+    html+='<div class="recipe-section">Macros</div><div class="macro-row"><div class="macro-box"><div class="macro-v" style="color:var(--nutri-a)">'+macros[0]+'</div><div class="macro-l">Prot</div></div><div class="macro-box"><div class="macro-v" style="color:var(--routine-a)">'+macros[1]+'</div><div class="macro-l">Glucides</div></div><div class="macro-box"><div class="macro-v" style="color:var(--body-a)">'+macros[2]+'</div><div class="macro-l">Lipides</div></div><div class="macro-box"><div class="macro-v">'+macros[3]+'</div><div class="macro-l">kcal</div></div></div>';
+    if(recipe.why)html+='<div style="background:rgba(34,197,94,.08);border-radius:10px;padding:10px;margin-top:10px;font:400 12px var(--s);font-style:italic;color:var(--nutri-a)">✦ '+recipe.why+'</div>';
+    html+='</div>';
+    res.innerHTML=html;
+  }catch(e){
+    var words=q.toLowerCase().split(/[,\s]+/).filter(function(w){return w.length>2;});
+    var best=RECIPES.filter(function(r){return r.keys&&r.keys.some(function(k){return words.some(function(w){return k.indexOf(w)>=0||w.indexOf(k)>=0;});});});
+    if(!best.length)best=RECIPES;
+    res.innerHTML=makeRecipeCard(_shuffleArr(best)[0]);
+  }finally{
+    if(btn){btn.textContent='✦ Générer une recette';btn.disabled=false;}
+  }
+}
+
+// ============================================================
+// NUTRITION — autres
+// ============================================================
+function addWater(ml){sv('water_'+td(),Math.max(0,ld('water_'+td(),0)+ml));updateWater();}
+function resetWater(){sv('water_'+td(),0);updateWater();}
+function updateWater(){var w=ld('water_'+td(),0);var el=document.getElementById('water-disp');if(el)el.textContent=(w/1000).toFixed(1)+' / 3L';var bar=document.getElementById('water-bar');if(bar)bar.style.width=Math.min(100,w/3000*100)+'%';}
+
+function renderAliments(){
+  var el=document.getElementById('aliments-list');if(!el)return;
+  var items=[
+    {e:'🥚',n:'Oeufs',d:'Leucine complète · 6g prot/oeuf · Biodispo max',c:'var(--nutri-a)'},
+    {e:'🍗',n:'Blanc de poulet',d:'32g prot/100g · Post-JJB idéal',c:'var(--nutri-a)'},
+    {e:'🐟',n:'Saumon / Thon',d:'Oméga-3 + prot · Anti-inflam naturel',c:'var(--body-a)'},
+    {e:'🍠',n:'Patate douce',d:'Glucides lents · Potassium · Glycogène',c:'var(--routine-a)'},
+    {e:'🥑',n:'Avocat',d:'Bons lipides · Magnésium · Satiété',c:'var(--nutri-b)'},
+    {e:'🍌',n:'Banane',d:'Énergie rapide · Potassium · Post-effort',c:'var(--feed-b)'},
+  ];
+  var html='';
+  items.forEach(function(it){
+    html+='<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1.5px solid var(--line)">';
+    html+='<div style="width:36px;height:36px;border-radius:10px;background:'+it.c+'22;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+it.e+'</div>';
+    html+='<div><div style="font:600 13px var(--f)">'+it.n+'</div><div style="font:400 11px var(--f);color:var(--ink2)">'+it.d+'</div></div></div>';
+  });
+  el.innerHTML=html;
+}
+
+async function searchMeals(q){
+  var input=document.getElementById('meal-q');
+  var query=q||(input&&input.value.trim())||'chicken';
+  var el=document.getElementById('meal-results');
+  if(el)el.innerHTML='<div style="text-align:center;padding:20px 0;color:var(--ink3)">Recherche...</div>';
+  try{
+    var r=await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s='+encodeURIComponent(query));
+    var d=await r.json();
+    if(!d.meals){if(el)el.innerHTML='<div style="text-align:center;padding:20px 0;color:var(--ink3)">Aucune recette trouvée</div>';return;}
+    var html='<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
+    d.meals.slice(0,8).forEach(function(m){
+      html+='<div data-mid="'+m.idMeal+'" class="mcard" style="background:var(--white);border:1.5px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer">';
+      html+='<img src="'+m.strMealThumb+'/preview" style="width:100%;height:90px;object-fit:cover">';
+      html+='<div style="padding:8px"><div style="font:700 11px var(--f);line-height:1.3">'+m.strMeal+'</div>';
+      html+='<div style="font:500 9px var(--f);color:var(--ink3);margin-top:2px">'+m.strCategory+'</div></div></div>';
+    });
+    html+='</div>';
+    if(el){
+      el.innerHTML=html;
+      el.querySelectorAll('.mcard').forEach(function(card){card.addEventListener('click',function(){openMeal(this.dataset.mid);});});
+    }
+  }catch(e){if(el)el.innerHTML='<div style="text-align:center;padding:20px 0;color:var(--ink3)">Connexion requise</div>';}
+}
+
+async function openMeal(id){
+  var el=document.getElementById('meal-results');
+  if(el)el.innerHTML='<div style="text-align:center;padding:20px 0;color:var(--ink3)">Chargement...</div>';
+  try{
+    var r=await fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i='+id);
+    var d=await r.json();var m=d.meals[0];
+    var ings=[];
+    for(var i=1;i<=20;i++){var ing=m['strIngredient'+i],mes=m['strMeasure'+i];if(ing&&ing.trim())ings.push((mes?mes.trim()+' ':'')+ing.trim());}
+    var steps=m.strInstructions.split('\n').filter(function(s){return s.trim().length>10;}).slice(0,8);
+    var html='<div><img src="'+m.strMealThumb+'/preview" style="width:100%;height:160px;object-fit:cover;border-radius:14px;margin-bottom:14px">';
+    html+='<div style="font:900 20px var(--f);margin-bottom:3px">'+m.strMeal+'</div>';
+    html+='<div style="font:500 11px var(--f);color:var(--ink3);margin-bottom:14px">'+m.strCategory+' · '+m.strArea+'</div>';
+    html+='<div style="font:700 12px var(--f);margin-bottom:8px">Ingrédients</div>';
+    html+='<div style="background:var(--cream);border-radius:12px;padding:12px;margin-bottom:14px">';
+    ings.forEach(function(ing){html+='<div style="font:500 11px var(--f);padding:3px 0;border-bottom:1px solid var(--line)">· '+ing+'</div>';});
+    html+='</div><div style="font:700 12px var(--f);margin-bottom:8px">Étapes</div>';
+    steps.forEach(function(s,i){html+='<div style="font:500 11px var(--f);line-height:1.6;padding:6px 0;border-bottom:1px solid var(--line)"><span style="font:700 11px var(--f);color:var(--nutri-a)">'+(i+1)+'.</span> '+s.trim()+'</div>';});
+    if(m.strYoutube)html+='<a href="'+m.strYoutube+'" target="_blank" style="display:block;margin-top:14px;background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));color:white;text-align:center;border-radius:50px;padding:11px;font:700 12px var(--f);text-decoration:none">▶ Voir sur YouTube</a>';
+    html+='<button onclick="searchMeals(\'chicken\')" style="width:100%;margin-top:10px;background:var(--cream);border:none;border-radius:50px;padding:9px;font:600 11px var(--f);cursor:pointer">← Retour</button></div>';
+    if(el)el.innerHTML=html;
+  }catch(e){if(el)el.innerHTML='<div style="text-align:center;padding:20px 0;color:var(--ink3)">Erreur</div>';}
+}
+
+// ============================================================
+// ROUTINE
+// ============================================================
 var HABITS={
 matin:[{id:'eau',e:'💧',l:'Eau au réveil (avant téléphone)',c:'var(--body-a)'},{id:'lumiere',e:'☀️',l:'Lumière naturelle 10 min',c:'var(--routine-a)'},{id:'jjb-mat',e:'🥋',l:'JJB session matin',c:'var(--nutri-a)'},{id:'cafe',e:'☕',l:'Café noir (pas de sucre)',c:'var(--feed-a)'}],
-midi:[{id:'legumes',e:'🥦',l:"Légumes d'abord",c:'var(--nutri-a)'},{id:'deep',e:'🎯',l:'Deep Work 90 min',c:'var(--routine-a)'},{id:'lecture',e:'📖',l:'30 pages lues',c:'var(--mind-a)'},{id:'nap',e:'😴',l:'Nap Café 26 min',c:'var(--body-a)'}],
+midi:[{id:'legumes',e:'🥦',l:'Légumes d\'abord',c:'var(--nutri-a)'},{id:'deep',e:'🎯',l:'Deep Work 90 min',c:'var(--routine-a)'},{id:'lecture',e:'📖',l:'30 pages lues',c:'var(--mind-a)'},{id:'nap',e:'😴',l:'Nap Café 26 min',c:'var(--body-a)'}],
 soir:[{id:'jjb-soir',e:'🥋',l:'JJB session soir',c:'var(--nutri-a)'},{id:'no-wa',e:'📵',l:'WhatsApp off après 18h',c:'var(--feed-a)'},{id:'journal',e:'✍️',l:'Journaling 5 min',c:'var(--mind-a)'},{id:'coucher',e:'🌙',l:'Couché avant 22h15',c:'var(--body-a)'}],
 };
 
@@ -844,7 +985,7 @@ Object.entries(HABITS).forEach(function(entry){
 var tab=entry[0],list=entry[1];var el=document.getElementById('hab-'+tab);if(!el)return;el.innerHTML='';
 list.forEach(function(h){
 var done=!!state[h.id];var d=document.createElement('div');d.className='hab-item';
-d.innerHTML='<div class="hab-ico" style="background:'+h.c+'22">'+h.e+'</div><div class="hab-label'+(done?' dn':'')+'" >'+h.l+'</div><div class="hab-chk'+(done?' dn':'')+'"></div>';
+d.innerHTML='<div class="hab-ico" style="background:'+h.c+'22">'+h.e+'</div><div class="hab-label'+(done?' dn':'')+'">'+h.l+'</div><div class="hab-chk'+(done?' dn':'')+'"></div>';
 d.querySelector('.hab-chk').setAttribute('onclick','toggleHab("'+h.id+'",this)');
 el.appendChild(d);
 });
@@ -879,8 +1020,8 @@ var days=[];for(var i=29;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);day
 for(var j=0;j<30;j++){var dd=new Date();dd.setDate(dd.getDate()-j);var ds=dd.toISOString().slice(0,10);var sv2=ld('habits_'+ds,{});var t=Object.values(HABITS).flat().length;if(Object.values(sv2).filter(Boolean).length>=Math.ceil(t*.5))streak++;else if(j>0)break;}
 var le=document.getElementById('streak-lbl');if(le)le.textContent=streak+'j 🔥';
 days.forEach(function(d){
-var ds=d.toISOString().slice(0,10);var sv3=ld('habits_'+ds,{});var t=Object.values(HABITS).flat().length;
-var hit=Object.values(sv3).filter(Boolean).length>=Math.ceil(t*.5);var isnow=ds===td();
+var ds=d.toISOString().slice(0,10);var sv3=ld('habits_'+ds,{});var t2=Object.values(HABITS).flat().length;
+var hit=Object.values(sv3).filter(Boolean).length>=Math.ceil(t2*.5);var isnow=ds===td();
 var el=document.createElement('div');el.className='sd '+(isnow?'now':hit?'hit':'miss');el.textContent=d.getDate();grid.appendChild(el);
 });
 }
@@ -894,7 +1035,7 @@ function renderTasks(){
 var tasks=ld('tasks_'+td(),[]);var el=document.getElementById('tasks-list');if(!el)return;
 if(!tasks.length){el.innerHTML='<div style="font:400 13px var(--f);color:var(--ink3);padding:8px 0">Aucune tâche. Lance-toi !</div>';updateScore();return;}
 el.innerHTML='';
-tasks.forEach(function(t,i){var d=document.createElement('div');d.className='ti';d.innerHTML='<div class="tc'+(t.done?' dn':'')+'" onclick="toggleTask('+i+')"></div><div class="tt'+(t.done?' dn':'')+'">'+t.text+'</div><button class="td" onclick="delTask('+i+')">✕</button>';el.appendChild(d);});
+tasks.forEach(function(t,i){var d=document.createElement('div');d.className='ti';d.innerHTML='<div class="tc'+(t.done?' dn':'')+'\" onclick="toggleTask('+i+')"></div><div class="tt'+(t.done?' dn':'')+'">'+t.text+'</div><button class="td" onclick="delTask('+i+')">✕</button>';el.appendChild(d);});
 updateScore();
 }
 function toggleTask(i){var t=ld('tasks_'+td(),[]);t[i].done=!t[i].done;sv('tasks_'+td(),t);renderTasks();}
@@ -905,7 +1046,7 @@ var DEFAULT_AG=[
 {time:'06:15',title:'JJB Matin',det:'90 min',col:'var(--nutri-a)'},
 {time:'08:15',title:'Deep Work',det:'90 min — une seule tâche',col:'var(--routine-a)'},
 {time:'10:00',title:'Lecture',det:'30 pages minimum',col:'var(--mind-a)'},
-{time:'12:00',title:'Déjeuner',det:"Légumes d'abord",col:'var(--ink3)'},
+{time:'12:00',title:'Déjeuner',det:'Légumes d\'abord',col:'var(--ink3)'},
 {time:'12:30',title:'Nap Café',det:'26 min',col:'var(--body-a)'},
 {time:'14:00',title:'JJB Soir · Sparring',det:'90 min',col:'var(--nutri-a)'},
 {time:'19:00',title:'Dîner léger',det:'',col:'var(--ink3)'},
@@ -926,154 +1067,70 @@ sv('agenda',blocks);closeM('m-agenda');renderAgenda();document.getElementById('a
 }
 function delAg(i,e){e.stopPropagation();var b=ld('agenda',DEFAULT_AG);b.splice(i,1);sv('agenda',b);renderAgenda();}
 
-function saveSleep(){
-var bed=document.getElementById('s-bed').value;var wake=document.getElementById('s-wake').value;var qual=document.getElementById('s-qual').value;
-var bv=bed.split(':').map(Number),wv=wake.split(':').map(Number);
-var dur=(wv[0]*60+wv[1])-(bv[0]*60+bv[1]);if(dur<0)dur+=1440;
-var log=ld('sleep_log',[]);log.unshift({date:td(),bed:bed,wake:wake,duration:dur,quality:qual,label:Math.floor(dur/60)+'h'+(dur%60>0?dur%60+'min':'')});
-sv('sleep_log',log.slice(0,60));
-var dd=document.getElementById('sleep-disp');if(dd)dd.textContent=Math.floor(dur/60)+'h'+(dur%60>0?dur%60:'');
-var dq=document.getElementById('sleep-ql');if(dq)dq.textContent='Qualité '+qual+'/5';
-updateSleepStreak();renderSleepChart();updateScore();toast('Sommeil enregistré ✓');
-}
-function updateSleepStreak(){
-var log=ld('sleep_log',[]);var streak=0;
-for(var i=0;i<30;i++){var d=new Date();d.setDate(d.getDate()-i);var ds=d.toISOString().slice(0,10);var e=log.find(function(x){return x.date===ds;});if(e&&e.duration>=480)streak++;else if(i>0)break;}
-var el=document.getElementById('sleep-streak');if(el)el.textContent=streak+'j';
-}
-function renderSleepChart(){
-var chart=document.getElementById('sleep-chart');if(!chart)return;chart.innerHTML='';var log=ld('sleep_log',[]);
-for(var i=13;i>=0;i--){
-var d=new Date();d.setDate(d.getDate()-i);var ds=d.toISOString().slice(0,10);var e=log.find(function(x){return x.date===ds;});
-var col=document.createElement('div');col.className='bc';var h=e?e.duration/480*100:2;
-var c=e?(e.duration>=420?'var(--nutri-a)':e.duration>=360?'var(--routine-a)':'var(--feed-a)'):'var(--line)';var isn=ds===td();
-col.innerHTML='<div class="bf" style="height:'+Math.max(h,2)+'%;background:'+c+(isn?';box-shadow:0 0 6px '+c:'')+'"></div><div class="bl" style="'+(isn?'color:var(--routine-a)':'')+'">'+d.getDate()+'</div>';
-chart.appendChild(col);
-}
-}
-function restoreSleep(){var log=ld('sleep_log',[]);var last=log[0];if(!last)return;var dd=document.getElementById('sleep-disp');if(dd)dd.textContent=last.label;var dq=document.getElementById('sleep-ql');if(dq)dq.textContent='Qualité '+last.quality+'/5';}
-
-var _brRun=false,_brInt=null,_brCyc=0,_brPh=0;
-var PHASES=[{l:'Inspire',d:4},{l:'Retiens',d:7},{l:'Expire',d:8}];
-function toggleBreath(){
-if(_brRun){clearTimeout(_brInt);_brRun=false;document.getElementById('br-btn').textContent='Commencer';document.getElementById('br-ph').textContent='Prêt';document.getElementById('br-arc').style.strokeDashoffset='402';}
-else{_brRun=true;_brCyc=0;_brPh=0;document.getElementById('br-btn').textContent='Arrêter';runBrPh();}
-}
-function runBrPh(){
-if(!_brRun)return;var ph=PHASES[_brPh];document.getElementById('br-ph').textContent=ph.l;
-var arc=document.getElementById('br-arc');arc.style.transition='stroke-dashoffset '+ph.d+'s linear';
-if(_brPh===0){arc.style.strokeDashoffset='402';setTimeout(function(){arc.style.strokeDashoffset='0';},50);}else if(_brPh===1)arc.style.strokeDashoffset='0';else arc.style.strokeDashoffset='402';
-_brInt=setTimeout(function(){_brPh=(_brPh+1)%3;if(_brPh===0){_brCyc++;if(_brCyc>=5){toggleBreath();toast('5 cycles terminés ✓');return;}}document.getElementById('br-cn').textContent=(5-_brCyc)+' cycles restants';runBrPh();},ph.d*1000);
-}
-
-function saveApnee(){
-var time=document.getElementById('apn-time').value.trim();if(!time)return toast('Entre un temps');
-var e=ld('apn_entries',[]);e.unshift({date:td(),time:time,type:document.getElementById('apn-type').value,notes:document.getElementById('apn-notes').value.trim()});sv('apn_entries',e);
-document.getElementById('apn-time').value='';document.getElementById('apn-notes').value='';
-updateApnStats();renderApnChart();toast('Session apnée enregistrée ✓');
-}
-function updateApnStats(){
-var e=ld('apn_entries',[]);var nb=document.getElementById('apn-nb');if(nb)nb.textContent=e.length;
-if(e.length){var ts=function(t){var p=(t||'0:0').split(':').map(Number);return p[0]*60+(p[1]||0);};var best=e.reduce(function(b,x){return ts(x.time)>ts(b.time)?x:b;},e[0]);var be=document.getElementById('apn-best');if(be)be.textContent=best.time;}
-}
-function renderApnChart(){
-var chart=document.getElementById('apn-chart');if(!chart)return;
-var entries=ld('apn_entries',[]).slice(0,14).reverse();
-if(!entries.length){chart.innerHTML='<div style="font:400 12px var(--f);color:var(--ink3);padding:20px 0;text-align:center">Pas encore de données</div>';return;}
-chart.innerHTML='';
-var ts=function(t){var p=(t||'0:0').split(':').map(Number);return p[0]*60+(p[1]||0);};
-var vals=entries.map(function(e){return ts(e.time);});var max=Math.max.apply(null,vals.concat([1]));
-entries.forEach(function(e,i){var col=document.createElement('div');col.className='bc';var pct=Math.round(vals[i]/max*100);col.innerHTML='<div class="bf" style="height:'+Math.max(pct,4)+'%;background:linear-gradient(180deg,var(--body-a),var(--body-b))"></div><div class="bl">'+e.time+'</div>';chart.appendChild(col);});
-}
-
-function updCI(axis,slider){document.getElementById('ci-'+axis+'-v').textContent=slider.value;}
-function saveCI(){var data={};['e','f','c'].forEach(function(a){var sl=document.getElementById('ci-'+a);if(sl)data[a]=parseInt(sl.value);});sv('checkin_'+td(),data);toast('Check-in enregistré ✓');}
-
-var QUOTES=[
-{t:"L'excellence n\'est pas un acte, c\'est une habitude.",a:"Aristote"},
-{t:"Le jiu-jitsu ne construit pas le caractère — il le révèle.",a:"Helio Gracie"},
-{t:"Chaque action est un vote pour le type de personne que tu veux devenir.",a:"James Clear"},
-{t:"La vraie discipline n'est pas d'être dur envers soi. C'est d'être précis.",a:"—"},
-{t:"Ne cherche pas à ce que les choses arrivent comme tu le veux.",a:"Épictète"},
-{t:"Le talent c\'est ce que tu as. La technique c\'est ce que tu fais avec.",a:"Josh Waitzkin"},
-{t:"Suis ton propre pas. La patience, la constance — voilà la clé.",a:"Rickson Gracie"},
-{t:"Il ne s'agit pas d\'être parfait. Il s\'agit d\'être meilleur qu'hier.",a:"—"},
-];
-function initQuotes(){var i=Math.floor(Date.now()/86400000);var q=QUOTES[i%QUOTES.length];var e=document.getElementById('dash-q');if(e)e.textContent=q.t;var ea=document.getElementById('dash-qa');if(ea)ea.textContent='— '+q.a;}
-
-function saveJournal(){
-var a=document.getElementById('j-appris').value.trim();var b=document.getElementById('j-bien').value.trim();var c=document.getElementById('j-amel').value.trim();var p=parseInt(document.getElementById('j-pages').value)||0;
-if(!a&&!b&&!c)return toast('Écris quelque chose !');
-var entries=ld('journal',[]);entries.unshift({date:td(),appris:a,bien:b,ameliorer:c,pages:p});sv('journal',entries.slice(0,60));
-['j-appris','j-bien','j-amel','j-pages'].forEach(function(id){var e=document.getElementById(id);if(e)e.value='';});
-renderJournal();toast('Journal sauvegardé ✓');
-}
-
-
-function addNote(){
-var title=document.getElementById('note-title').value.trim();var body=document.getElementById('note-body').value.trim();if(!title)return;
-var notes=ld('notes',[]);notes.unshift({title:title,body:body,date:td()});sv('notes',notes);
-document.getElementById('note-title').value='';document.getElementById('note-body').value='';
-closeM('m-note');renderNotes();toast('Note sauvegardée ✓');
-}
-
-function delNote(i){var n=ld('notes',[]);n.splice(i,1);sv('notes',n);renderNotes();}
-
-
-
-function addWater(ml){sv('water_'+td(),Math.max(0,ld('water_'+td(),0)+ml));updateWater();}
-function resetWater(){sv('water_'+td(),0);updateWater();}
-function updateWater(){var w=ld('water_'+td(),0);var el=document.getElementById('water-disp');if(el)el.textContent=(w/1000).toFixed(1)+' / 3L';var bar=document.getElementById('water-bar');if(bar)bar.style.width=Math.min(100,w/3000*100)+'%';}
-
-
-
-var _fT=0,_fR=0,_fRun=false,_fInt=null;
-function openFocus(type,mins,name,sub){
-_fT=mins*60;_fR=_fT;_fRun=false;if(_fInt){clearInterval(_fInt);_fInt=null;}
-document.getElementById('fo-tag').textContent=type.toUpperCase();document.getElementById('fo-name').textContent=name;document.getElementById('fo-sub').textContent=sub;
-document.getElementById('fo-play').textContent='▶ Démarrer';updateFD();document.getElementById('fov').classList.add('on');
-}
-function closeFocus(){document.getElementById('fov').classList.remove('on');if(_fInt){clearInterval(_fInt);_fInt=null;_fRun=false;}}
-function toggleTimer(){
-if(_fRun){clearInterval(_fInt);_fRun=false;document.getElementById('fo-play').textContent='▶ Reprendre';}
-else{_fRun=true;document.getElementById('fo-play').textContent='⏸ Pause';_fInt=setInterval(function(){_fR--;if(_fR<=0){clearInterval(_fInt);_fRun=false;_fR=0;document.getElementById('fo-play').textContent='✓ Terminé';toast('Timer terminé ✓');}updateFD();},1000);}
-}
-function resetTimer(){if(_fInt)clearInterval(_fInt);_fRun=false;_fR=_fT;document.getElementById('fo-play').textContent='▶ Démarrer';updateFD();}
-function updateFD(){var m=Math.floor(_fR/60),s=_fR%60;var e=document.getElementById('fo-time');if(e)e.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');var arc=document.getElementById('fo-arc');if(arc)arc.style.strokeDashoffset=616*(_fT>0?1-_fR/_fT:0);}
-
-var EXPLORE_ENGINES=[
-  {id:'google',label:'Google',icon:'🌐',url:'https://www.google.com/search?q=',col:'#4285f4'},
-  {id:'youtube',label:'YouTube',icon:'▶',url:'https://www.youtube.com/results?search_query=',col:'#ff0000'},
-  {id:'reddit',label:'Reddit',icon:'🤙',url:'https://www.reddit.com/search/?q=',col:'#ff4500'},
-  {id:'pubmed',label:'PubMed',icon:'🔬',url:'https://pubmed.ncbi.nlm.nih.gov/?term=',col:'#336699'},
-  {id:'coindesk',label:'CoinDesk',icon:'B',url:'https://www.coindesk.com/search?s=',col:'#f7931a'},
-];
-var _activeEngine='google';
-
-var EXPLORE_SHORTCUTS=[
-  {label:'BTC analyse',q:'bitcoin price analysis 2025',engine:'youtube',icon:'📈'},
-  {label:'JJB technique',q:'bjj technique tutorial guard passing',engine:'youtube',icon:'🥋'},
-  {label:'Apnée training',q:'freediving training CO2 tables',engine:'youtube',icon:'🌊'},
-  {label:'Sommeil science',q:'sleep deep work cognitive performance',engine:'pubmed',icon:'😴'},
-  {label:'DCA stratégie',q:'DCA bitcoin long term strategy',engine:'reddit',icon:'💰'},
-  {label:'Nutrition récup',q:'post workout nutrition recovery',engine:'google',icon:'🥗'},
+// ============================================================
+// FINANCE
+// ============================================================
+var CRYPTO_LEARN=[
+{q:'C\'est quoi vraiment le Bitcoin ?',a:'Bitcoin est un réseau de paiement décentralisé créé en 2009. Il n\'y aura jamais plus de 21 millions de BTC. C\'est sa rareté programmée qui lui donne de la valeur.'},
+{q:'Halving Bitcoin : pourquoi c\'est important ?',a:'Toutes les 210 000 blocs (~4 ans), la récompense des mineurs est divisée par 2. Moins de nouveaux BTC créés = pression haussière historiquement. Prochain : 2028.'},
+{q:'ETF vs action : quelle différence ?',a:'Une action = tu achètes une part d\'entreprise. Un ETF = tu achètes un panier d\'actions. Ton DFND est un ETF défense.'},
+{q:'PEA : pourquoi 5 ans c\'est crucial ?',a:'Gains avant 5 ans taxés à 30%. Après 5 ans : seulement 17.2% de prélèvements sociaux, 0% impôt sur le revenu.'},
+{q:'DCA : comment calculer si tu es en profit ?',a:'Formule : (Prix actuel ÷ Prix moyen - 1) × 100. Acheté à 60 000€, BTC à 80 000€ : +33.3%.'},
+{q:'Ethereum vs Bitcoin : pourquoi garder les deux ?',a:'Bitcoin = réserve de valeur numérique. Ethereum = plateforme d\'apps décentralisées. Cas d\'usage différents, cycles parfois indépendants.'},
 ];
 
+function renderCryptoLearn(){
+var list=document.getElementById('crypto-learn-list');if(!list)return;list.innerHTML='';
+CRYPTO_LEARN.forEach(function(item,i){
+var el=document.createElement('div');el.className='clearn-item';
+el.innerHTML='<div class="clearn-q">'+item.q+'</div><div class="clearn-a" id="cla-'+i+'" style="display:none">'+item.a+'</div><button class="clearn-more" id="clb-'+i+'">Lire la réponse ↓</button>';
+list.appendChild(el);
+(function(idx){var btn=document.getElementById('clb-'+idx);var ans=document.getElementById('cla-'+idx);var exp=false;btn.addEventListener('click',function(){exp=!exp;ans.style.display=exp?'block':'none';btn.textContent=exp?'Réduire ↑':'Lire la réponse ↓';});})(i);
+});
+}
 
+function renderPEA(){
+var list=document.getElementById('pea-list');if(!list)return;
+var pea=[['ASML','Tech sémiconducteurs','var(--crypto-a)'],['BNP Paribas','Banque','var(--body-a)'],['Schneider Electric','Énergie & Automatisation','var(--nutri-a)'],['TotalEnergies','Énergie','var(--nutri-a)'],['Air Liquide','Industrie','var(--body-a)'],['Capgemini','Tech & Consulting','var(--crypto-a)'],['AXA','Assurance','var(--routine-a)']];
+list.innerHTML='';
+pea.forEach(function(p){var el=document.createElement('div');el.style.cssText='display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1.5px solid var(--line)';el.innerHTML='<div style="width:8px;height:8px;border-radius:50%;background:'+p[2]+';flex-shrink:0"></div><div style="flex:1"><div style="font:600 13px var(--f)">'+p[0]+'</div><div style="font:400 11px var(--f);color:var(--ink2)">'+p[1]+'</div></div>';list.appendChild(el);});
+}
 
+function renderPie(){
+var svg=document.getElementById('pie-svg');var legend=document.getElementById('pie-legend');if(!svg||!legend)return;
+var segs=[{name:'PEA Actions',pct:55,c:'#c8a84b'},{name:'Bitcoin',pct:20,c:'#f7931a'},{name:'DFND ETF',pct:15,c:'#2563eb'},{name:'Cash',pct:10,c:'#e5e7eb'}];
+var cx=50,cy=50,r=42,cum=0;svg.innerHTML='';legend.innerHTML='';
+segs.forEach(function(s){var a1=(cum/100)*2*Math.PI-Math.PI/2,a2=((cum+s.pct)/100)*2*Math.PI-Math.PI/2;cum+=s.pct;var x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2);var path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d','M'+cx+','+cy+' L'+x1+','+y1+' A'+r+','+r+' 0 '+(s.pct>50?1:0)+',1 '+x2+','+y2+' Z');path.setAttribute('fill',s.c);svg.appendChild(path);legend.innerHTML+='<div class="pii"><div class="pid" style="background:'+s.c+'"></div><div class="pin">'+s.name+'</div><div class="pip">'+s.pct+'%</div></div>';});
+var hole=document.createElementNS('http://www.w3.org/2000/svg','circle');hole.setAttribute('cx',cx);hole.setAttribute('cy',cy);hole.setAttribute('r','26');hole.setAttribute('fill','white');svg.appendChild(hole);
+}
 
+async function fetchFearGreed(){
+try{var r=await fetch('https://api.alternative.me/fng/');var d=await r.json();if(d.data&&d.data[0]){var val=parseInt(d.data[0].value);var lbl=d.data[0].value_classification;var lblMap={'Extreme Fear':'Peur Extrême','Fear':'Peur','Neutral':'Neutre','Greed':'Avidité','Extreme Greed':'Avidité Extrême'};var col=val<25?'#ef4444':val<45?'#f59e0b':val<55?'#94a3b8':val<75?'#22c55e':'#16a34a';var fgv=document.getElementById('fg-value');if(fgv){fgv.textContent=val;fgv.style.color=col;}var fgl=document.getElementById('fg-label');if(fgl){fgl.textContent=lblMap[lbl]||lbl;fgl.style.color=col;}var fgb=document.getElementById('fg-bar');if(fgb)setTimeout(function(){fgb.style.width=val+'%';},200);}}catch(e){}
+}
 
+async function fetchBTCChart(){
+try{var r=await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=eur&days=7&interval=daily');var d=await r.json();if(d.prices&&d.prices.length){var prices=d.prices.map(function(p){return p[1];});var min=Math.min.apply(null,prices);var max=Math.max.apply(null,prices);var el=document.getElementById('btc-sparkline');if(!el)return;el.innerHTML='';prices.forEach(function(p){var pct=max===min?50:((p-min)/(max-min)*100);var col=p>=prices[0]?'#22c55e':'#ef4444';var bar=document.createElement('div');bar.style.cssText='flex:1;border-radius:3px 3px 0 0;min-height:4px;background:'+col+';opacity:.85';bar.style.height=Math.max(pct,5)+'%';el.appendChild(bar);});var chg=((prices[prices.length-1]-prices[0])/prices[0]*100);var chgEl=document.getElementById('btc-7d-chg');if(chgEl){chgEl.textContent=(chg>=0?'+':'')+chg.toFixed(1)+'% sur 7j';chgEl.style.color=chg>=0?'var(--nutri-a)':'#ef4444';}}}catch(e){}
+}
 
+async function fetchCrypto(){
+try{var [rBTC,rETH]=await Promise.all([fetch('https://api.coinbase.com/v2/prices/BTC-EUR/spot'),fetch('https://api.coinbase.com/v2/prices/ETH-EUR/spot')]);var dBTC=await rBTC.json();var dETH=await rETH.json();if(dBTC.data){var p=parseFloat(dBTC.data.amount);var pe=document.getElementById('btc-p');if(pe)pe.textContent='€'+Math.round(p).toLocaleString('fr');var mc=document.getElementById('btc-mktcap');if(mc)mc.textContent='~€'+Math.round(p*19700000/1e9)+'Md';sv('cached_btc',p);updateDCAPnL(p);}if(dETH.data){var ep=parseFloat(dETH.data.amount);var epe=document.getElementById('eth-p');if(epe)epe.textContent='€'+Math.round(ep).toLocaleString('fr');}toast('Cours actualisés ✓');}catch(e){var pe=document.getElementById('btc-p');if(pe&&pe.textContent==='Chargement...')pe.textContent='Indisponible';}
+}
 
+function saveDCA(){var inv=parseFloat(document.getElementById('dca-inv-in').value);var avg=parseFloat(document.getElementById('dca-avg-in').value);if(isNaN(inv)||isNaN(avg))return toast('Remplis les deux champs');sv('btc_dca',{inv:inv,avg:avg});renderDCA();toast('DCA sauvegardé ✓');}
+function renderDCA(){var dca=ld('btc_dca',null);if(!dca)return;var ie=document.getElementById('dca-inv-d');if(ie)ie.textContent='€'+dca.inv.toLocaleString('fr');var ae=document.getElementById('dca-avg-d');if(ae)ae.textContent='€'+Math.round(dca.avg).toLocaleString('fr');var iin=document.getElementById('dca-inv-in');if(iin)iin.value=dca.inv;var ain=document.getElementById('dca-avg-in');if(ain)ain.value=dca.avg;}
+function updateDCAPnL(cur){var dca=ld('btc_dca',null);if(!dca||!dca.inv||!dca.avg)return;var owned=dca.inv/dca.avg,val=owned*cur,pnl=val-dca.inv,pct=(pnl/dca.inv*100).toFixed(1);var el=document.getElementById('dca-pnl-d');if(el){el.textContent=(pnl>=0?'+€':'-€')+Math.abs(Math.round(pnl)).toLocaleString('fr')+' ('+pct+'%)';el.style.color=pnl>=0?'rgba(134,239,172,1)':'rgba(255,150,150,1)';}}
 
+// ============================================================
+// BRIEF
+// ============================================================
 var QBRIEF=[
-{t:"L'excellence n\'est pas un acte, c\'est une habitude.",a:'Aristote'},
+{t:"L'excellence n'est pas un acte, c'est une habitude.",a:'Aristote'},
 {t:"Chaque action est un vote pour le type de personne que tu veux devenir.",a:'James Clear'},
-{t:"La vraie discipline c\'est être précis, pas dur.",a:'–'},
+{t:"La vraie discipline c'est être précis, pas dur.",a:'–'},
 {t:"Ne cherche pas à ce que les choses arrivent comme tu le veux.",a:'Épictète'},
-{t:"Le talent c\'est ce que tu as. La technique c\'est ce que tu fais avec.",a:'Josh Waitzkin'},
-{t:"Le corps s\'adapte. L\'esprit décide.",a:'–'},
-{t:"Il ne s'agit pas d\'être parfait. Il s\'agit d\'être meilleur qu'hier.",a:'–'},
+{t:"Le talent c'est ce que tu as. La technique c'est ce que tu fais avec.",a:'Josh Waitzkin'},
+{t:"Le corps s'adapte. L'esprit décide.",a:'–'},
+{t:"Il ne s'agit pas d'être parfait. Il s'agit d'être meilleur qu'hier.",a:'–'},
 {t:'Suis ton propre pas. La patience, la constance — voilà la clé.',a:'Rickson Gracie'},
 {t:"Le jiu-jitsu ne construit pas le caractère — il le révèle.",a:'Helio Gracie'},
 ];
@@ -1091,16 +1148,10 @@ var yState=ld('habits_'+yd,{});var yDone=HIDS.filter(function(id){return !!yStat
 var scoreEl=document.getElementById('brief-score');if(scoreEl)scoreEl.textContent=yPct+'%';
 var barEl=document.getElementById('brief-hab-bar');if(barEl)setTimeout(function(){barEl.style.width=yPct+'%';},300);
 var habEl=document.getElementById('brief-hab-score');if(habEl)habEl.textContent=yDone+'/'+HIDS.length;
-var DAB=DEFAULT_AG;var blocks=ld('agenda',DAB).slice().sort(function(a,b){return a.time.localeCompare(b.time);});
+var blocks=ld('agenda',DEFAULT_AG).slice().sort(function(a,b){return a.time.localeCompare(b.time);});
 var agEl=document.getElementById('brief-agenda');if(!agEl)return;agEl.innerHTML='';
 var now=d.getHours()*60+d.getMinutes();
-blocks.forEach(function(b,i){
-var bMin=parseInt(b.time.split(':')[0])*60+parseInt(b.time.split(':')[1]);var nb2=blocks[i+1];var nMin=nb2?parseInt(nb2.time.split(':')[0])*60+parseInt(nb2.time.split(':')[1]):1440;
-var isNow=now>=bMin&&now<nMin;var isPast=now>=nMin;
-var el2=document.createElement('div');el2.style.cssText='display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1.5px solid var(--line)'+(i===blocks.length-1?';border-bottom:none':'');
-el2.innerHTML='<div style="font:700 11px var(--f);color:'+(isNow?b.col:'var(--ink3)')+';width:38px;flex-shrink:0">'+b.time+'</div><div style="width:7px;height:7px;border-radius:50%;background:'+(isPast?'var(--line)':b.col)+';flex-shrink:0"></div><div style="font:'+(isNow?'700':'500')+' 13px var(--f);color:'+(isPast?'var(--ink3)':'var(--ink)')+';flex:1'+(isPast?';text-decoration:line-through':'')+'">'+b.title+'</div>'+(isNow?'<span style="background:var(--routine-a);color:white;padding:2px 8px;border-radius:20px;font:700 9px var(--f)">En cours</span>':'');
-agEl.appendChild(el2);
-});
+blocks.forEach(function(b,i){var bMin=parseInt(b.time.split(':')[0])*60+parseInt(b.time.split(':')[1]);var nb2=blocks[i+1];var nMin=nb2?parseInt(nb2.time.split(':')[0])*60+parseInt(nb2.time.split(':')[1]):1440;var isNow=now>=bMin&&now<nMin;var isPast=now>=nMin;var el2=document.createElement('div');el2.style.cssText='display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1.5px solid var(--line)'+(i===blocks.length-1?';border-bottom:none':'');el2.innerHTML='<div style="font:700 11px var(--f);color:'+(isNow?b.col:'var(--ink3)')+';width:38px;flex-shrink:0">'+b.time+'</div><div style="width:7px;height:7px;border-radius:50%;background:'+(isPast?'var(--line)':b.col)+';flex-shrink:0"></div><div style="font:'+(isNow?'700':'500')+' 13px var(--f);color:'+(isPast?'var(--ink3)':'var(--ink)')+';flex:1'+(isPast?';text-decoration:line-through':'')+' ">'+b.title+'</div>'+(isNow?'<span style="background:var(--routine-a);color:white;padding:2px 8px;border-radius:20px;font:700 9px var(--f)">En cours</span>':'');agEl.appendChild(el2);});
 var cachedBTC=ld('cached_btc',null);var btcEl=document.getElementById('brief-btc');if(cachedBTC&&btcEl)btcEl.textContent='€'+Math.round(cachedBTC).toLocaleString('fr');
 fetchWeather();
 var intent=ld('intent_'+td(),'');var intentEl=document.getElementById('brief-intent');if(intentEl&&intent)intentEl.value=intent;
@@ -1108,45 +1159,13 @@ renderIntentList();
 }
 
 async function fetchWeather(){
-var tempEl=document.getElementById('brief-temp');
-var cityEl=document.getElementById('brief-city');
-// Try open-meteo first
-try{
-var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=-27.97&longitude=153.38&current=temperature_2m,weather_code&timezone=auto');
-if(!r.ok)throw new Error('open-meteo '+r.status);
-var d=await r.json();
-if(d.current){
-var temp=Math.round(d.current.temperature_2m);
-var wc=d.current.weather_code;
-var icon=wc<=1?'☀️':wc<=3?'⛅':wc<=48?'🌫️':wc<=67?'🌧️':wc<=77?'❄️':wc<=82?'🌦️':'⛈️';
-if(tempEl)tempEl.textContent=icon+' '+temp+'°';
-if(cityEl)cityEl.textContent='Southport QLD';
-return;
-}
-}catch(e1){
-// Fallback: wttr.in (no CORS issues)
-try{
-var r2=await fetch('https://wttr.in/Southport+QLD+Australia?format=j1');
-if(!r2.ok)throw new Error('wttr '+r2.status);
-var d2=await r2.json();
-var cur=d2.current_condition[0];
-var temp2=cur.temp_C;
-var desc=cur.weatherDesc[0].value.toLowerCase();
-var icon2=desc.includes('sun')||desc.includes('clear')?'☀️':desc.includes('cloud')?'⛅':desc.includes('rain')||desc.includes('shower')?'🌧️':desc.includes('thunder')?'⛈️':desc.includes('snow')?'❄️':'🌤️';
-if(tempEl)tempEl.textContent=icon2+' '+temp2+'°';
-if(cityEl)cityEl.textContent='Southport QLD';
-}catch(e2){
-// Static fallback
-if(tempEl)tempEl.textContent='🌤️ --°';
-if(cityEl)cityEl.textContent='Southport QLD';
-}
+var tempEl=document.getElementById('brief-temp');var cityEl=document.getElementById('brief-city');
+try{var r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=-27.97&longitude=153.38&current=temperature_2m,weather_code&timezone=auto');if(!r.ok)throw new Error();var d=await r.json();if(d.current){var temp=Math.round(d.current.temperature_2m);var wc=d.current.weather_code;var icon=wc<=1?'☀️':wc<=3?'⛅':wc<=48?'🌫️':wc<=67?'🌧️':'⛈️';if(tempEl)tempEl.textContent=icon+' '+temp+'°';if(cityEl)cityEl.textContent='Southport';return;}}catch(e1){
+try{var r2=await fetch('https://wttr.in/Southport+QLD+Australia?format=j1');if(!r2.ok)throw new Error();var d2=await r2.json();var cur=d2.current_condition[0];var temp2=cur.temp_C;var desc=cur.weatherDesc[0].value.toLowerCase();var icon2=desc.includes('sun')||desc.includes('clear')?'☀️':desc.includes('cloud')?'⛅':desc.includes('rain')?'🌧️':'🌤️';if(tempEl)tempEl.textContent=icon2+' '+temp2+'°';if(cityEl)cityEl.textContent='Southport';}catch(e2){if(tempEl)tempEl.textContent='🌤️ --°';if(cityEl)cityEl.textContent='Southport';}
 }
 }
 
-function saveIntent(){
-var el=document.getElementById('brief-intent');if(!el||!el.value.trim())return toast("Écris ton intention !");
-sv('intent_'+td(),el.value.trim());renderIntentList();toast('Journée lancée ✓');
-}
+function saveIntent(){var el=document.getElementById('brief-intent');if(!el||!el.value.trim())return toast("Écris ton intention !");sv('intent_'+td(),el.value.trim());renderIntentList();toast('Journée lancée ✓');}
 function renderIntentList(){
 var list=document.getElementById('intent-list');if(!list)return;
 var intents=[];for(var i=0;i<7;i++){var d2=new Date();d2.setDate(d2.getDate()-i);var ds=d2.toISOString().slice(0,10);var v=ld('intent_'+ds,null);if(v)intents.push({date:ds,text:v});}
@@ -1155,315 +1174,41 @@ list.innerHTML='';
 intents.forEach(function(item){var el=document.createElement('div');el.className='ent';el.innerHTML='<div class="ehd"><div style="font:700 10px var(--f);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)">'+item.date+'</div></div><div style="font:500 14px var(--f);color:var(--ink);line-height:1.5;margin-top:4px">'+item.text+'</div>';list.appendChild(el);});
 }
 
+// ============================================================
+// FOCUS TIMER
+// ============================================================
+var _fT=0,_fR=0,_fRun=false,_fInt=null;
+function openFocus(type,mins,name,sub){_fT=mins*60;_fR=_fT;_fRun=false;if(_fInt){clearInterval(_fInt);_fInt=null;}document.getElementById('fo-tag').textContent=type.toUpperCase();document.getElementById('fo-name').textContent=name;document.getElementById('fo-sub').textContent=sub;document.getElementById('fo-play').textContent='▶ Démarrer';updateFD();document.getElementById('fov').classList.add('on');}
+function closeFocus(){document.getElementById('fov').classList.remove('on');if(_fInt){clearInterval(_fInt);_fInt=null;_fRun=false;}}
+function toggleTimer(){if(_fRun){clearInterval(_fInt);_fRun=false;document.getElementById('fo-play').textContent='▶ Reprendre';}else{_fRun=true;document.getElementById('fo-play').textContent='⏸ Pause';_fInt=setInterval(function(){_fR--;if(_fR<=0){clearInterval(_fInt);_fRun=false;_fR=0;document.getElementById('fo-play').textContent='✓ Terminé';toast('Timer terminé ✓');}updateFD();},1000);}}
+function resetTimer(){if(_fInt)clearInterval(_fInt);_fRun=false;_fR=_fT;document.getElementById('fo-play').textContent='▶ Démarrer';updateFD();}
+function updateFD(){var m=Math.floor(_fR/60),s=_fR%60;var e=document.getElementById('fo-time');if(e)e.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');var arc=document.getElementById('fo-arc');if(arc)arc.style.strokeDashoffset=616*(_fT>0?1-_fR/_fT:0);}
+
+// Stubs pour fonctions inutilisées mais référencées
+function restoreSleep(){}
+function updateApnStats(){}
+function renderSleepChart(){}
+function updateSleepStreak(){}
+
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('./sw.js').catch(function(){});});}
 
-
-var FEED_SOURCES = [
-  {id:'sport', label:'Sport', color:'#10b981', url:'https://www.lequipe.fr/rss/actu_rss_TouteLEquipe.xml'},
-  {id:'crypto', label:'Crypto', color:'#f59e0b', url:'https://cointelegraph.com/rss'},
-  {id:'sante', label:'Sante', color:'#84cc16', url:'https://feeds.bbci.co.uk/news/health/rss.xml'},
-  {id:'tech', label:'Tech', color:'#3b82f6', url:'https://feeds.bbci.co.uk/news/technology/rss.xml'},
-  {id:'monde', label:'Monde', color:'#8b5cf6', url:'https://feeds.bbci.co.uk/news/world/rss.xml'}
-];
-var _feedCat = 'sport';
-
-
-function initFeed() {
-  var el = document.getElementById('feed-cats');
-  if (!el) return;
-  el.innerHTML = '';
-  FEED_SOURCES.forEach(function(s) {
-    var btn = document.createElement('button');
-    btn.textContent = s.label;
-    btn.dataset.cat = s.id;
-    var on = s.id === _feedCat;
-    btn.style.cssText = 'flex-shrink:0;border-radius:50px;padding:6px 14px;font:600 11px var(--f);cursor:pointer;border:1.5px solid ' + (on ? s.color : 'var(--line)') + ';background:' + (on ? s.color : 'var(--white)') + ';color:' + (on ? 'white' : 'var(--ink)');
-    btn.addEventListener('click', function() { _feedCat = this.dataset.cat; initFeed(); loadFeed(); });
-    el.appendChild(btn);
-  });
-}
-
-function loadFeed() {
-  var el = document.getElementById('feed-articles');
-  if (!el) return;
-  var all = {
-    sport:[
-      {t:'Comment progresser en JJB sans gi : les 5 clés', u:'https://www.bjjheroes.com', d:'BJJ Heroes · Technique & Mental'},
-      {t:'Pourquoi le sommeil est plus important que l\u2019entra\u00eenement', u:'https://www.sleepfoundation.org/physical-activity', d:'Sleep Foundation · Science'},
-      {t:'Freediving : protocole CO2 pour augmenter l\'apnée', u:'https://www.diveassure.com/blog', d:'DiveAssure · Freediving'},
-      {t:'Les 7 erreurs de nutrition qui sabotent ta recup JJB', u:'https://www.bjjfanatics.com/blogs/news', d:'BJJ Fanatics · Nutrition Sport'},
-      {t:'Tout sur le DCA musculaire : hypertrophie vs force', u:'https://www.strongerbyscience.com', d:'Stronger By Science · Evidence-based'},
-      {t:'L\'Equipe : toute l\'actu sport du moment', u:'https://www.lequipe.fr', d:'L\'Equipe · Sport FR'},
-      {t:'Analyse tactique MMA : ce que le JJB apporte', u:'https://www.mmamania.com', d:'MMA Mania · Analyse'},
-      {t:'Récupération active vs passive : que dit la science ?', u:'https://examine.com/articles/active-vs-passive-recovery/', d:'Examine.com · Recherche'},
-    ],
-    crypto:[
-      {t:'Bitcoin : le cycle des halvings expliqué simplement', u:'https://bitcoinmagazine.com', d:'Bitcoin Magazine · Analyse'},
-      {t:'DCA vs lump sum : quelle stratégie est la meilleure ?', u:'https://dcabtc.com', d:'DCA BTC · Calculateur'},
-      {t:'Fear & Greed Index : comment l\'utiliser pour trader', u:'https://alternative.me/crypto/fear-and-greed-index/', d:'Alternative.me · Sentiment'},
-      {t:'Ethereum vs Bitcoin : comparatif long terme 2025', u:'https://cointelegraph.com', d:'CoinTelegraph · Crypto'},
-      {t:'Les ETF Bitcoin : tout ce qu\'il faut savoir', u:'https://www.coindesk.com/learn/bitcoin-etfs-everything-you-need-to-know/', d:'CoinDesk · Éducation'},
-      {t:'Portfolio crypto diversifié : guide pour débutant', u:'https://www.coingecko.com/learn', d:'CoinGecko · Learn'},
-      {t:'On-chain analytics : lire les données blockchain', u:'https://glassnode.com/insights', d:'Glassnode · On-chain'},
-      {t:'Actu marchés crypto en temps réel', u:'https://cointelegraph.com/news', d:'CoinTelegraph · News'},
-    ],
-    sante:[
-      {t:'Protocole Huberman : routine matinale optimale', u:'https://hubermanlab.com/tools-for-managing-stress-and-anxiety/', d:'Huberman Lab · Neuroscience'},
-      {t:'Les meilleurs suppléments pour la récupération musculaire', u:'https://examine.com/supplements/creatine/', d:'Examine.com · Créatine'},
-      {t:'Comment optimiser ton sommeil profond', u:'https://www.sleepfoundation.org/stages-of-sleep/deep-sleep', d:'Sleep Foundation · Sommeil'},
-      {t:'Jeûne intermittent et performance sportive : les faits', u:'https://examine.com/articles/intermittent-fasting/', d:'Examine.com · IF'},
-      {t:'Protéines : combien par jour pour un athlète ?', u:'https://examine.com/nutrition/how-much-protein-do-you-need/', d:'Examine.com · Nutrition'},
-      {t:'Doctissimo : nutrition sportive et récupération', u:'https://www.doctissimo.fr/nutrition/sport-et-alimentation', d:'Doctissimo · Nutrition FR'},
-      {t:'Anti-inflammatoires naturels : curcuma, oméga-3', u:'https://examine.com/supplements/fish-oil/', d:'Examine.com · Oméga-3'},
-      {t:'VO2 max : comment l\'améliorer efficacement', u:'https://www.trainingpeaks.com/blog/vo2-max-everything-you-need-to-know/', d:'TrainingPeaks · Cardio'},
-    ],
-    tech:[
-      {t:'Hacker News : les projets tech du moment', u:'https://news.ycombinator.com', d:'Hacker News · Tech'},
-      {t:'Les meilleurs outils IA gratuits en 2025', u:'https://www.producthunt.com/topics/artificial-intelligence', d:'Product Hunt · IA'},
-      {t:'GitHub Trending : projets open source populaires', u:'https://github.com/trending', d:'GitHub · Open Source'},
-      {t:'01net : actualité tech en français', u:'https://www.01net.com/actualites/', d:'01net · Tech FR'},
-      {t:'The Verge : toute la tech du moment', u:'https://www.theverge.com', d:'The Verge · Tech EN'},
-      {t:'Comment apprendre à coder efficacement en 2025', u:'https://roadmap.sh', d:'roadmap.sh · Apprentissage'},
-      {t:'Notion vs Obsidian : quel outil de productivité ?', u:'https://www.reddit.com/r/productivity', d:'Reddit · Productivité'},
-      {t:'Les meilleures extensions navigateur pour dev', u:'https://dev.to/top-tools', d:'Dev.to · Outils'},
-    ],
-    monde:[
-      {t:'Le Monde : international', u:'https://www.lemonde.fr/international/', d:'Le Monde · FR'},
-      {t:'France 24 : info internationale en continu', u:'https://www.france24.com/fr/', d:'France 24 · TV Info'},
-      {t:'BBC News World : actualité mondiale', u:'https://www.bbc.com/news/world', d:'BBC · EN'},
-      {t:'The Guardian : journalisme indépendant', u:'https://www.theguardian.com/world', d:'The Guardian · EN'},
-      {t:'Reuters : dépêches et analyses mondiales', u:'https://www.reuters.com/world/', d:'Reuters · Wire'},
-      {t:'Courrier International : presse étrangère', u:'https://www.courrierinternational.com', d:'Courrier International · FR'},
-      {t:'Arte Info : documentaires et reportages', u:'https://www.arte.tv/fr/arte-info/', d:'Arte · FR/DE'},
-      {t:'RFI : radio France internationale', u:'https://www.rfi.fr/fr/', d:'RFI · Monde FR'},
-    ]
-  };
-  var items = all[_feedCat] || all.sport;
-  // Shuffle for variety
-  items = items.slice().sort(function() { return Math.random() - 0.5; });
-  var src = FEED_SOURCES.find(function(s) { return s.id === _feedCat; }) || FEED_SOURCES[0];
-  var html = '';
-  items.forEach(function(a) {
-    html += '<a href="'+a.u+'" target="_blank" style="display:block;background:var(--white);border:1.5px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;text-decoration:none;color:inherit">';
-    html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">';
-    html += '<div style="background:'+src.color+';border-radius:6px;padding:2px 8px;font:700 9px var(--f);color:white;letter-spacing:.05em;text-transform:uppercase">'+_feedCat+'</div>';
-    html += '</div>';
-    html += '<div style="font:700 13px var(--f);line-height:1.45;margin-bottom:5px">'+a.t+'</div>';
-    html += '<div style="font:400 11px var(--f);color:var(--ink2);line-height:1.4">'+a.d+' →</div></a>';
-  });
-  if (el) el.innerHTML = html;
-}
-
-async function searchMeals(q) {
-  var input = document.getElementById('meal-q');
-  var query = q || (input && input.value.trim()) || 'chicken';
-  if (!query) { query = 'chicken'; }
-  var el = document.getElementById('meal-results');
-  if (el) el.innerHTML = '<div style="text-align:center;padding:20px 0;color:var(--ink3);font:500 12px var(--f)">Recherche en cours...</div>';
-  try {
-    var fetchUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?s=' + encodeURIComponent(query);
-    var r = await fetch(fetchUrl);
-    var d = await r.json();
-    if (!d.meals) {
-      if (el) el.innerHTML = '<div style="text-align:center;padding:20px 0;color:var(--ink3);font:500 12px var(--f)">Aucune recette trouvée</div>';
-      return;
-    }
-    var html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
-    d.meals.slice(0, 8).forEach(function(m) {
-      html += '<div data-mid="' + m.idMeal + '" class="mcard" style="background:var(--white);border:1.5px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer">';
-      html += '<img src="' + m.strMealThumb + '/preview" style="width:100%;height:90px;object-fit:cover">';
-      html += '<div style="padding:8px"><div style="font:700 11px var(--f);line-height:1.3">' + m.strMeal + '</div>';
-      html += '<div style="font:500 9px var(--f);color:var(--ink3);margin-top:2px">' + m.strCategory + '</div></div></div>';
-    });
-    html += '</div>';
-    if (el) {
-      el.innerHTML = html;
-      el.querySelectorAll('.mcard').forEach(function(card) {
-        card.addEventListener('click', function() { openMeal(this.dataset.mid); });
-      });
-    }
-  } catch(e) {
-    if (el) el.innerHTML = '<div style="text-align:center;padding:20px 0;color:var(--ink3);font:500 12px var(--f)">Erreur connexion</div>';
-  }
-}
-
-async function openMeal(id) {
-  var el = document.getElementById('meal-results');
-  if (el) el.innerHTML = '<div style="text-align:center;padding:20px 0;color:var(--ink3);font:500 12px var(--f)">Chargement...</div>';
-  try {
-    var r = await fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + id);
-    var d = await r.json();
-    var m = d.meals[0];
-    var ings = [];
-    for (var i = 1; i <= 20; i++) {
-      var ing = m['strIngredient' + i], mes = m['strMeasure' + i];
-      if (ing && ing.trim()) ings.push((mes ? mes.trim() + ' ' : '') + ing.trim());
-    }
-    var steps = m.strInstructions.split('\n').filter(function(s) { return s.trim().length > 10; }).slice(0, 8);
-    var html = '<div>';
-    html += '<img src="' + m.strMealThumb + '/preview" style="width:100%;height:160px;object-fit:cover;border-radius:14px;margin-bottom:14px">';
-    html += '<div style="font:900 20px var(--f);margin-bottom:3px">' + m.strMeal + '</div>';
-    html += '<div style="font:500 11px var(--f);color:var(--ink3);margin-bottom:14px">' + m.strCategory + ' · ' + m.strArea + '</div>';
-    html += '<div style="font:700 12px var(--f);margin-bottom:8px">Ingrédients</div>';
-    html += '<div style="background:var(--cream);border-radius:12px;padding:12px;margin-bottom:14px">';
-    ings.forEach(function(ing) { html += '<div style="font:500 11px var(--f);padding:3px 0;border-bottom:1px solid var(--line)">· ' + ing + '</div>'; });
-    html += '</div>';
-    html += '<div style="font:700 12px var(--f);margin-bottom:8px">Étapes</div>';
-    steps.forEach(function(s, i) {
-      html += '<div style="font:500 11px var(--f);line-height:1.6;padding:6px 0;border-bottom:1px solid var(--line)"><span style="font:700 11px var(--f);color:var(--nutri-a)">' + (i+1) + '.</span> ' + s.trim() + '</div>';
-    });
-    if (m.strYoutube) {
-      html += '<a href="' + m.strYoutube + '" target="_blank" style="display:block;margin-top:14px;background:linear-gradient(135deg,var(--nutri-a),var(--nutri-b));color:white;text-align:center;border-radius:50px;padding:11px;font:700 12px var(--f);text-decoration:none">▶ Voir sur YouTube</a>';
-    }
-    html += '<button onclick="searchMeals(\'chicken\')" style="width:100%;margin-top:10px;background:var(--cream);border:none;border-radius:50px;padding:9px;font:600 11px var(--f);cursor:pointer">← Retour</button>';
-    html += '</div>';
-    if (el) el.innerHTML = html;
-  } catch(e) {
-    if (el) el.innerHTML = '<div style="text-align:center;padding:20px 0;color:var(--ink3)">Erreur</div>';
-  }
-}
-
-var ENGINES = [
-  {id:'google', name:'Google', icon:'G', color:'#4285f4', url:'https://www.google.com/search?q='},
-  {id:'youtube', name:'YouTube', icon:'▶', color:'#ff0000', url:'https://www.youtube.com/results?search_query='},
-  {id:'reddit', name:'Reddit', icon:'r/', color:'#ff4500', url:'https://www.reddit.com/search/?q='},
-  {id:'pubmed', name:'PubMed', icon:'🔬', color:'#336699', url:'https://pubmed.ncbi.nlm.nih.gov/?term='},
-  {id:'scholar', name:'Scholar', icon:'📚', color:'#4285f4', url:'https://scholar.google.com/scholar?q='},
-  {id:'x', name:'X/Twitter', icon:'X', color:'#000000', url:'https://x.com/search?q='}
-];
-var _activeEngine = 'google';
-
-var SHORTCUTS = [
-  {label:'BTC analyse', q:'bitcoin analysis 2025', engine:'youtube'},
-  {label:'JJB technique', q:'BJJ technique guard', engine:'youtube'},
-  {label:'Nutrition sport', q:'nutrition sportive performance', engine:'pubmed'},
-  {label:'DCA crypto', q:'DCA crypto strategy', engine:'reddit'},
-  {label:'Sommeil science', q:'sleep science performance', engine:'scholar'},
-  {label:'Apnee training', q:'freediving breath training', engine:'youtube'}
-];
-
-function initExplore() {
-  var grid = document.getElementById('engine-grid');
-  if (grid) {
-    grid.innerHTML = '';
-    ENGINES.forEach(function(eng) {
-      var btn = document.createElement('div');
-      var on = eng.id === _activeEngine;
-      btn.style.cssText = 'background:' + (on ? eng.color : 'var(--white)') + ';border:' + (on ? '2px solid '+eng.color : '1.5px solid var(--line)') + ';border-radius:14px;padding:14px;text-align:center;cursor:pointer';
-      btn.innerHTML = '<div style="font:900 18px var(--f);color:' + (on ? 'white' : eng.color) + ';margin-bottom:4px">' + eng.icon + '</div><div style="font:700 11px var(--f);color:' + (on ? 'white' : 'var(--ink)') + '">' + eng.name + '</div>';
-      btn.dataset.eid = eng.id;
-      btn.addEventListener('click', function() { _activeEngine = this.dataset.eid; initExplore(); });
-      grid.appendChild(btn);
-    });
-  }
-  var sc = document.getElementById('shortcuts-grid');
-  if (sc) {
-    sc.innerHTML = '';
-    SHORTCUTS.forEach(function(s) {
-      var eng = ENGINES.find(function(e) { return e.id === s.engine; }) || ENGINES[0];
-      var btn = document.createElement('a');
-      btn.href = eng.url + encodeURIComponent(s.q);
-      btn.target = '_blank';
-      btn.style.cssText = 'display:flex;align-items:center;gap:10px;background:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:8px;text-decoration:none;color:inherit';
-      btn.innerHTML = '<div style="background:' + eng.color + ';color:white;border-radius:8px;padding:4px 8px;font:700 10px var(--f);flex-shrink:0">' + eng.name + '</div><div style="font:600 12px var(--f)">' + s.label + '</div><div style="margin-left:auto;color:var(--ink3);font:600 12px var(--f)">→</div>';
-      sc.appendChild(btn);
-    });
-  }
-}
-
-function doSearch() {
-  var q = document.getElementById('explore-q');
-  if (!q || !q.value.trim()) return;
-  var eng = ENGINES.find(function(e) { return e.id === _activeEngine; }) || ENGINES[0];
-  var link = eng.url + encodeURIComponent(q.value.trim());
-  window.location.href = link;
-}
-
-function toggleDark() {
-  var html = document.documentElement;
-  var btn = document.getElementById('dark-btn');
-  if (html.getAttribute('data-theme') === 'dark') {
-    html.removeAttribute('data-theme');
-    if (btn) btn.textContent = '🌙';
-    localStorage.setItem('theme', 'light');
-  } else {
-    html.setAttribute('data-theme', 'dark');
-    if (btn) btn.textContent = '☀';
-    localStorage.setItem('theme', 'dark');
-  }
-}
-
-function initTheme() {
-  var saved = localStorage.getItem('theme');
-  if (saved === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    var btn = document.getElementById('dark-btn');
-    if (btn) btn.textContent = '☀';
-  }
-}
-
-
-function genRecipe() {
-  var ingr = document.getElementById('ai-ingr');
-  var ctx = document.getElementById('ai-ctx');
-  if (!ingr || !ingr.value.trim()) return toast('Entre des ingrédients !');
-  var q = ingr.value.trim().toLowerCase();
-  var ctxVal = ctx ? ctx.value : '';
-  // Find matching recipe
-  var match = RECIPES.filter(function(r) {
-    if (ctxVal && r.ctx.indexOf(ctxVal) < 0) return false;
-    return r.keys.some(function(k) { return q.indexOf(k) >= 0; });
-  });
-  if (!match.length) match = RECIPES.filter(function(r) { return !ctxVal || r.ctx.indexOf(ctxVal) >= 0; });
-  if (!match.length) match = RECIPES;
-  var r = match[Math.floor(Math.random() * match.length)];
-  var res = document.getElementById('recipe-result');
-  if (res) { res.style.display = 'block'; res.innerHTML = makeRecipeCard(r); }
-  toast('Recette générée ✓');
-}
-
+// ============================================================
+// INIT
+// ============================================================
 window.addEventListener('DOMContentLoaded',function(){
 initTheme();
-initTopbar();initQuotes();renderCryptoLearn();renderPEA();renderPie();renderDCA();
-renderStaticRecipes();renderAliments();renderHabits();renderStreak();renderTasks();renderAgenda();
-restoreSleep();updateApnStats();
-updateWater();fetchCrypto();fetchFearGreed();fetchBTCChart();
-initBrief();initFeed();loadFeed();searchMeals('chicken');initExplore();
+initTopbar();
+renderCryptoLearn();renderPEA();renderPie();renderDCA();
+renderStaticRecipes();renderAliments();
+renderHabits();renderStreak();renderTasks();renderAgenda();
+updateWater();
+fetchCrypto();fetchFearGreed();fetchBTCChart();
+initBrief();
+initFeed();loadFeed();
+searchMeals('chicken');
+initExplore();
 document.getElementById('ht-matin').className='btn btn-sm btn-p';
 });
-;
-
-// Stub functions for removed features
-function renderStaticRecipes() {
-  var el = document.getElementById('static-recipes');
-  if (!el) return;
-  var html = '';
-  RECIPES.forEach(function(r) { html += makeRecipeCard(r); });
-  el.innerHTML = html;
-}
-function renderAliments() {
-  var el = document.getElementById('aliments-list');
-  if (!el) return;
-  var items = [
-    {e:'🥚', n:'Oeufs', d:'Leucine complète · 6g prot/oeuf · Biodispo max', c:'var(--nutri-a)'},
-    {e:'🍗', n:'Blanc de poulet', d:'32g prot/100g · Post-JJB idéal', c:'var(--nutri-a)'},
-    {e:'🐟', n:'Saumon / Thon', d:'Oméga-3 + prot · Anti-inflam naturel', c:'var(--body-a)'},
-    {e:'🍠', n:'Patate douce', d:'Glucides lents · Potassium · Glycogène', c:'var(--routine-a)'},
-    {e:'🥑', n:'Avocat', d:'Bons lipides · Magnésium · Satiété', c:'var(--nutri-b)'},
-    {e:'🍌', n:'Banane', d:'Énergie rapide · Potassium · Post-effort', c:'var(--feed-b)'},
-  ];
-  var html = '';
-  items.forEach(function(it) {
-    html += '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1.5px solid var(--line)">';
-    html += '<div style="width:36px;height:36px;border-radius:10px;background:'+it.c+'22;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+it.e+'</div>';
-    html += '<div><div style="font:600 13px var(--f)">'+it.n+'</div><div style="font:400 11px var(--f);color:var(--ink2)">'+it.d+'</div></div></div>';
-  });
-  el.innerHTML = html;
-}
-function renderNotes() {}
-function renderJournal() {}
-
-
 </script>
 </body>
 </html>
