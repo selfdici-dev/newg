@@ -1053,6 +1053,10 @@ function shuffle(arr){
   return a;
 }
 
+// ── GLOBAL STATE ──────────────────────────────────────────────
+var _fcat = 'sport';
+var _deck = [];
+
 // ─── UTILS ───────────────────────────────────────────────────
 function sv(k,v){try{localStorage.setItem('los_'+k,JSON.stringify(v))}catch(e){}}
 function ld(k,d){try{var r=localStorage.getItem('los_'+k);return r!=null?JSON.parse(r):d}catch(e){return d}}
@@ -1113,7 +1117,7 @@ var SPORT_POOL = [
 var _rssCache = {};
 
 async function loadCatFeed(cat) {
-  var arena = document.getElementById('arena');
+  var arena = document.getElementById('card-arena');
   if (!arena) return;
   var cfg = FEED_CATS_CFG[cat];
   if (!cfg) return;
@@ -1126,7 +1130,7 @@ async function loadCatFeed(cat) {
     '<div style="height:16px;width:65%;background:var(--s2);border-radius:5px;animation:pulse 1.4s infinite;opacity:.3;animation-delay:.24s"></div>' +
     '<div style="font:400 10px var(--fm);color:var(--ink3);text-align:center;margin-top:10px;letter-spacing:.06em">Chargement...</div>' +
     '</div>';
-  document.getElementById('feed-ctr').textContent = '';
+  document.getElementById('feed-counter').textContent = '';
 
   // Cache 8 min
   var now = Date.now();
@@ -1207,7 +1211,7 @@ async function loadGuardian(q, section) {
 }
 
 function showOffline(cat) {
-  var arena = document.getElementById('arena');
+  var arena = document.getElementById('card-arena');
   if (!arena) return;
   arena.innerHTML = '';
   var wrap = document.createElement('div');
@@ -1244,33 +1248,34 @@ function initFeed(){
 }
 
 function renderCards(){
-  var arena=document.getElementById('arena'); if(!arena) return;
+  var arena=document.getElementById('card-arena'); if(!arena) return;
   arena.innerHTML='';
   if(!_deck.length){
     arena.innerHTML='<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px"><div style="font:600 28px var(--fm);color:var(--ink3)">✓</div><div style="font:500 13px var(--f);color:var(--ink2)">Tout lu</div><button onclick="resetFeed()" style="margin-top:8px;padding:6px 14px;border-radius:6px;border:1px solid var(--line);background:var(--s2);color:var(--ink2);font:400 10px var(--fm);cursor:pointer">↺ Recharger</button></div>';
-    document.getElementById('feed-ctr').textContent='';
+    var cnt=document.getElementById('feed-counter'); if(cnt) cnt.textContent='';
     return;
   }
-  var col=(FEED_CATS_CFG[_fcat]&&FEED_CATS_CFG[_fcat].col)||'var(--ink2)';
+  var cfg=FEED_CATS_CFG[_fcat]||{};
+  var col=cfg.col||'var(--ink2)';
   var show=Math.min(3,_deck.length);
   for(var i=show-1;i>=0;i--){
     var item=_deck[i];
     var card=document.createElement('div');
-    card.className='fc';
-    if(i===0){card.style.zIndex=10;card.style.transform='none';card.style.opacity='1';}
-    else if(i===1){card.style.zIndex=5;card.style.transform='scale(.96) translateY(10px)';card.style.opacity='.45';card.style.pointerEvents='none';}
-    else{card.style.zIndex=1;card.style.transform='scale(.92) translateY(20px)';card.style.opacity='.2';card.style.pointerEvents='none';}
+    card.className='f-card';
+    if(i===0){card.style.zIndex=10;card.style.transform='translateY(0) scale(1)';card.style.opacity='1';}
+    else if(i===1){card.style.zIndex=5;card.style.transform='translateY(14px) scale(.95)';card.style.opacity='.55';card.style.pointerEvents='none';}
+    else{card.style.zIndex=1;card.style.transform='translateY(28px) scale(.9)';card.style.opacity='.25';card.style.pointerEvents='none';}
     card.innerHTML=
-      '<div class="swipe-l">Skip</div>'+
-      '<div class="swipe-r">Save</div>'+
-      '<div class="fc-cat" style="color:'+col+'">'+CAT_NAMES[_fcat]+'</div>'+
-      '<div class="fc-title">'+item.t+'</div>'+
-      (item.desc&&item.desc.length>10?'<div style="font:400 11px var(--f);color:var(--ink3);margin-top:8px;line-height:1.6;overflow:hidden;max-height:60px">'+item.desc+'...</div>':'')+
-      '<div class="fc-source">'+item.d+'</div>';
+      '<div class="swipe-nope">SKIP</div>'+
+      '<div class="swipe-like">SAVE</div>'+
+      '<div class="cat-tag" style="background:'+col+'20;color:'+col+'">'+CAT_NAMES[_fcat]+'</div>'+
+      '<div class="headline">'+item.t+'</div>'+
+      (item.desc&&item.desc.length>10?'<div style="font:400 12px var(--f);color:var(--ink3);margin-top:8px;line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical">'+item.desc+'</div>':'')+
+      '<div class="source">'+item.d+'</div>';
     if(i===0) attachSwipe(card);
     arena.appendChild(card);
   }
-  var cnt=document.getElementById('feed-ctr');
+  var cnt=document.getElementById('feed-counter');
   if(cnt) cnt.textContent=_deck.length+' article'+(_deck.length>1?'s':'')+' restants';
 }
 
@@ -1317,7 +1322,7 @@ function flyOut(card,dir){
 }
 
 function doSwipe(dir){
-  var arena=document.getElementById('arena');if(!arena)return;
+  var arena=document.getElementById('card-arena');if(!arena)return;
   var cards=[].slice.call(arena.querySelectorAll('.fc'));
   var top=null;var maxZ=0;
   cards.forEach(function(c){var z=parseInt(c.style.zIndex||0);if(z>maxZ){maxZ=z;top=c}});
