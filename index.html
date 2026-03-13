@@ -279,7 +279,7 @@ textarea{resize:none;min-height:52px}
 }
 
 /* Base card */
-.card {
+.swipe-card {
   position: absolute;
   border-radius: 20px;
   background: var(--s2);
@@ -289,25 +289,25 @@ textarea{resize:none;min-height:52px}
   cursor: grab; user-select: none; touch-action: none;
   will-change: transform; overflow: hidden;
 }
-.card:active { cursor: grabbing; }
-.card.top  { top:0; left:0;    right:0;    bottom:0;     z-index:10; pointer-events:auto; }
-.card.mid  { top:0; left:12px; right:12px; bottom:-12px; z-index:5;  opacity:.6;  pointer-events:none; border-radius:18px; }
-.card.back { top:0; left:22px; right:22px; bottom:-22px; z-index:1;  opacity:.3;  pointer-events:none; border-radius:16px; }
+.swipe-card:active { cursor: grabbing; }
+.swipe-card.top  { top:0; left:0;    right:0;    bottom:0;     z-index:10; pointer-events:auto; }
+.swipe-card.mid  { top:0; left:12px; right:12px; bottom:-12px; z-index:5;  opacity:.6;  pointer-events:none; border-radius:18px; }
+.swipe-card.back { top:0; left:22px; right:22px; bottom:-22px; z-index:1;  opacity:.3;  pointer-events:none; border-radius:16px; }
 
-.card-cat  { font: 700 9px var(--f); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
-.card-ttl  { font: 800 20px var(--f); letter-spacing: -.03em; line-height: 1.28; }
-.card-desc {
+.swipe-card-cat  { font: 700 9px var(--f); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+.swipe-card-ttl  { font: 800 20px var(--f); letter-spacing: -.03em; line-height: 1.28; }
+.swipe-card-desc {
   font: 400 13px var(--f); color: var(--ink2); line-height: 1.65; margin-top: 10px;
   overflow: hidden; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;
   flex: 1;
 }
-.card-meta {
+.swipe-card-meta {
   margin-top: 14px; padding-top: 12px;
   display: flex; align-items: center; gap: 8px;
   font: 500 11px var(--f); color: var(--ink3);
   border-top: 1px solid var(--line); flex-shrink: 0;
 }
-.card-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.swipe-card-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
 .lbl-skip, .lbl-save {
   position: absolute; top: 18px;
@@ -1357,19 +1357,28 @@ function renderCards(){
   for(var i=n-1;i>=0;i--){
     var item=_deck[i];
     var card=document.createElement('div');
-    card.className='card '+depths[i];
+    card.className='swipe-card '+depths[i];
     var domain = '';
     try { domain = new URL(item.u).hostname.replace('www.',''); } catch(e){}
+    var readTime = item.desc && item.desc.length > 100 ? Math.ceil(item.desc.split(' ').length / 200)+' min' : '';
     card.innerHTML=
       '<div class="lbl-skip">SKIP</div>'+
       '<div class="lbl-save">SAVE</div>'+
-      '<div class="card-cat" style="color:'+col+'">'+label+'</div>'+
-      '<div class="card-ttl">'+item.t+'</div>'+
-      '<div class="card-desc">'+(item.desc&&item.desc.length>10?item.desc:'Tape ↗ pour lire l’article complet.')+'</div>'+
-      '<div class="card-meta">'+
-        '<div class="card-dot" style="background:'+col+'"></div>'+
-        '<span style="flex:1">'+item.d+'</span>'+
-        '<a href="'+item.u+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="font:600 10px var(--fm);color:'+col+';text-decoration:none;padding:3px 10px;border:1px solid '+col+'55;border-radius:20px;white-space:nowrap">Lire →</a>'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">'+
+        '<div style="font:700 9px var(--fm);letter-spacing:.1em;text-transform:uppercase;color:'+col+';background:'+col+'18;padding:3px 9px;border-radius:20px">'+label+'</div>'+
+        (readTime?'<div style="font:400 9px var(--fm);color:var(--ink3)">'+readTime+' de lecture</div>':'')+
+      '</div>'+
+      '<div style="font:800 19px var(--f);letter-spacing:-.03em;line-height:1.28;margin-bottom:10px;flex:1">'+item.t+'</div>'+
+      (item.desc&&item.desc.length>10
+        ?'<div style="font:400 13px var(--f);color:var(--ink2);line-height:1.7;overflow:hidden;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical">'+item.desc+'</div>'
+        :'<div style="font:400 13px var(--f);color:var(--ink3);line-height:1.7">Appuie sur ↗ pour lire l’article complet.</div>')+
+      '<div style="margin-top:auto;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;gap:8px;flex-shrink:0">'+
+        '<div style="width:6px;height:6px;border-radius:50%;background:'+col+';flex-shrink:0"></div>'+
+        '<span style="font:500 11px var(--f);color:var(--ink3);flex:1">'+item.d+'</span>'+
+        '<a href="'+item.u+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" '+
+          'style="font:600 10px var(--fm);color:'+col+';text-decoration:none;padding:4px 12px;'+
+          'background:'+col+'15;border:1px solid '+col+'40;border-radius:20px;white-space:nowrap;letter-spacing:.03em">'+
+          'Lire →</a>'+
       '</div>';
     if(i===0) attachSwipe(card);
     arena.appendChild(card);
@@ -1414,7 +1423,7 @@ function flyOut(card,dir){
 }
 
 function doSwipe(dir){
-  var top=document.querySelector('#card-arena .card.top');
+  var top=document.querySelector('#card-arena .swipe-card.top');
   if(top) flyOut(top,dir==='right'?'right':'left');
 }
 function openCard(){ if(_deck.length) window.open(_deck[0].u,'_blank','noopener'); }
@@ -1959,7 +1968,7 @@ async function fetchWeather(){
 // ─── INIT ─────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded',function(){
   document.body.classList.add('dark');
-  initBrief();initFeed();initExplore();
+  initBrief();initFeed();initExplore();nTab('ia');renderBank();renderAlim();
   renderHabits();renderStreak();renderTasks();renderBTCLearn();
   var w=ld('water',{v:0,d:td()});_water=w.d===td()?w.v||0:0;renderWater();
   calcDCA();fetchBTC();fetchFG();fetchChart();fetchWeather();
