@@ -276,7 +276,8 @@ textarea{resize:none;min-height:52px}
   overflow:visible;
 }
 .f-card{
-  position:absolute;inset:0;
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:24px;
@@ -1270,29 +1271,33 @@ function renderCards(){
   var label = cfg.label || _fcat;
   var show  = Math.min(3, _deck.length);
 
-  // Render back cards first (index 2,1) then top card (index 0)
-  // So top card is last in DOM → gets pointer events
+  // Cards stacked: bottom card at back, top card at front (last in DOM = on top)
+  // We use translateY to peek the cards behind — NO scale (scale causes visual overlap)
   for(var i = show - 1; i >= 0; i--){
     var item = _deck[i];
     var card = document.createElement('div');
     card.className = 'f-card';
 
-    // Explicit inline styles — no CSS conflict
     if(i === 0){
-      card.style.zIndex    = '10';
-      card.style.transform = 'translateY(0px) scale(1)';
-      card.style.opacity   = '1';
+      // Top card — full size, interactive
+      card.style.zIndex       = '10';
+      card.style.transform    = 'translateY(0px)';
+      card.style.opacity      = '1';
       card.style.pointerEvents = 'auto';
     } else if(i === 1){
-      card.style.zIndex    = '5';
-      card.style.transform = 'translateY(14px) scale(.95)';
-      card.style.opacity   = '.5';
+      // Middle card — peeking 10px below
+      card.style.zIndex       = '5';
+      card.style.transform    = 'translateY(10px) scaleX(0.96)';
+      card.style.opacity      = '0.7';
       card.style.pointerEvents = 'none';
+      card.style.transformOrigin = 'bottom center';
     } else {
-      card.style.zIndex    = '1';
-      card.style.transform = 'translateY(28px) scale(.90)';
-      card.style.opacity   = '.25';
+      // Back card — peeking 20px below
+      card.style.zIndex       = '1';
+      card.style.transform    = 'translateY(20px) scaleX(0.92)';
+      card.style.opacity      = '0.4';
       card.style.pointerEvents = 'none';
+      card.style.transformOrigin = 'bottom center';
     }
 
     card.innerHTML =
@@ -1902,3 +1907,4 @@ window.addEventListener('DOMContentLoaded',function(){
 </script>
 </body>
 </html>
+  
