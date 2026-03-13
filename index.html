@@ -1231,15 +1231,18 @@ function showOffline(cat) {
 var CAT_NAMES={sport:'Sport',crypto:'Crypto',sante:'Santé',tech:'Tech',monde:'Monde'}; // kept for nav buttons
 
 function initFeed(){
-  var el=document.getElementById('feed-cats');if(!el)return;
+  var el=document.getElementById('feed-cats'); if(!el) return;
   el.innerHTML='';
   Object.keys(FEED_CATS_CFG).forEach(function(k){
     var b=document.createElement('button');
     b.className='fcat'+(k===_fcat?' on':'');
     b.textContent=CAT_NAMES[k];
     b.onclick=function(){
-      document.querySelectorAll('.fcat').forEach(function(x){x.classList.remove('on')});
-      b.classList.add('on');_fcat=k;
+      document.querySelectorAll('.fcat').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on');
+      _fcat=k;
+      delete _rssCache[k]; // fresh on tab switch
+      _deck=[];
       loadCatFeed(k);
     };
     el.appendChild(b);
@@ -1249,88 +1252,111 @@ function initFeed(){
 
 function renderCards(){
   var arena=document.getElementById('card-arena'); if(!arena) return;
-  arena.innerHTML='';
+  // Remove only card elements, keep skeleton if present
+  var existing=[].slice.call(arena.querySelectorAll('.f-card'));
+  existing.forEach(function(c){c.remove();});
+
   if(!_deck.length){
-    arena.innerHTML='<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px"><div style="font:600 28px var(--fm);color:var(--ink3)">✓</div><div style="font:500 13px var(--f);color:var(--ink2)">Tout lu</div><button onclick="resetFeed()" style="margin-top:8px;padding:6px 14px;border-radius:6px;border:1px solid var(--line);background:var(--s2);color:var(--ink2);font:400 10px var(--fm);cursor:pointer">↺ Recharger</button></div>';
-    var cnt=document.getElementById('feed-counter'); if(cnt) cnt.textContent='';
-    return;
+    arena.innerHTML='<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px"><div style="font:700 32px var(--f)">✓</div><div style="font:500 14px var(--f);color:var(--ink2)">Tout lu</div><button onclick="resetFeed()" style="margin-top:6px;padding:7px 18px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--ink2);font:500 12px var(--f);cursor:pointer">↺ Recharger</button></div>';
+    var cnt=document.getElementById('feed-counter'); if(cnt) cnt.textContent=''; return;
   }
+
+  // Clear and rebuild
+  arena.innerHTML='';
   var cfg=FEED_CATS_CFG[_fcat]||{};
-  var col=cfg.col||'var(--ink2)';
+  var col=cfg.col||'#888';
+  var label=cfg.label||_fcat;
   var show=Math.min(3,_deck.length);
+
+  // Build back-to-front so top card is last in DOM (gets click events)
   for(var i=show-1;i>=0;i--){
     var item=_deck[i];
     var card=document.createElement('div');
     card.className='f-card';
-    if(i===0){card.style.zIndex=10;card.style.transform='translateY(0) scale(1)';card.style.opacity='1';}
-    else if(i===1){card.style.zIndex=5;card.style.transform='translateY(14px) scale(.95)';card.style.opacity='.55';card.style.pointerEvents='none';}
-    else{card.style.zIndex=1;card.style.transform='translateY(28px) scale(.9)';card.style.opacity='.25';card.style.pointerEvents='none';}
+
+    // Depth transform — inline style overrides CSS :nth-child
+    if(i===0){
+      card.style.cssText='z-index:10;transform:translateY(0) scale(1);opacity:1;';
+    } else if(i===1){
+      card.style.cssText='z-index:5;transform:translateY(12px) scale(.96);opacity:.5;pointer-events:none;';
+    } else {
+      card.style.cssText='z-index:1;transform:translateY(24px) scale(.92);opacity:.25;pointer-events:none;';
+    }
+
     card.innerHTML=
       '<div class="swipe-nope">SKIP</div>'+
       '<div class="swipe-like">SAVE</div>'+
-      '<div class="cat-tag" style="background:'+col+'20;color:'+col+'">'+CAT_NAMES[_fcat]+'</div>'+
+      '<div class="cat-tag" style="background:'+col+'22;color:'+col+'">'+label+'</div>'+
       '<div class="headline">'+item.t+'</div>'+
-      (item.desc&&item.desc.length>10?'<div style="font:400 12px var(--f);color:var(--ink3);margin-top:8px;line-height:1.6;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical">'+item.desc+'</div>':'')+
+      (item.desc&&item.desc.length>10
+        ? '<div style="font:400 12px var(--f);color:var(--ink3);line-height:1.65;margin-top:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical">'+item.desc+'</div>'
+        : '')+
       '<div class="source">'+item.d+'</div>';
+
     if(i===0) attachSwipe(card);
     arena.appendChild(card);
   }
+
   var cnt=document.getElementById('feed-counter');
-  if(cnt) cnt.textContent=_deck.length+' article'+(_deck.length>1?'s':'')+' restants';
+  if(cnt) cnt.textContent=_deck.length+' article'+(_deck.length>1?'s':'')+' restant'+(_deck.length>1?'s':'');
 }
 
 function attachSwipe(card){
   var sx,sy,dx=0,dragging=false;
-  var threshold=90;
-  function start(ex,ey){sx=ex;sy=ey;dx=0;dragging=true;card.style.transition='none'}
+  var THRESHOLD=80;
+
+  function start(ex,ey){ sx=ex; sy=ey; dx=0; dragging=true; card.style.transition='none'; }
   function move(ex,ey){
-    if(!dragging)return;
-    dx=ex-sx;var dy=ey-sy;
-    var rot=dx*.07;
-    card.style.transform='translate('+dx+'px,'+dy+'px) rotate('+rot+'deg)';
+    if(!dragging) return;
+    dx=ex-sx; var dy=ey-sy;
+    card.style.transform='translate('+dx+'px,'+dy*0.2+'px) rotate('+(dx*0.06)+'deg)';
     var nope=card.querySelector('.swipe-nope');
     var like=card.querySelector('.swipe-like');
-    if(nope)nope.style.opacity=dx<-20?Math.min(1,(-dx-20)/60)+'':'0';
-    if(like)like.style.opacity=dx>20?Math.min(1,(dx-20)/60)+'':'0';
+    if(nope) nope.style.opacity=dx<-20?Math.min(1,(-dx-20)/60)+'':'0';
+    if(like) like.style.opacity=dx>20?Math.min(1,(dx-20)/60)+'':'0';
   }
   function end(){
-    if(!dragging)return;dragging=false;
-    card.style.transition='transform .35s cubic-bezier(.25,.46,.45,.94),opacity .35s';
-    if(Math.abs(dx)>threshold){
-      flyOut(card,dx>0?'right':'left');
-    } else {
+    if(!dragging) return; dragging=false;
+    card.style.transition='transform .3s ease,opacity .3s ease';
+    if(dx>THRESHOLD)       flyOut(card,'right');
+    else if(dx<-THRESHOLD) flyOut(card,'left');
+    else {
       card.style.transform='translateY(0) scale(1)';
       var nope=card.querySelector('.swipe-nope');
       var like=card.querySelector('.swipe-like');
-      if(nope)nope.style.opacity='0';if(like)like.style.opacity='0';
+      if(nope) nope.style.opacity='0';
+      if(like) like.style.opacity='0';
     }
   }
-  card.addEventListener('touchstart',function(e){var t=e.touches[0];start(t.clientX,t.clientY)},{passive:true});
-  card.addEventListener('touchmove',function(e){var t=e.touches[0];move(t.clientX,t.clientY)},{passive:true});
-  card.addEventListener('touchend',end);
-  card.addEventListener('mousedown',function(e){start(e.clientX,e.clientY)});
-  document.addEventListener('mousemove',function(e){if(dragging)move(e.clientX,e.clientY)});
-  document.addEventListener('mouseup',function(){if(dragging)end()});
+
+  card.addEventListener('touchstart',function(e){var t=e.touches[0];start(t.clientX,t.clientY);},{passive:true});
+  card.addEventListener('touchmove', function(e){var t=e.touches[0];move(t.clientX,t.clientY);},{passive:true});
+  card.addEventListener('touchend',  end);
+  card.addEventListener('mousedown', function(e){start(e.clientX,e.clientY);});
+  window.addEventListener('mousemove',function(e){if(dragging)move(e.clientX,e.clientY);});
+  window.addEventListener('mouseup',  function(){if(dragging)end();});
 }
 
 function flyOut(card,dir){
-  var tx=dir==='right'?window.innerWidth*1.5:-window.innerWidth*1.5;
-  var rot=dir==='right'?30:-30;
-  card.style.transform='translate('+tx+'px, -60px) rotate('+rot+'deg)';
+  var tx=dir==='right'?window.innerWidth+200:-(window.innerWidth+200);
+  card.style.transition='transform .32s ease,opacity .32s ease';
+  card.style.transform='translate('+tx+'px,'+-50+'px) rotate('+(dir==='right'?25:-25)+'deg)';
   card.style.opacity='0';
-  setTimeout(function(){_deck.shift();renderCards()},340);
+  setTimeout(function(){ _deck.shift(); renderCards(); }, 340);
 }
 
 function doSwipe(dir){
-  var arena=document.getElementById('card-arena');if(!arena)return;
-  var cards=[].slice.call(arena.querySelectorAll('.fc'));
-  var top=null;var maxZ=0;
-  cards.forEach(function(c){var z=parseInt(c.style.zIndex||0);if(z>maxZ){maxZ=z;top=c}});
-  if(top){top.style.transition='transform .35s cubic-bezier(.25,.46,.45,.94),opacity .35s';flyOut(top,dir)}
+  var arena=document.getElementById('card-arena'); if(!arena) return;
+  // Top card = highest z-index
+  var cards=[].slice.call(arena.querySelectorAll('.f-card'));
+  var top=null, maxZ=-1;
+  cards.forEach(function(c){ var z=parseInt(c.style.zIndex||0); if(z>maxZ){maxZ=z;top=c;} });
+  if(top) flyOut(top,dir==='right'?'right':'left');
 }
 
-function openTopCard(){if(_deck.length)window.open(_deck[0].u,'_blank','noopener')}
-function resetFeed(){delete _rssCache[_fcat];_deck=[];loadCatFeed(_fcat);toast('Actualisation...');}
+function openTopCard(){ if(_deck.length) window.open(_deck[0].u,'_blank','noopener noreferrer'); }
+
+function resetFeed(){ delete _rssCache[_fcat]; _deck=[]; loadCatFeed(_fcat); }
 
 // ─── EXPLORE ─────────────────────────────────────────────────
 var ENGINES=[
