@@ -246,100 +246,93 @@ textarea{resize:none;min-height:52px}
   display:none;
 }
 
-/* ═══════════════════════════════════════════
-   PAGE: FEED — TRUE SWIPE CARDS
-═══════════════════════════════════════════ */
-#p-feed{overflow:hidden;height:100dvh;padding-bottom:0}
-.feed-top{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px 10px;flex-shrink:0;
+/* ═══════════════════════════════════════════════
+   PAGE: FEED — SWIPE CARDS
+══════════════════════════════════════════════ */
+#p-feed {
+  display: flex; flex-direction: column;
+  height: 100dvh; overflow: hidden; padding-bottom: 0;
 }
-.feed-title{font:900 28px var(--f);letter-spacing:-.04em}
-.feed-cats{
-  display:flex;gap:6px;overflow-x:auto;padding:0 20px 10px;
-  scrollbar-width:none;flex-shrink:0;
+.feed-top {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px 8px;
 }
-.feed-cats::-webkit-scrollbar{display:none}
-.fcat{
-  flex-shrink:0;padding:6px 14px;border-radius:20px;
-  border:1px solid var(--border);background:transparent;
-  color:var(--ink3);font:700 9px var(--f);letter-spacing:.08em;
-  text-transform:uppercase;cursor:pointer;transition:all .18s;
+.feed-title { font: 800 26px var(--f); letter-spacing: -.03em; }
+.feed-cats {
+  flex-shrink: 0; display: flex; gap: 6px; overflow-x: auto;
+  padding: 0 20px 10px; scrollbar-width: none;
 }
-.fcat.on{border-color:var(--accent);color:var(--accent);background:rgba(226,255,61,.06)}
+.feed-cats::-webkit-scrollbar { display: none; }
+.fcat {
+  flex-shrink: 0; padding: 5px 14px; border-radius: 20px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--ink3); font: 700 9px var(--f); letter-spacing: .08em;
+  text-transform: uppercase; cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.fcat.on { border-color: var(--accent); color: var(--accent); background: rgba(200,251,92,.06); }
 
 /* Stack container */
-#card-arena{
-  position:relative;
-  flex:1;margin:0 16px;
-  height:calc(100dvh - 230px);
-  overflow:visible;
+#card-arena {
+  flex: 1; position: relative; margin: 0 14px;
+  min-height: 0; margin-bottom: 10px;
 }
-.f-card{
-  position:absolute;
-  top:0;left:0;right:0;bottom:0;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:24px;
-  display:flex;flex-direction:column;
-  cursor:grab;user-select:none;
-  will-change:transform;
-  touch-action:none;
-}
-.f-card:active{cursor:grabbing}
-.f-card .cat-tag{
-  display:inline-flex;align-items:center;gap:5px;
-  padding:4px 10px;border-radius:20px;
-  font:700 9px var(--f);letter-spacing:.08em;text-transform:uppercase;
-  margin-bottom:16px;
-}
-.f-card .headline{
-  font:800 22px var(--f);letter-spacing:-.03em;line-height:1.25;
-  flex:1;
-}
-.f-card .source{
-  font:500 11px var(--f);color:var(--ink3);
-  margin-top:16px;display:flex;align-items:center;gap:6px;
-}
-.f-card .source::before{content:'';width:20px;height:1px;background:var(--border2)}
 
-/* Depth handled by JS */
+/* Base card */
+.card {
+  position: absolute;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 22px 22px 16px;
+  display: flex; flex-direction: column;
+  cursor: grab; user-select: none; touch-action: none;
+  will-change: transform; overflow: hidden;
+}
+.card:active { cursor: grabbing; }
+.card.top  { top:0; left:0;    right:0;    bottom:0;     z-index:10; pointer-events:auto; }
+.card.mid  { top:0; left:12px; right:12px; bottom:-12px; z-index:5;  opacity:.6;  pointer-events:none; border-radius:18px; }
+.card.back { top:0; left:22px; right:22px; bottom:-22px; z-index:1;  opacity:.3;  pointer-events:none; border-radius:16px; }
 
-/* Swipe overlays */
-.swipe-nope,.swipe-like{
-  position:absolute;top:20px;
-  font:900 22px var(--f);letter-spacing:.06em;text-transform:uppercase;
-  padding:6px 14px;border-radius:10px;border:3px solid;
-  opacity:0;transition:opacity .1s;pointer-events:none;
-  transform:rotate(-15deg);
+.card-cat  { font: 700 9px var(--f); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+.card-ttl  { font: 800 20px var(--f); letter-spacing: -.03em; line-height: 1.28; }
+.card-desc {
+  font: 400 13px var(--f); color: var(--ink2); line-height: 1.65; margin-top: 10px;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;
+  flex: 1;
 }
-.swipe-nope{left:20px;color:#ff4444;border-color:#ff4444;transform:rotate(-15deg)}
-.swipe-like{right:20px;color:var(--green);border-color:var(--green);transform:rotate(15deg)}
+.card-meta {
+  margin-top: 14px; padding-top: 12px;
+  display: flex; align-items: center; gap: 8px;
+  font: 500 11px var(--f); color: var(--ink3);
+  border-top: 1px solid var(--border); flex-shrink: 0;
+}
+.card-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
 
-/* Feed action buttons */
-.feed-actions{
-  display:flex;justify-content:center;align-items:center;gap:16px;
-  padding:12px 20px;flex-shrink:0;
+.lbl-skip, .lbl-save {
+  position: absolute; top: 18px;
+  font: 900 15px var(--f); letter-spacing: .08em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 6px; border: 2px solid;
+  opacity: 0; pointer-events: none;
 }
-.fa{
-  display:flex;align-items:center;justify-content:center;
-  border-radius:50%;cursor:pointer;transition:transform .15s,background .15s;
-  font-size:18px;
+.lbl-skip { left:14px;  color:var(--red);   border-color:var(--red);   transform:rotate(-8deg); }
+.lbl-save { right:14px; color:var(--green); border-color:var(--green); transform:rotate(8deg); }
+
+.feed-counter {
+  flex-shrink: 0; text-align: center;
+  font: 400 10px var(--fm); color: var(--ink3); letter-spacing: .06em; padding: 6px 0;
 }
-.fa:active{transform:scale(.88)}
-.fa-skip{width:52px;height:52px;background:var(--surface2);border:1px solid var(--border)}
-.fa-open{
-  width:64px;height:64px;
-  background:var(--accent);
-  box-shadow:0 0 30px rgba(226,255,61,.25);
-  font-size:20px;color:#000;font-weight:900;
+.feed-actions {
+  flex-shrink: 0; display: flex; justify-content: center; align-items: center; gap: 14px;
+  padding: 10px 0 14px;
 }
-.fa-save{width:52px;height:52px;background:var(--surface2);border:1px solid var(--border)}
-.feed-counter{
-  text-align:center;font:500 10px var(--f);color:var(--ink3);
-  padding:4px 0;flex-shrink:0;
-}
+.fa { display:flex; align-items:center; justify-content:center; border-radius:50%; cursor:pointer; font-size:18px; font-weight:700; transition:transform .1s; }
+.fa:active { transform: scale(.88); }
+.fa-skip { width:50px; height:50px; background:var(--surface2); color:var(--ink3); border:1px solid var(--border); }
+.fa-open { width:62px; height:62px; background:var(--accent); color:#000; font-size:20px; }
+.fa-save { width:50px; height:50px; background:var(--surface2); color:var(--ink3); border:1px solid var(--border); }
+
+@keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:.7} }
 
 /* ═══════════════════════════════════════════
    PAGE: EXPLORE
@@ -712,7 +705,7 @@ body.light #navbar{background:rgba(247,246,242,.9)}
   <div class="feed-counter" id="feed-counter"></div>
   <div class="feed-actions">
     <div class="fa fa-skip" onclick="doSwipe('left')">✕</div>
-    <div class="fa fa-open" onclick="openTopCard()">↗</div>
+    <div class="fa fa-open" onclick="openCard()">↗</div>
     <div class="fa fa-save" onclick="doSwipe('right')">♥</div>
   </div>
 </div>
@@ -1228,151 +1221,218 @@ function showOffline(cat) {
 
 var CAT_NAMES={sport:'Sport',crypto:'Crypto',sante:'Santé',tech:'Tech',monde:'Monde'}; // kept for nav buttons
 
-function initFeed(){
-  var el=document.getElementById('feed-cats'); if(!el) return;
-  el.innerHTML='';
-  Object.keys(FEED_CATS_CFG).forEach(function(k){
-    var b=document.createElement('button');
-    b.className='fcat'+(k===_fcat?' on':'');
-    b.textContent=CAT_NAMES[k];
-    b.onclick=function(){
-      document.querySelectorAll('.fcat').forEach(function(x){x.classList.remove('on');});
-      b.classList.add('on');
-      _fcat=k;
-      delete _rssCache[k]; // fresh on tab switch
-      _deck=[];
-      loadCatFeed(k);
-    };
-    el.appendChild(b);
-  });
-  loadCatFeed(_fcat);
+// ── FEED DATA ────────────────────────────────────────────────
+var _fcat  = 'sport';
+var _deck  = [];
+var _cache = {};
+
+var CAT = {
+  sport:   { label:'Sport',    col:'#3fb950', type:'curated' },
+  finance: { label:'Finance',  col:'#c8fb5c', type:'multi',
+             sources:[
+               {type:'guardian', q:'stock market shares economy finance investing', sec:'business'},
+               {type:'guardian', q:'inflation interest rates federal reserve ECB', sec:'business'},
+             ]},
+  crypto:  { label:'Crypto',   col:'#e8960a', type:'guardian', q:'cryptocurrency bitcoin ethereum blockchain', sec:'technology' },
+  sante:   { label:'Santé',    col:'#58a6ff', type:'guardian', q:'health nutrition sleep fitness', sec:'science' },
+  tech:    { label:'Tech',     col:'#a371f7', type:'hn' },
+  monde:   { label:'Monde',    col:'#d29922', type:'guardian', q:'world politics economy geopolitics', sec:'world' },
+};
+
+var CAT_NAMES = {sport:'Sport',finance:'Finance',crypto:'Crypto',sante:'Santé',tech:'Tech',monde:'Monde'};
+
+var SPORT = [
+  {t:'BJJ: How to improve your guard retention',         d:'Grapplearts',      u:'https://www.grapplearts.com',              desc:'Guard retention is arguably the most important defensive skill in BJJ. Without it, every sweep or submission attempt leaves you exposed to passing.'},
+  {t:'The science of sleep for athletic recovery',       d:'Sleep Foundation', u:'https://www.sleepfoundation.org',          desc:'Sleep is when the body repairs muscle tissue, consolidates motor learning, and regulates hormones critical for performance. Most athletes need 8-10 hours.'},
+  {t:'Creatine: the most evidence-based supplement',     d:'Examine.com',      u:'https://examine.com/supplements/creatine/',desc:'Creatine monohydrate is the most studied sports supplement. It reliably increases strength, power output, and lean mass when combined with resistance training.'},
+  {t:'CO2 tolerance training for freedivers',            d:'DiveAssure',       u:'https://www.diveassure.com/blog',          desc:'CO2 tables teach your body to tolerate the urge to breathe at higher CO2 levels, extending dive time and improving mental control underwater.'},
+  {t:'Protein timing: does it matter for muscle growth?',d:'Examine.com',      u:'https://examine.com/articles/',            desc:'Total daily protein intake matters most. Spreading intake across 3-5 meals optimizes muscle protein synthesis, but meal timing has a modest effect.'},
+  {t:'Magnesium for athletes: complete guide',           d:'Examine.com',      u:'https://examine.com/supplements/magnesium/',desc:'Magnesium participates in over 300 enzymatic reactions. Athletes deplete it faster through sweat. Deficiency impairs sleep, recovery, and muscle function.'},
+  {t:'Cold exposure: the Huberman protocol',             d:'Huberman Lab',     u:'https://hubermanlab.com',                  desc:'11 minutes per week of cold water immersion (not shower) at uncomfortable but safe temperatures can increase dopamine, adrenaline, and metabolic rate.'},
+  {t:'Caffeine and performance: the complete guide',     d:'Examine.com',      u:'https://examine.com/supplements/caffeine/',desc:'3-6mg/kg caffeine 30-60 min before exercise reliably improves endurance, strength, and cognitive performance. Tolerance builds — cycle it for best results.'},
+  {t:'VO2 max: how to measure and improve it',           d:'TrainingPeaks',    u:'https://www.trainingpeaks.com/blog/',      desc:'VO2 max predicts longevity and athletic potential. Zone 2 training (60-70% max HR) for 3+ hours per week is the most efficient way to build it.'},
+  {t:'The half guard: mastering bottom game',            d:'Grapplearts',      u:'https://www.grapplearts.com',              desc:'The half guard is one of the most versatile positions in BJJ. Mastering the knee shield and underhook battle opens up sweeps, back takes, and leg lock entries.'},
+  {t:'Zone 2 cardio for combat sports athletes',         d:'TrainingPeaks',    u:'https://www.trainingpeaks.com/blog/',      desc:'Zone 2 builds the aerobic base that allows you to recover between hard rounds. Elite fighters spend 70-80% of training time at low intensity.'},
+  {t:'Omega-3 and inflammation in athletes',             d:'Examine.com',      u:'https://examine.com/supplements/fish-oil/',desc:'EPA and DHA from fish oil reduce exercise-induced inflammation and may improve recovery. 2-3g per day is a common effective dose for athletes.'},
+  {t:'Hypertrophy vs strength training for fighters',   d:'Stronger By Science',u:'https://www.strongerbyscience.com',      desc:'Fighters need both. Hypertrophy builds muscle mass and durability; strength training improves force production. Periodize both across your training year.'},
+  {t:'Why drilling matters more than rolling',           d:'BJJ Fanatics',     u:'https://www.bjjfanatics.com/blogs/news',  desc:'Deliberate drilling builds the muscle memory needed to execute techniques under pressure. Champions drill thousands of reps before relying on moves in competition.'},
+  {t:'Curcumin and joint health for grapplers',         d:'Examine.com',      u:'https://examine.com/supplements/curcumin/',desc:'Curcumin with piperine has anti-inflammatory effects that may help joint pain and soreness. Needs to be taken consistently for several weeks to show benefit.'},
+  {t:'Nap timing for peak athletic performance',         d:'Huberman Lab',     u:'https://hubermanlab.com',                  desc:'A 20-min nap between 1-3pm can restore alertness and improve motor learning without disrupting nighttime sleep. Avoid napping after 3pm.'},
+  {t:'Intermittent fasting and athletic performance',   d:'Examine.com',      u:'https://examine.com',                      desc:'IF can work for fat loss without harming performance if protein targets are met. Athletes doing two-a-days may struggle with narrow eating windows.'},
+  {t:'Active vs passive recovery: what science says',   d:'Examine.com',      u:'https://examine.com',                      desc:'Light movement (walking, cycling at low intensity) clears lactate and reduces DOMS more effectively than complete rest in most scenarios.'},
+  {t:'BJJ competition: a mental preparation guide',     d:'Grapplearts',      u:'https://www.grapplearts.com',              desc:'Visualization, controlled breathing, and pre-competition routines help manage adrenaline. The goal is to feel activated, not anxious, before you compete.'},
+  {t:'Vitamin D for immune function and performance',   d:'Examine.com',      u:'https://examine.com/supplements/vitamin-d/',desc:'Most people in low-sun climates are deficient. Vitamin D supports immune function, testosterone levels, and bone density — all critical for athletes.'},
+];
+
+function rng(){
+  if(typeof crypto!=='undefined'&&crypto.getRandomValues){var a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]/0xFFFFFFFF;}
+  return Math.random();
+}
+function shuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(rng()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
 }
 
-function renderCards(){
-  var arena = document.getElementById('card-arena');
-  if(!arena) return;
-  arena.innerHTML = '';
+async function loadCat(cat){
+  var arena = document.getElementById('card-arena'); if(!arena) return;
+  arena.innerHTML =
+    '<div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:12px;padding:28px">' +
+    ['','',''].map(function(_,i){ return '<div style="height:14px;background:var(--surface2);border-radius:4px;opacity:'+(1-i*0.3)+';animation:pulse 1.4s '+(i*0.15)+'s infinite"></div>'; }).join('') +
+    '</div>';
+  document.getElementById('feed-counter').textContent = '';
 
+  var now = Date.now();
+  if(_cache[cat] && now - _cache[cat].ts < 480000){
+    _deck = shuffle(_cache[cat].items.slice()); renderCards(); return;
+  }
+
+  var cfg = CAT[cat]||{}; var items = [];
+  try {
+    if(cfg.type === 'curated'){
+      items = SPORT;
+    } else if(cfg.type === 'hn'){
+      var ids = await fetch('https://hacker-news.firebaseio.com/v0/topstories.json').then(function(r){return r.json();});
+      var stories = await Promise.all(ids.slice(0,30).map(function(id){
+        return fetch('https://hacker-news.firebaseio.com/v0/item/'+id+'.json').then(function(r){return r.json();}).catch(function(){return null;});
+      }));
+      items = stories.filter(function(s){return s&&s.url&&s.title;}).map(function(s){
+        return {t:s.title, u:s.url, d:'Hacker News · '+s.score+' pts', desc:''};
+      });
+    } else if(cfg.type === 'guardian'){
+      items = await fetchGuardian(cfg.q, cfg.sec, 30);
+    } else if(cfg.type === 'multi'){
+      var all = [];
+      for(var si=0;si<cfg.sources.length;si++){
+        var src=cfg.sources[si];
+        if(src.type==='guardian'){
+          var got = await fetchGuardian(src.q, src.sec, 20);
+          all = all.concat(got);
+        }
+      }
+      items = all;
+    }
+  } catch(e){ items = []; }
+
+  if(!items.length) items = SPORT;
+  _cache[cat] = {items:items, ts:Date.now()};
+  _deck = shuffle(items.slice());
+  renderCards();
+}
+
+async function fetchGuardian(q, sec, n){
+  var url='https://content.guardianapis.com/search?api-key=test&q='+encodeURIComponent(q)+'&section='+encodeURIComponent(sec)+'&show-fields=trailText&page-size='+(n||30)+'&order-by=newest';
+  var data = await fetch(url).then(function(r){return r.json();});
+  return ((data.response&&data.response.results)||[]).map(function(a){
+    return {t:a.webTitle, u:a.webUrl, d:'The Guardian',
+      desc:(a.fields&&a.fields.trailText)?a.fields.trailText.replace(/<[^>]+>/g,'').slice(0,220):''};
+  });
+}
+
+
+
+function renderCards(){
+  var arena = document.getElementById('card-arena'); if(!arena) return;
+  arena.innerHTML = '';
   var cnt = document.getElementById('feed-counter');
 
   if(!_deck.length){
-    arena.innerHTML =
-      '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;text-align:center">' +
-      '<div style="font:700 40px var(--f)">✓</div>' +
-      '<div style="font:500 15px var(--f);color:var(--ink2)">Tout lu !</div>' +
-      '<button onclick="resetFeed()" style="margin-top:4px;padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--ink2);font:500 13px var(--f);cursor:pointer">↺ Recharger</button>' +
-      '</div>';
-    if(cnt) cnt.textContent = '';
-    return;
+    // Auto-reload with fresh shuffle from cache
+    var cached = _cache[_fcat];
+    if(cached && cached.items.length){
+      _deck = shuffle(cached.items.slice());
+      // fall through to render
+    } else {
+      arena.innerHTML =
+        '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px">' +
+        '<div style="font:700 36px var(--f)">✓</div>' +
+        '<div style="color:var(--ink2);font:500 14px var(--f)">Tout lu !</div>' +
+        '<button onclick="resetFeed()" style="margin-top:6px;padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--ink2);font:500 12px var(--f);cursor:pointer">↺ Recharger</button>' +
+        '</div>';
+      if(cnt) cnt.textContent=''; return;
+    }
   }
 
-  var cfg   = FEED_CATS_CFG[_fcat] || {};
-  var col   = cfg.col   || '#888';
-  var label = cfg.label || _fcat;
-  var show  = Math.min(3, _deck.length);
+  var cfg=CAT[_fcat]||{}, col=cfg.col||'#888', label=cfg.label||_fcat;
+  var n=Math.min(3,_deck.length);
+  var depths=['top','mid','back'];
 
-  // Cards stacked: bottom card at back, top card at front (last in DOM = on top)
-  // We use translateY to peek the cards behind — NO scale (scale causes visual overlap)
-  for(var i = show - 1; i >= 0; i--){
-    var item = _deck[i];
-    var card = document.createElement('div');
-    card.className = 'f-card';
-
-    if(i === 0){
-      // Top card — full size, interactive
-      card.style.zIndex       = '10';
-      card.style.transform    = 'translateY(0px)';
-      card.style.opacity      = '1';
-      card.style.pointerEvents = 'auto';
-    } else if(i === 1){
-      // Middle card — peeking 10px below
-      card.style.zIndex       = '5';
-      card.style.transform    = 'translateY(10px) scaleX(0.96)';
-      card.style.opacity      = '0.7';
-      card.style.pointerEvents = 'none';
-      card.style.transformOrigin = 'bottom center';
-    } else {
-      // Back card — peeking 20px below
-      card.style.zIndex       = '1';
-      card.style.transform    = 'translateY(20px) scaleX(0.92)';
-      card.style.opacity      = '0.4';
-      card.style.pointerEvents = 'none';
-      card.style.transformOrigin = 'bottom center';
-    }
-
-    card.innerHTML =
-      '<div class="swipe-nope">SKIP</div>' +
-      '<div class="swipe-like">SAVE</div>' +
-      '<div class="cat-tag" style="background:' + col + '22;color:' + col + '">' + label + '</div>' +
-      '<div class="headline">' + item.t + '</div>' +
-      (item.desc && item.desc.length > 10
-        ? '<div style="font:400 13px var(--f);color:var(--ink3);line-height:1.6;margin-top:8px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical">' + item.desc + '</div>'
-        : '') +
-      '<div class="source">' + item.d + '</div>';
-
-    if(i === 0) attachSwipe(card);
+  for(var i=n-1;i>=0;i--){
+    var item=_deck[i];
+    var card=document.createElement('div');
+    card.className='card '+depths[i];
+    card.innerHTML=
+      '<div class="lbl-skip">SKIP</div>'+
+      '<div class="lbl-save">SAVE</div>'+
+      '<div class="card-cat" style="color:'+col+'">'+label+'</div>'+
+      '<div class="card-ttl">'+item.t+'</div>'+
+      '<div class="card-desc">'+(item.desc&&item.desc.length>10?item.desc:'Appuie sur \u2197 pour lire l\u2019article.')+'</div>'+
+      '<div class="card-meta"><div class="card-dot" style="background:'+col+'"></div>'+item.d+'</div>';
+    if(i===0) attachSwipe(card);
     arena.appendChild(card);
   }
-
-  if(cnt) cnt.textContent = _deck.length + ' article' + (_deck.length > 1 ? 's' : '') + ' restant' + (_deck.length > 1 ? 's' : '');
+  if(cnt) cnt.textContent=_deck.length+' article'+(_deck.length>1?'s':'')+' restant'+(_deck.length>1?'s':'');
 }
 
 function attachSwipe(card){
-  var sx,sy,dx=0,dragging=false;
-  var THRESHOLD=80;
-
-  function start(ex,ey){ sx=ex; sy=ey; dx=0; dragging=true; card.style.transition='none'; }
+  var sx,sy,dx=0,on=false, THRESH=80;
+  function start(ex,ey){sx=ex;sy=ey;dx=0;on=true;card.style.transition='none';}
   function move(ex,ey){
-    if(!dragging) return;
-    dx=ex-sx; var dy=ey-sy;
-    card.style.transform='translate('+dx+'px,'+dy*0.2+'px) rotate('+(dx*0.06)+'deg)';
-    var nope=card.querySelector('.swipe-nope');
-    var like=card.querySelector('.swipe-like');
-    if(nope) nope.style.opacity=dx<-20?Math.min(1,(-dx-20)/60)+'':'0';
-    if(like) like.style.opacity=dx>20?Math.min(1,(dx-20)/60)+'':'0';
+    if(!on)return; dx=ex-sx;
+    var dy=(ey-sy)*0.15;
+    card.style.transform='translate('+dx+'px,'+dy+'px) rotate('+(dx*0.05)+'deg)';
+    var s=card.querySelector('.lbl-skip'),v=card.querySelector('.lbl-save');
+    if(s) s.style.opacity=dx<-20?Math.min(1,(-dx-20)/50):0;
+    if(v) v.style.opacity=dx>20?Math.min(1,(dx-20)/50):0;
   }
   function end(){
-    if(!dragging) return; dragging=false;
-    card.style.transition='transform .3s ease,opacity .3s ease';
-    if(dx>THRESHOLD)       flyOut(card,'right');
-    else if(dx<-THRESHOLD) flyOut(card,'left');
-    else {
-      card.style.transform='translateY(0) scale(1)';
-      var nope=card.querySelector('.swipe-nope');
-      var like=card.querySelector('.swipe-like');
-      if(nope) nope.style.opacity='0';
-      if(like) like.style.opacity='0';
-    }
+    if(!on)return; on=false;
+    card.style.transition='transform .25s ease,opacity .25s ease';
+    if(dx>THRESH){flyOut(card,'right');return;}
+    if(dx<-THRESH){flyOut(card,'left');return;}
+    card.style.transform='none';
+    var s=card.querySelector('.lbl-skip'),v=card.querySelector('.lbl-save');
+    if(s) s.style.opacity=0; if(v) v.style.opacity=0;
   }
-
-  card.addEventListener('touchstart',function(e){var t=e.touches[0];start(t.clientX,t.clientY);},{passive:true});
-  card.addEventListener('touchmove', function(e){var t=e.touches[0];move(t.clientX,t.clientY);},{passive:true});
-  card.addEventListener('touchend',  end);
-  card.addEventListener('mousedown', function(e){start(e.clientX,e.clientY);});
-  window.addEventListener('mousemove',function(e){if(dragging)move(e.clientX,e.clientY);});
-  window.addEventListener('mouseup',  function(){if(dragging)end();});
+  card.addEventListener('touchstart',function(e){start(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  card.addEventListener('touchmove', function(e){move(e.touches[0].clientX, e.touches[0].clientY);},{passive:true});
+  card.addEventListener('touchend', end);
+  card.addEventListener('mousedown',function(e){start(e.clientX,e.clientY);e.preventDefault();});
+  document.addEventListener('mousemove',function(e){if(on)move(e.clientX,e.clientY);});
+  document.addEventListener('mouseup',  function(){if(on)end();});
 }
 
 function flyOut(card,dir){
-  var tx=dir==='right'?window.innerWidth+200:-(window.innerWidth+200);
-  card.style.transition='transform .32s ease,opacity .32s ease';
-  card.style.transform='translate('+tx+'px,'+-50+'px) rotate('+(dir==='right'?25:-25)+'deg)';
+  var tx=dir==='right'?window.innerWidth+300:-(window.innerWidth+300);
+  card.style.transition='transform .3s ease,opacity .3s ease';
+  card.style.transform='translate('+tx+'px,-30px) rotate('+(dir==='right'?22:-22)+'deg)';
   card.style.opacity='0';
-  setTimeout(function(){ _deck.shift(); renderCards(); }, 340);
+  setTimeout(function(){_deck.shift();renderCards();},310);
 }
 
 function doSwipe(dir){
-  var arena=document.getElementById('card-arena'); if(!arena) return;
-  // Top card = highest z-index
-  var cards=[].slice.call(arena.querySelectorAll('.f-card'));
-  var top=null, maxZ=-1;
-  cards.forEach(function(c){ var z=parseInt(c.style.zIndex||0); if(z>maxZ){maxZ=z;top=c;} });
+  var top=document.querySelector('#card-arena .card.top');
   if(top) flyOut(top,dir==='right'?'right':'left');
 }
+function openCard(){ if(_deck.length) window.open(_deck[0].u,'_blank','noopener'); }
+function resetFeed(){ delete _cache[_fcat]; _deck=[]; loadCat(_fcat); }
 
-function openTopCard(){ if(_deck.length) window.open(_deck[0].u,'_blank','noopener noreferrer'); }
+function initFeed(){
+  var el=document.getElementById('feed-cats'); if(!el)return;
+  el.innerHTML='';
+  Object.keys(CAT).forEach(function(k){
+    var b=document.createElement('button');
+    b.className='fcat'+(k===_fcat?' on':'');
+    b.textContent=CAT[k].label;
+    b.onclick=function(){
+      document.querySelectorAll('.fcat').forEach(function(x){x.classList.remove('on');});
+      b.classList.add('on'); _fcat=k; _deck=[]; loadCat(k);
+    };
+    el.appendChild(b);
+  });
+  loadCat(_fcat);
+}
 
-function resetFeed(){ delete _rssCache[_fcat]; _deck=[]; loadCatFeed(_fcat); }
 
 // ─── EXPLORE ─────────────────────────────────────────────────
 var ENGINES=[
@@ -1907,4 +1967,3 @@ window.addEventListener('DOMContentLoaded',function(){
 </script>
 </body>
 </html>
-  
